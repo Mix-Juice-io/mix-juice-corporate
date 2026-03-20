@@ -1,0 +1,375 @@
+.page {
+  padding-top: 72px;
+}
+
+.pageHero {
+  position: relative;
+  padding: 84px 0 68px;
+  overflow: hidden;
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.blob1 {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  filter: blur(90px);
+  opacity: 0.34;
+  top: -24%;
+  right: 14%;
+}
+
+.blob2 {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: var(--color-secondary-light);
+  filter: blur(80px);
+  opacity: 0.28;
+  bottom: -12%;
+  left: 8%;
+}
+
+.pageLabel {
+  font-family: var(--font-jp);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--color-primary-dark);
+  margin-bottom: 12px;
+  display: inline-block;
+  position: relative;
+}
+
+.pageLabel::after {
+  content: '';
+  display: block;
+  width: 82px;
+  height: 14px;
+  margin-top: 10px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 82 14'%3E%3Cpath d='M2 7 C6 2, 12 2, 16 7 S26 12, 30 7 S40 2, 44 7 S54 12, 58 7 S68 2, 72 7 S78 12, 80 7' fill='none' stroke='%23FF945A' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center;
+  background-size: 82px 14px;
+}
+
+.pageTitle {
+  font-family: var(--font-jp);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 16px;
+  color: var(--color-text);
+}
+
+.pageDesc {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--color-text-light);
+  max-width: 720px;
+}
+
+.serviceSection {
+  padding: 12px 0 84px;
+}
+
+.serviceBlock {
+  padding: 34px 30px 30px;
+  background: rgba(255, 255, 255, 0.64);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 18px 40px rgba(24, 33, 51, 0.06);
+}
+
+.serviceBlock + .serviceBlock {
+  margin-top: 26px;
+}
+
+.serviceHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.serviceIconLarge {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(255, 179, 138, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.serviceEyebrow {
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: #8a8278;
+  margin-bottom: 4px;
+}
+
+.serviceTitle {
+  font-family: var(--font-jp);
+  font-size: 1.32rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.serviceDesc {
+  font-size: 1rem;
+  line-height: 2.05;
+  color: var(--color-text-light);
+  max-width: 780px;
+}
+
+.serviceDesc + .serviceDesc {
+  margin-top: 10px;
+}
+
+.productCard {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(109, 103, 95, 0.16);
+}
+
+.productHeader {
+  display: grid;
+  grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+}
+
+.productVisual {
+  display: flex;
+  justify-content: center;
+}
+
+.productIconCard {
+  width: 180px;
+  height: 180px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffb15f, #ff8f2b);
+  box-shadow: 0 18px 38px rgba(255, 143, 43, 0.18);
+}
+
+.productIconImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.productInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.productBadge {
+  display: inline-block;
+  font-family: var(--font-en);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--color-primary-dark);
+  background: rgba(255, 179, 138, 0.15);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+  width: fit-content;
+}
+
+.productName {
+  font-family: var(--font-jp);
+  font-size: 1.56rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--color-text);
+  margin-bottom: 10px;
+}
+
+.productTagline {
+  font-size: 0.94rem;
+  line-height: 1.8;
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.productDesc {
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: var(--color-text-light);
+}
+
+.featureList {
+  border-top: 1px solid var(--color-border);
+  padding-top: 28px;
+  margin-top: 28px;
+}
+
+.featureTitle {
+  font-family: var(--font-jp);
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: var(--color-text);
+}
+
+.features,
+.developmentList {
+  list-style: none;
+  display: grid;
+  gap: 16px;
+}
+
+.features {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.featureItem,
+.developmentItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--color-text-light);
+}
+
+.featureItem svg,
+.developmentItem svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.developmentList {
+  margin-top: 28px;
+}
+
+.inlineLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 28px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  transition: gap 0.3s ease;
+}
+
+.inlineLink:hover {
+  gap: 10px;
+}
+
+.cta {
+  padding: 0 0 88px;
+}
+
+.ctaBox {
+  text-align: center;
+  padding: 64px 40px;
+}
+
+.ctaTitle {
+  font-family: var(--font-jp);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--color-text);
+}
+
+.ctaDesc {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--color-text-light);
+  margin-bottom: 32px;
+}
+
+@media (max-width: 768px) {
+  .pageHero {
+    padding: 68px 0 52px;
+  }
+
+  .pageTitle {
+    font-size: 2.05rem;
+  }
+
+  .pageDesc {
+    font-size: 0.94rem;
+  }
+
+  .serviceSection {
+    padding: 0 0 64px;
+  }
+
+  .serviceBlock {
+    padding: 26px 20px 24px;
+  }
+
+  .serviceBlock + .serviceBlock {
+    margin-top: 18px;
+  }
+
+  .serviceHeader {
+    align-items: flex-start;
+    margin-bottom: 18px;
+  }
+
+  .serviceTitle {
+    font-size: 1.14rem;
+  }
+
+  .serviceEyebrow {
+    font-size: 0.8rem;
+  }
+
+  .serviceDesc {
+    font-size: 0.94rem;
+  }
+
+  .productCard {
+    margin-top: 26px;
+    padding-top: 22px;
+  }
+
+  .productHeader {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .productVisual {
+    justify-content: flex-start;
+  }
+
+  .productIconCard {
+    width: 120px;
+    height: 120px;
+    border-radius: 22px;
+  }
+
+  .productName {
+    font-size: 1.24rem;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+  }
+
+  .cta {
+    padding-bottom: 64px;
+  }
+
+  .ctaBox {
+    padding: 40px 24px;
+  }
+}
