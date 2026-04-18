@@ -265,6 +265,14 @@ export default function FLabelPrivacyPage() {
               </p>
             </section>
 
+            <section className={styles.section}>
+              <h2 className={styles.sectionTitle}>12. お問い合わせ窓口</h2>
+              <p className={styles.paragraph}>
+                本ポリシーまたは個人情報の取り扱いに関するお問い合わせは、
+                Shopify App Store記載のサポートメールアドレスまでご連絡ください。
+              </p>
+            </section>
+
             <div className={styles.history}>
               <strong>改訂履歴</strong>
               <br />
