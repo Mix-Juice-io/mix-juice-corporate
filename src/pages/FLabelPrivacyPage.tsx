@@ -15,7 +15,7 @@ export default function FLabelPrivacyPage() {
         <div className="container">
           <p className={styles.pageLabel}>PRIVACY</p>
           <h1 className={styles.pageTitle}>Fラベル プライバシーポリシー</h1>
-          <p className={styles.pageDesc}>本サービスにおける個人情報の取り扱いについて定めるものです。</p>
+          <p className={styles.pageDesc}>本アプリにおける個人情報の取り扱いについて定めるものです。</p>
         </div>
       </section>
 
@@ -191,7 +191,7 @@ export default function FLabelPrivacyPage() {
               </p>
               <ul className={styles.list}>
                 <li>通信の暗号化: クライアント・サーバー間のすべての通信をTLS 1.2以上で暗号化</li>
-                <li>アクセストークンの保護: OAuthアクセストークンはデータベースに暗号化の上で保存</li>
+                <li>アクセストークンの保護: OAuthアクセストークンはデータベースに暗号化したうえで保存</li>
                 <li>Webhook真正性検証: ShopifyからのWebhook送信はHMAC署名により都度検証</li>
                 <li>アクセス制御: 本番データベースへのアクセスは権限管理された環境下でのみ実施</li>
                 <li>不要データの自動削除: アプリアンインストール時のセッション自動削除、データ削除Webhook対応</li>
@@ -209,7 +209,7 @@ export default function FLabelPrivacyPage() {
                 <li>データへのアクセス: 当方が保有するマーチャントデータの開示請求</li>
                 <li>データの訂正: 不正確なデータの訂正請求</li>
                 <li>データの削除: Shopify管理画面から本アプリをアンインストールすることで、自動的にデータ削除プロセスが開始されます</li>
-                <li>利用停止: 当方所定の窓口への連絡</li>
+                <li>利用停止: Shopify App Store記載のサポートメールアドレスへの連絡</li>
                 <li>データポータビリティ（GDPR適用時）: 構造化された形式でのデータ提供請求</li>
               </ul>
 
