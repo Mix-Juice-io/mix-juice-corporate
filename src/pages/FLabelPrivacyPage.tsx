@@ -23,7 +23,7 @@ export default function FLabelPrivacyPage() {
         <div className="container">
           <article className={`glass-panel ${styles.card} reveal`}>
             <p className={styles.lead}>
-              Fラベル（以下「本アプリ」）は、[運営者名]（以下「当方」）が提供する、Shopifyプラットフォーム向けの食品表示管理アプリです。
+              Fラベル（以下「本アプリ」）は、Mix-Juice（以下「当方」）が提供する、Shopifyプラットフォーム向けの食品表示管理アプリです。
               当方は、マーチャント（アプリ利用事業者）および当該マーチャントの顧客のプライバシーを尊重し、個人情報の保護に努めます。
               本ポリシーは、本アプリの利用において当方が取り扱う情報の内容、取得方法、利用目的、管理方法等を定めるものです。
             </p>
@@ -32,11 +32,11 @@ export default function FLabelPrivacyPage() {
               <h2 className={styles.sectionTitle}>1. 事業者情報</h2>
               <dl className={styles.meta}>
                 <dt>運営者</dt>
-                <dd>[会社名または個人事業主名]</dd>
+                <dd>Mix-Juice</dd>
                 <dt>所在地</dt>
                 <dd>[住所]</dd>
                 <dt>代表者</dt>
-                <dd>[代表者氏名]</dd>
+                <dd>水沢孟由</dd>
                 <dt>連絡先</dt>
                 <dd>[問い合わせ先メールアドレス]</dd>
                 <dt>製品サイト</dt>
