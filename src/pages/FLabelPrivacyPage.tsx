@@ -155,7 +155,7 @@ export default function FLabelPrivacyPage() {
                     <tr>
                       <td>クラウドホスティング事業者</td>
                       <td>アプリケーションホスティング、PostgreSQLデータベース運用</td>
-                      <td>米国</td>
+                      <td>海外（複数リージョン）</td>
                     </tr>
                   </tbody>
                 </table>
@@ -174,7 +174,7 @@ export default function FLabelPrivacyPage() {
 
               <h3 className={styles.subSectionTitle}>5.1 保存場所</h3>
               <ul className={styles.list}>
-                <li>当方サーバーで保存するデータは、米国に所在するホスティング事業者のサーバーに保存されます。</li>
+                <li>当方サーバーで保存するデータは、ホスティング事業者の指定する複数のリージョン（日本国外を含む）に保存される場合があります。</li>
                 <li>Shopify上に保存されるデータ（メタフィールド、メタオブジェクト等）は、Shopifyの定めるリージョンおよびポリシーに従って管理されます。</li>
               </ul>
 
@@ -232,7 +232,7 @@ export default function FLabelPrivacyPage() {
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>8. 国際的なデータ移転</h2>
               <p className={styles.paragraph}>
-                本アプリは米国に所在するクラウドホスティング事業者を利用しているため、マーチャントのデータは日本国外（主として米国）に移転される場合があります。
+                本アプリは海外に所在するクラウドホスティング事業者を利用しているため、マーチャントのデータが日本国外に移転される場合があります。
                 マーチャントは、本アプリの利用を開始した時点で当該国際移転に同意するものとみなされます。
               </p>
               <p className={styles.paragraph}>
