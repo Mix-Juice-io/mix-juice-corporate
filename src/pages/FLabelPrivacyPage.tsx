@@ -33,12 +33,8 @@ export default function FLabelPrivacyPage() {
               <dl className={styles.meta}>
                 <dt>運営者</dt>
                 <dd>Mix-Juice</dd>
-                <dt>所在地</dt>
-                <dd>[住所]</dd>
                 <dt>代表者</dt>
                 <dd>水沢孟由</dd>
-                <dt>連絡先</dt>
-                <dd>[問い合わせ先メールアドレス]</dd>
                 <dt>製品サイト</dt>
                 <dd>
                   <a
