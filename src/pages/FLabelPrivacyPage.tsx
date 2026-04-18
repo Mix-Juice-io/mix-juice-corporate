@@ -265,23 +265,6 @@ export default function FLabelPrivacyPage() {
               </p>
             </section>
 
-            <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>12. お問い合わせ窓口</h2>
-              <p className={styles.paragraph}>
-                本ポリシーまたは個人情報の取り扱いに関するご質問、開示・訂正・削除等のご請求は、以下の窓口までお願いします。
-              </p>
-              <dl className={styles.meta}>
-                <dt>運営者</dt>
-                <dd>[会社名または個人事業主名]</dd>
-                <dt>メールアドレス</dt>
-                <dd>[問い合わせ先メールアドレス]</dd>
-                <dt>受付時間</dt>
-                <dd>平日 10:00〜18:00（土日祝日・年末年始を除く）</dd>
-                <dt>回答目安</dt>
-                <dd>5営業日以内</dd>
-              </dl>
-            </section>
-
             <div className={styles.history}>
               <strong>改訂履歴</strong>
               <br />
