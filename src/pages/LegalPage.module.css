@@ -108,9 +108,74 @@
   margin-bottom: 14px;
 }
 
+.subSectionTitle {
+  font-family: var(--font-jp);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
 .paragraph {
   font-size: 0.94rem;
   line-height: 1.9;
+  color: var(--color-text-light);
+}
+
+.paragraph + .paragraph {
+  margin-top: 12px;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  margin: 12px 0 4px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--color-text-light);
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 10px 12px;
+  border: 1px solid rgba(109, 103, 95, 0.18);
+  vertical-align: top;
+}
+
+.table th {
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--color-text);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.meta {
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: var(--color-text-light);
+}
+
+.meta dt {
+  font-weight: 700;
+  color: var(--color-text);
+  margin-top: 6px;
+}
+
+.meta dd {
+  margin: 0 0 4px 0;
+}
+
+.history {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(109, 103, 95, 0.16);
+  font-size: 0.9rem;
   color: var(--color-text-light);
 }
 
