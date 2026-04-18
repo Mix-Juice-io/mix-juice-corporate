@@ -248,7 +248,7 @@ export default function FLabelPrivacyPage() {
               <h2 className={styles.sectionTitle}>10. 準拠法・管轄裁判所</h2>
               <p className={styles.paragraph}>
                 本ポリシーは日本法に準拠し、解釈されます。本アプリの利用に関連して生じる一切の紛争については、
-                [運営者所在地]を管轄する地方裁判所を第一審の専属的合意管轄裁判所とします。
+                大阪地方裁判所を第一審の専属的合意管轄裁判所とします。
               </p>
             </section>
 
