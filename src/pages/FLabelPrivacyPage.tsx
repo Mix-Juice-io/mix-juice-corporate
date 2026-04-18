@@ -23,9 +23,9 @@ export default function FLabelPrivacyPage() {
         <div className="container">
           <article className={`glass-panel ${styles.card} reveal`}>
             <p className={styles.lead}>
-              Fラベル（以下「本アプリ」）は、[運営者名]（以下「当社」）が提供する、Shopifyプラットフォーム向けの食品表示管理アプリです。
-              当社は、マーチャント（アプリ利用事業者）および当該マーチャントの顧客のプライバシーを尊重し、個人情報の保護に努めます。
-              本ポリシーは、本アプリの利用において当社が取り扱う情報の内容、取得方法、利用目的、管理方法等を定めるものです。
+              Fラベル（以下「本アプリ」）は、[運営者名]（以下「当方」）が提供する、Shopifyプラットフォーム向けの食品表示管理アプリです。
+              当方は、マーチャント（アプリ利用事業者）および当該マーチャントの顧客のプライバシーを尊重し、個人情報の保護に努めます。
+              本ポリシーは、本アプリの利用において当方が取り扱う情報の内容、取得方法、利用目的、管理方法等を定めるものです。
             </p>
 
             <section className={styles.section}>
@@ -59,7 +59,7 @@ export default function FLabelPrivacyPage() {
               <h3 className={styles.subSectionTitle}>2.1 Shopify Admin APIを通じて取得・参照する情報</h3>
               <p className={styles.paragraph}>
                 本アプリは、マーチャントがインストール時に付与したアクセススコープの範囲内で、Shopify Admin APIを通じて以下の情報にアクセスします。
-                これらの情報は原則としてShopify上に保存され、当社サーバーには永続的に保存されません（処理時の一時参照を除く）。
+                これらの情報は原則としてShopify上に保存され、当方サーバーには永続的に保存されません（処理時の一時参照を除く）。
               </p>
               <ul className={styles.list}>
                 <li>商品情報（商品ID、商品名、バリアント等）</li>
@@ -75,12 +75,12 @@ export default function FLabelPrivacyPage() {
               <h3 className={styles.subSectionTitle}>2.2 マーチャントが入力する情報</h3>
               <p className={styles.paragraph}>
                 マーチャントが本アプリの管理画面で入力した食品表示データ（原材料名、アレルゲン、栄養成分値、事業者情報等）は、Shopifyのメタフィールドおよびメタオブジェクトとして保存されます。
-                これらのデータはShopify上に保存され、当社のサーバーには保存されません。
+                これらのデータはShopify上に保存され、当方のサーバーには保存されません。
               </p>
 
-              <h3 className={styles.subSectionTitle}>2.3 当社サーバーに保存される情報</h3>
+              <h3 className={styles.subSectionTitle}>2.3 当方サーバーに保存される情報</h3>
               <p className={styles.paragraph}>
-                本アプリの動作のため、以下の最小限の情報を当社が利用するホスティング環境のデータベースに保存します。
+                本アプリの動作のため、以下の最小限の情報を当方が利用するホスティング環境のデータベースに保存します。
               </p>
               <ul className={styles.list}>
                 <li>セッション情報: Shopifyショップドメイン、OAuthアクセストークン、スコープ情報、有効期限</li>
@@ -119,7 +119,7 @@ export default function FLabelPrivacyPage() {
 
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>3. 利用目的</h2>
-              <p className={styles.paragraph}>当社は、取得した情報を以下の目的のためにのみ利用します。</p>
+              <p className={styles.paragraph}>当方は、取得した情報を以下の目的のためにのみ利用します。</p>
               <ul className={styles.list}>
                 <li>本アプリの機能提供（食品表示データの管理、商品ページへの表示、原材料マスター管理等）</li>
                 <li>Shopifyプラットフォームとの認証およびAPI通信</li>
@@ -134,7 +134,7 @@ export default function FLabelPrivacyPage() {
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>4. 第三者提供・委託先</h2>
               <p className={styles.paragraph}>
-                当社は、法令に基づく場合またはマーチャントの明示的同意がある場合を除き、取得した情報を第三者に提供しません。
+                当方は、法令に基づく場合またはマーチャントの明示的同意がある場合を除き、取得した情報を第三者に提供しません。
                 ただし、本アプリの提供に不可欠な以下の事業者に対し、業務遂行に必要な範囲でデータの取り扱いを委託します。
               </p>
               <div className={styles.tableWrap}>
@@ -162,10 +162,10 @@ export default function FLabelPrivacyPage() {
               </div>
               <p className={styles.paragraph}>
                 これらの事業者はそれぞれのプライバシーポリシーに基づき情報を取り扱います。
-                当社は委託先の選定および管理にあたり、適切なセキュリティ水準が確保されていることを継続的に確認します。
+                当方は委託先の選定および管理にあたり、適切なセキュリティ水準が確保されていることを継続的に確認します。
               </p>
               <p className={styles.paragraph}>
-                当社は、マーケティング目的、広告配信目的等で第三者にデータを提供・販売することは一切ありません。
+                当方は、マーケティング目的、広告配信目的等で第三者にデータを提供・販売することは一切ありません。
               </p>
             </section>
 
@@ -174,7 +174,7 @@ export default function FLabelPrivacyPage() {
 
               <h3 className={styles.subSectionTitle}>5.1 保存場所</h3>
               <ul className={styles.list}>
-                <li>当社サーバーで保存するデータは、Railway Corporationの米国リージョンに保存されます。</li>
+                <li>当方サーバーで保存するデータは、Railway Corporationの米国リージョンに保存されます。</li>
                 <li>Shopify上に保存されるデータ（メタフィールド、メタオブジェクト等）は、Shopifyの定めるリージョンおよびポリシーに従って管理されます。</li>
               </ul>
 
@@ -182,7 +182,7 @@ export default function FLabelPrivacyPage() {
               <ul className={styles.list}>
                 <li>セッション情報・アプリ設定情報: マーチャントが本アプリをインストールしている期間中、またはShopifyがトークンを失効させるまで保存します。</li>
                 <li>アプリアンインストール時: Shopifyから送信される app/uninstalled Webhookを受信した時点で、セッション情報を速やかに削除します。</li>
-                <li>ショップデータ削除請求時: Shopifyから送信される shop/redact Webhook（アンインストールから48時間経過後に送信）を受信した時点で、当該ショップに紐づくすべての当社保存データを完全に削除します。</li>
+                <li>ショップデータ削除請求時: Shopifyから送信される shop/redact Webhook（アンインストールから48時間経過後に送信）を受信した時点で、当該ショップに紐づくすべての当方保存データを完全に削除します。</li>
                 <li>ログデータ: 運営上の必要性に応じた期間（原則30日間）保持後、順次削除されます。</li>
                 <li>バックアップ: システムバックアップに含まれるデータは、削除後最大30日間システム上に残存する可能性がありますが、新規処理には一切利用されません。</li>
               </ul>
@@ -191,7 +191,7 @@ export default function FLabelPrivacyPage() {
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>6. セキュリティ対策</h2>
               <p className={styles.paragraph}>
-                当社は、保有する情報の漏えい、滅失、毀損を防止するため、以下の措置を講じます。
+                当方は、保有する情報の漏えい、滅失、毀損を防止するため、以下の措置を講じます。
               </p>
               <ul className={styles.list}>
                 <li>通信の暗号化: クライアント・サーバー間のすべての通信をTLS 1.2以上で暗号化</li>
@@ -210,10 +210,10 @@ export default function FLabelPrivacyPage() {
                 マーチャントは、日本の個人情報保護法、GDPR、その他の適用法令に基づき、いつでも以下の権利を行使できます。
               </p>
               <ul className={styles.list}>
-                <li>データへのアクセス: 当社が保有するマーチャントデータの開示請求</li>
+                <li>データへのアクセス: 当方が保有するマーチャントデータの開示請求</li>
                 <li>データの訂正: 不正確なデータの訂正請求</li>
                 <li>データの削除: Shopify管理画面から本アプリをアンインストールすることで、自動的にデータ削除プロセスが開始されます</li>
-                <li>利用停止: 当社所定の窓口への連絡</li>
+                <li>利用停止: 当方所定の窓口への連絡</li>
                 <li>データポータビリティ（GDPR適用時）: 構造化された形式でのデータ提供請求</li>
               </ul>
 
@@ -223,7 +223,7 @@ export default function FLabelPrivacyPage() {
                 ただし、Shopifyから送信される以下のGDPR準拠Webhookを受信した場合、適切に対応します。
               </p>
               <ul className={styles.list}>
-                <li>customers/data_request: 当社が当該顧客に関連するデータを保有していない旨を応答します</li>
+                <li>customers/data_request: 当方が当該顧客に関連するデータを保有していない旨を応答します</li>
                 <li>customers/redact: 削除対象となるデータが存在しないことを確認し、処理ログを記録します</li>
                 <li>shop/redact: アンインストールから48時間以内に受信し、当該ショップに紐づくすべての保存データを削除します</li>
               </ul>
@@ -259,7 +259,7 @@ export default function FLabelPrivacyPage() {
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>11. 本ポリシーの改定</h2>
               <p className={styles.paragraph}>
-                当社は、法令改正、サービス内容変更等に伴い、本ポリシーを改定することがあります。
+                当方は、法令改正、サービス内容変更等に伴い、本ポリシーを改定することがあります。
                 重要な変更を行う場合は、アプリ内または製品サイト上で事前に通知します。
                 継続的に本アプリを利用することは、改定後のポリシーに同意したものとみなされます。
               </p>
