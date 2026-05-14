@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import AnalyticsTracker from './components/AnalyticsTracker'
 import HomePage from './pages/HomePage'
 import ServicePage from './pages/ServicePage'
 import ContactPage from './pages/ContactPage'
@@ -11,6 +12,7 @@ import FLabelPrivacyPage from './pages/FLabelPrivacyPage'
 function App() {
   return (
     <BrowserRouter>
+      <AnalyticsTracker />
       <Header />
       <main>
         <Routes>
