@@ -11,7 +11,7 @@ import FLabelPrivacyPage from './pages/FLabelPrivacyPage'
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <AnalyticsTracker />
       <Header />
       <main>
