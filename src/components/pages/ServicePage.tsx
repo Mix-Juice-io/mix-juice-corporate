@@ -89,7 +89,13 @@ export default function ServicePage() {
                 </ul>
               </div>
 
-              <Link to="/service/f-label" className={styles.inlineLink}>
+              <Link
+                to="/service/f-label"
+                className={styles.inlineLink}
+                data-track-event="mix_cta_click"
+                data-track-cta-id="service_flabel_detail"
+                data-track-surface="service_flabel_card"
+              >
                 アプリの詳細を見る
                 <ArrowRight size={16} />
               </Link>
@@ -117,7 +123,13 @@ export default function ServicePage() {
                 </li>
               ))}
             </ul>
-            <Link to="/contact" className={styles.inlineLink}>
+            <Link
+              to="/contact"
+              className={styles.inlineLink}
+              data-track-event="mix_cta_click"
+              data-track-cta-id="service_custom_dev_consult"
+              data-track-surface="service_custom_card"
+            >
               開発について相談する
               <ArrowRight size={16} />
             </Link>
@@ -132,7 +144,13 @@ export default function ServicePage() {
             <p className={styles.ctaDesc}>
               自社アプリについてのご質問や、カスタムアプリ開発のご相談を承っています。
             </p>
-            <Link to="/contact" className="btn btn-primary">
+            <Link
+              to="/contact"
+              className="btn btn-primary"
+              data-track-event="mix_cta_click"
+              data-track-cta-id="service_contact_primary"
+              data-track-surface="service_contact_cta"
+            >
               ご相談はこちら
               <ArrowRight size={18} />
             </Link>

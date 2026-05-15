@@ -82,6 +82,23 @@ const organizationJsonLd = {
     <Footer />
 
     <script>
+      import '../scripts/click-tracking'
+      import '../scripts/article-tracking'
+      import { trackEvent } from '../lib/analytics'
+
+      // Fラベル LP 着地（初回） — fire `mix_lp_view` once per page load on
+      // dedicated LP paths. Spec: /MIX/issues/MIX-32#document-spec §2.3.
+      const LP_PATHS: Record<string, string> = {
+        '/service/f-label': 'flabel_v1',
+      }
+      const path = window.location.pathname.replace(/\/$/, '') || '/'
+      const variant = LP_PATHS[path]
+      if (variant) {
+        trackEvent('mix_lp_view', { lp_variant: variant })
+      }
+    </script>
+
+    <script>
       // Scroll-reveal: progressively enhance any `.reveal` element.
       const reveal = () => {
         const els = document.querySelectorAll('.reveal:not(.active)')
