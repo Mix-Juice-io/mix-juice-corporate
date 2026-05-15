@@ -1,10 +1,8 @@
-import { Link } from 'react-router-dom'
+import Link from '../Link'
 import { Package, ArrowRight, Wrench, CheckCircle } from 'lucide-react'
-import { useScrollReveal } from '../hooks/useScrollReveal'
 import styles from './HomePage.module.css'
 
 export default function HomePage() {
-  useScrollReveal()
 
   return (
     <>
