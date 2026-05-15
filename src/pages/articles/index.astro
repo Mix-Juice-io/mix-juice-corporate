@@ -1,0 +1,56 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import { getPublishedArticles, formatDate } from '../../lib/articles'
+import '../../styles/articles.css'
+
+const articles = await getPublishedArticles()
+---
+
+<Layout
+  title="記事一覧 | Mix-Juice"
+  description="Mix-JuiceによるEC・Shopify・食品表示まわりの実務に役立つ記事をお届けします。"
+>
+  <div class="art-page">
+    <section class="art-hero">
+      <div class="art-hero-bg">
+        <div class="art-blob1"></div>
+        <div class="art-blob2"></div>
+      </div>
+      <div class="container">
+        <p class="art-label">ARTICLES</p>
+        <h1 class="art-title">記事一覧</h1>
+        <p class="art-desc">
+          EC運営やShopify、食品表示まわりの実務に役立つ情報をお届けします。
+        </p>
+      </div>
+    </section>
+
+    <section class="art-content">
+      <div class="container">
+        {
+          articles.length === 0 ? (
+            <p class="art-empty">記事は近日公開予定です。</p>
+          ) : (
+            <div class="art-grid">
+              {articles.map((article) => (
+                <a class="art-card reveal" href={`/articles/${article.id}`}>
+                  <div class="art-card-meta">
+                    {article.data.category && (
+                      <span class="art-card-cat">{article.data.category}</span>
+                    )}
+                    <time datetime={article.data.publishDate.toISOString()}>
+                      {formatDate(article.data.publishDate)}
+                    </time>
+                  </div>
+                  <h2 class="art-card-title">{article.data.title}</h2>
+                  <p class="art-card-desc">{article.data.description}</p>
+                  <span class="art-card-more">記事を読む →</span>
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </div>
+    </section>
+  </div>
+</Layout>

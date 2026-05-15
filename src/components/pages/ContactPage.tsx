@@ -1,10 +1,8 @@
 import { useState } from 'react'
 import { Send, CheckCircle } from 'lucide-react'
-import { useScrollReveal } from '../hooks/useScrollReveal'
 import styles from './ContactPage.module.css'
 
 export default function ContactPage() {
-  useScrollReveal()
 
   const [form, setForm] = useState({
     name: '',

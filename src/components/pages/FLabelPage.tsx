@@ -1,10 +1,8 @@
-import { Link } from 'react-router-dom'
+import Link from '../Link'
 import { CheckCircle } from 'lucide-react'
-import { useScrollReveal } from '../hooks/useScrollReveal'
 import styles from './FLabelPage.module.css'
 
 export default function FLabelPage() {
-  useScrollReveal()
 
   const features = [
     '原材料・添加物・アレルゲン・栄養成分をまとめて管理',

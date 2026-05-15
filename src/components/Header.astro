@@ -1,0 +1,91 @@
+---
+import styles from './Header.module.css'
+
+const navItems = [
+  { to: '/', label: 'Home' },
+  { to: '/service', label: 'Service' },
+  { to: '/articles', label: 'Articles' },
+  { to: '/contact', label: 'Contact' },
+]
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/'
+const isActive = (to: string) =>
+  to === '/' ? pathname === '/' : pathname === to || pathname.startsWith(`${to}/`)
+---
+
+<header class={styles.header}>
+  <div class={`container ${styles.inner}`}>
+    <a href="/" class={styles.logo}>
+      <img src="/logo.png" alt="Mix-Juice" class={styles.logoImg} />
+    </a>
+
+    <nav class={styles.nav} data-nav>
+      {
+        navItems.map((item) => (
+          <a
+            href={item.to}
+            class={`${styles.navLink} ${isActive(item.to) ? styles.navLinkActive : ''}`}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <button class={styles.menuBtn} data-menu-btn aria-label="メニュー" aria-expanded="false">
+      <svg
+        class="icon-menu"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="4" x2="20" y1="12" y2="12"></line>
+        <line x1="4" x2="20" y1="6" y2="6"></line>
+        <line x1="4" x2="20" y1="18" y2="18"></line>
+      </svg>
+      <svg
+        class="icon-close"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M18 6 6 18"></path>
+        <path d="m6 6 12 12"></path>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<style>
+  .icon-close {
+    display: none;
+  }
+  [aria-expanded='true'] .icon-menu {
+    display: none;
+  }
+  [aria-expanded='true'] .icon-close {
+    display: block;
+  }
+</style>
+
+<script define:vars={{ navOpenClass: styles.navOpen }}>
+  const btn = document.querySelector('[data-menu-btn]')
+  const nav = document.querySelector('[data-nav]')
+  if (btn && nav) {
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true'
+      btn.setAttribute('aria-expanded', String(!open))
+      nav.classList.toggle(navOpenClass)
+    })
+  }
+</script>

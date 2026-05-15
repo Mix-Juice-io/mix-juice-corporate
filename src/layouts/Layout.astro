@@ -1,0 +1,108 @@
+---
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import '../index.css'
+
+interface Props {
+  title: string
+  description?: string
+  ogType?: 'website' | 'article'
+  ogImage?: string
+  noindex?: boolean
+}
+
+const {
+  title,
+  description = 'Mix-Juice | Shopifyアプリ開発 - スモールビジネスのためのTech Studio',
+  ogType = 'website',
+  ogImage = '/logo.png',
+  noindex = false,
+} = Astro.props
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href
+const ogImageUrl = new URL(ogImage, Astro.site).href
+const GA_ID = import.meta.env.VITE_GA_MEASUREMENT_ID
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Mix-Juice',
+  url: Astro.site?.href,
+  logo: new URL('/logo.png', Astro.site).href,
+}
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:site_name" content="Mix-Juice" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(organizationJsonLd)} />
+    <slot name="head" />
+
+    {
+      GA_ID && (
+        <>
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
+          <script is:inline define:vars={{ GA_ID }}>
+            window.dataLayer = window.dataLayer || []
+            function gtag() {
+              window.dataLayer.push(arguments)
+            }
+            gtag('js', new Date())
+            gtag('config', GA_ID)
+          </script>
+        </>
+      )
+    }
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Scroll-reveal: progressively enhance any `.reveal` element.
+      const reveal = () => {
+        const els = document.querySelectorAll('.reveal:not(.active)')
+        if (!('IntersectionObserver' in window)) {
+          els.forEach((el) => el.classList.add('active'))
+          return
+        }
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('active')
+                observer.unobserve(entry.target)
+              }
+            })
+          },
+          { threshold: 0.1 },
+        )
+        els.forEach((el) => observer.observe(el))
+      }
+      reveal()
+    </script>
+  </body>
+</html>

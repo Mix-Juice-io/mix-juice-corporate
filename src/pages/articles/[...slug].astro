@@ -1,0 +1,83 @@
+---
+import { render } from 'astro:content'
+import Layout from '../../layouts/Layout.astro'
+import { getPublishedArticles, formatDate } from '../../lib/articles'
+import '../../styles/articles.css'
+
+export async function getStaticPaths() {
+  const articles = await getPublishedArticles()
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }))
+}
+
+const { article } = Astro.props
+const { Content } = await render(article)
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href
+const blogPostingJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: article.data.title,
+  description: article.data.description,
+  datePublished: article.data.publishDate.toISOString(),
+  dateModified: (article.data.updatedDate ?? article.data.publishDate).toISOString(),
+  author: { '@type': 'Organization', name: article.data.author },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Mix-Juice',
+    logo: { '@type': 'ImageObject', url: new URL('/logo.png', Astro.site).href },
+  },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+}
+---
+
+<Layout
+  title={`${article.data.title} | Mix-Juice`}
+  description={article.data.description}
+  ogType="article"
+  ogImage={article.data.ogImage ?? '/logo.png'}
+>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(blogPostingJsonLd)}
+    slot="head"
+  />
+  <div class="art-page">
+    <section class="art-hero">
+      <div class="art-hero-bg">
+        <div class="art-blob1"></div>
+        <div class="art-blob2"></div>
+      </div>
+      <div class="container">
+        <p class="art-label">ARTICLE</p>
+        <div class="art-detail-meta">
+          {article.data.category && <span class="art-detail-cat">{article.data.category}</span>}
+          <time datetime={article.data.publishDate.toISOString()}>
+            {formatDate(article.data.publishDate)}
+          </time>
+          {
+            article.data.updatedDate && (
+              <span>更新: {formatDate(article.data.updatedDate)}</span>
+            )
+          }
+          <span>{article.data.author}</span>
+        </div>
+        <h1 class="art-title">{article.data.title}</h1>
+        <p class="art-desc">{article.data.description}</p>
+      </div>
+    </section>
+
+    <section class="art-content">
+      <div class="container">
+        <article class="art-body">
+          <Content />
+        </article>
+        <div class="art-back">
+          <a href="/articles">← 記事一覧へ戻る</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>

@@ -1,10 +1,8 @@
-import { Link } from 'react-router-dom'
+import Link from '../Link'
 import { Package, Wrench, ArrowRight, CheckCircle } from 'lucide-react'
-import { useScrollReveal } from '../hooks/useScrollReveal'
 import styles from './ServicePage.module.css'
 
 export default function ServicePage() {
-  useScrollReveal()
 
   const foodLabelerFeatures = [
     '原材料・添加物・アレルゲン・栄養成分をShopify上でまとめて管理',

@@ -1,9 +1,7 @@
-import { Link } from 'react-router-dom'
-import { useScrollReveal } from '../hooks/useScrollReveal'
+import Link from '../Link'
 import styles from './LegalPage.module.css'
 
 export default function FLabelTermsPage() {
-  useScrollReveal()
 
   return (
     <div className={styles.page}>
