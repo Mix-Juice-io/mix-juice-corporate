@@ -22,12 +22,17 @@ const blogPostingJsonLd = {
   headline: article.data.title,
   description: article.data.description,
   datePublished: article.data.publishDate.toISOString(),
-  dateModified: (article.data.updatedDate ?? article.data.publishDate).toISOString(),
+  dateModified: (
+    article.data.updatedDate ?? article.data.publishDate
+  ).toISOString(),
   author: { '@type': 'Organization', name: article.data.author },
   publisher: {
     '@type': 'Organization',
     name: 'Mix-Juice',
-    logo: { '@type': 'ImageObject', url: new URL('/logo.png', Astro.site).href },
+    logo: {
+      '@type': 'ImageObject',
+      url: new URL('/logo.png', Astro.site).href,
+    },
   },
   mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
 }
@@ -53,7 +58,11 @@ const blogPostingJsonLd = {
       <div class="container">
         <p class="art-label">ARTICLE</p>
         <div class="art-detail-meta">
-          {article.data.category && <span class="art-detail-cat">{article.data.category}</span>}
+          {
+            article.data.category && (
+              <span class="art-detail-cat">{article.data.category}</span>
+            )
+          }
           <time datetime={article.data.publishDate.toISOString()}>
             {formatDate(article.data.publishDate)}
           </time>
