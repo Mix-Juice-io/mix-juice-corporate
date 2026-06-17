@@ -10,13 +10,22 @@ const navItems = [
 
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/'
 const isActive = (to: string) =>
-  to === '/' ? pathname === '/' : pathname === to || pathname.startsWith(`${to}/`)
+  to === '/'
+    ? pathname === '/'
+    : pathname === to || pathname.startsWith(`${to}/`)
 ---
 
 <header class={styles.header}>
   <div class={`container ${styles.inner}`}>
     <a href="/" class={styles.logo}>
-      <img src="/logo.png" alt="Mix-Juice" class={styles.logoImg} />
+      <img
+        src="/logo.webp"
+        alt="Mix-Juice"
+        width="1024"
+        height="226"
+        decoding="async"
+        class={styles.logoImg}
+      />
     </a>
 
     <nav class={styles.nav} data-nav>
@@ -32,7 +41,12 @@ const isActive = (to: string) =>
       }
     </nav>
 
-    <button class={styles.menuBtn} data-menu-btn aria-label="メニュー" aria-expanded="false">
+    <button
+      class={styles.menuBtn}
+      data-menu-btn
+      aria-label="メニュー"
+      aria-expanded="false"
+    >
       <svg
         class="icon-menu"
         width="24"
