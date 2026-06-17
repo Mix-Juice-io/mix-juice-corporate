@@ -1,9 +1,9 @@
 import Link from '../Link'
 import { CheckCircle } from 'lucide-react'
+import PageHero from '../PageHero'
 import styles from './FLabelPage.module.css'
 
 export default function FLabelPage() {
-
   const features = [
     '原材料・添加物・アレルゲン・栄養成分をまとめて管理',
     '原材料マスターを使って複数商品に共通データを再利用',
@@ -20,19 +20,11 @@ export default function FLabelPage() {
 
   return (
     <div className={styles.page}>
-      <section className={styles.pageHero}>
-        <div className={styles.heroBg}>
-          <div className={styles.blob1} />
-          <div className={styles.blob2} />
-        </div>
-        <div className="container">
-          <p className={styles.pageLabel}>PRODUCT</p>
-          <h1 className={styles.pageTitle}>Fラベル｜EC用の食品表示</h1>
-          <p className={styles.pageDesc}>
-            食品表示を正しく管理・表示し、商品説明欄へのコピペ運用を減らすためのアプリです。
-          </p>
-        </div>
-      </section>
+      <PageHero
+        label="PRODUCT"
+        title="Fラベル｜EC用の食品表示"
+        description="食品表示を正しく管理・表示し、商品説明欄へのコピペ運用を減らすためのアプリです。"
+      />
 
       <section className={styles.contentSection}>
         <div className="container">
@@ -40,8 +32,12 @@ export default function FLabelPage() {
             <div className={styles.productHeader}>
               <div className={styles.iconCard}>
                 <img
-                  src="/f-label.png"
+                  src="/f-label.webp"
                   alt="Fラベルのアイコン"
+                  width="1200"
+                  height="1200"
+                  loading="lazy"
+                  decoding="async"
                   className={styles.iconImage}
                 />
               </div>
