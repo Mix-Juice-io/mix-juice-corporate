@@ -1,21 +1,15 @@
 import Link from '../Link'
+import PageHero from '../PageHero'
 import styles from './LegalPage.module.css'
 
 export default function FLabelTermsPage() {
-
   return (
     <div className={styles.page}>
-      <section className={styles.pageHero}>
-        <div className={styles.heroBg}>
-          <div className={styles.blob1} />
-          <div className={styles.blob2} />
-        </div>
-        <div className="container">
-          <p className={styles.pageLabel}>TERMS</p>
-          <h1 className={styles.pageTitle}>Fラベル 利用規約</h1>
-          <p className={styles.pageDesc}>Fラベルのご利用にあたっての一般的な条件を定めるものです。</p>
-        </div>
-      </section>
+      <PageHero
+        label="TERMS"
+        title="Fラベル 利用規約"
+        description="Fラベルのご利用にあたっての一般的な条件を定めるものです。"
+      />
 
       <section className={styles.contentSection}>
         <div className="container">
@@ -53,7 +47,9 @@ export default function FLabelTermsPage() {
             </section>
 
             <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>第4条（本サービスの停止等）</h2>
+              <h2 className={styles.sectionTitle}>
+                第4条（本サービスの停止等）
+              </h2>
               <p className={styles.paragraph}>
                 当方は、保守点検、システム障害、外部サービスの停止、その他運営上または技術上必要がある場合には、
                 利用者に事前に通知することなく本サービスの全部または一部の提供を停止または中断できるものとします。

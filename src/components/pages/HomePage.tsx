@@ -3,7 +3,6 @@ import { Package, ArrowRight, Wrench, CheckCircle } from 'lucide-react'
 import styles from './HomePage.module.css'
 
 export default function HomePage() {
-
   return (
     <>
       {/* Hero */}
@@ -33,16 +32,42 @@ export default function HomePage() {
             <h1 className={styles.heroTitle}>
               「<span className={styles.heroWavy}>届けたいもの</span>」に
               <br />
-              <span className={`${styles.heroGradient} ${styles.heroTitleSmaller}`}>あなたが向き合う時間を。</span>
+              <span
+                className={`${styles.heroGradient} ${styles.heroTitleSmaller}`}
+              >
+                あなたが向き合う時間を。
+              </span>
             </h1>
             <p className={styles.heroDesc}>
               EC現場の「困った」を、丁寧にアプリにしていく小さな専門集団です。
             </p>
           </div>
           <div className={styles.heroVisual}>
-            <img src="/hero-bg.png" alt="ジャム作りをする日本の農家がECアプリを利用している様子" className={styles.heroImage} />
-            <img src="/warehouse-picking.png" alt="倉庫でタブレットを使うスタッフ" className={styles.heroImageSub} />
-            <img src="/live-commerce.png" alt="ライブコマースの配信風景" className={styles.heroImageSub4} />
+            <img
+              src="/hero-bg.webp"
+              alt="ジャム作りをする日本の農家がECアプリを利用している様子"
+              width="640"
+              height="640"
+              decoding="async"
+              fetchPriority="high"
+              className={styles.heroImage}
+            />
+            <img
+              src="/warehouse-picking.webp"
+              alt="倉庫でタブレットを使うスタッフ"
+              width="640"
+              height="640"
+              decoding="async"
+              className={styles.heroImageSub}
+            />
+            <img
+              src="/live-commerce.webp"
+              alt="ライブコマースの配信風景"
+              width="640"
+              height="640"
+              decoding="async"
+              className={styles.heroImageSub4}
+            />
           </div>
         </div>
       </section>
@@ -53,41 +78,67 @@ export default function HomePage() {
           <div className={`${styles.sectionHead} ${styles.aboutHead} reveal`}>
             <span className={styles.sectionEn}>ABOUT</span>
             <h2 className={styles.sectionJp}>私たちについて</h2>
-            <p className={styles.aboutLead}>現場を見つめ、必要なものを、必要なかたちで。</p>
+            <p className={styles.aboutLead}>
+              現場を見つめ、必要なものを、必要なかたちで。
+            </p>
           </div>
           <div className={`${styles.aboutCards} reveal`}>
-            <article className={`${styles.aboutCard} ${styles.aboutCardFeatured}`}>
+            <article
+              className={`${styles.aboutCard} ${styles.aboutCardFeatured}`}
+            >
               <span className={styles.aboutCardNumber}>01</span>
               <h3 className={styles.aboutCardTitle}>AIを活用したリサーチ</h3>
-              <p className={styles.aboutCardText}>現場の課題を広く調べ、実務に効く形へ丁寧に整理します。</p>
+              <p className={styles.aboutCardText}>
+                現場の課題を広く調べ、実務に効く形へ丁寧に整理します。
+              </p>
               <div className={styles.aboutCardImageWrap}>
                 <img
-                  src="/research_18366281.png"
+                  src="/research_18366281.webp"
                   alt="AIリサーチを表すアイコン"
+                  width="512"
+                  height="512"
+                  loading="lazy"
+                  decoding="async"
                   className={styles.aboutCardImage}
                 />
               </div>
             </article>
             <article className={styles.aboutCard}>
               <span className={styles.aboutCardNumber}>02</span>
-              <h3 className={styles.aboutCardTitle}>丁寧なヒアリングと業務分析</h3>
-              <p className={styles.aboutCardText}>作業の流れを見つめ、どこを軽くできるかを具体的に見極めます。</p>
+              <h3 className={styles.aboutCardTitle}>
+                丁寧なヒアリングと業務分析
+              </h3>
+              <p className={styles.aboutCardText}>
+                作業の流れを見つめ、どこを軽くできるかを具体的に見極めます。
+              </p>
               <div className={styles.aboutCardImageWrap}>
                 <img
-                  src="/discussion_18366397.png"
+                  src="/discussion_18366397.webp"
                   alt="ヒアリングと対話を表すアイコン"
+                  width="512"
+                  height="512"
+                  loading="lazy"
+                  decoding="async"
                   className={styles.aboutCardImage}
                 />
               </div>
             </article>
             <article className={styles.aboutCard}>
               <span className={styles.aboutCardNumber}>03</span>
-              <h3 className={styles.aboutCardTitle}>Shopifyを含むECカート対応アプリとして実装</h3>
-              <p className={styles.aboutCardText}>Shopifyを含むECカートとつながる、実用的で運用しやすいアプリとして形にします。</p>
+              <h3 className={styles.aboutCardTitle}>
+                Shopifyを含むECカート対応アプリとして実装
+              </h3>
+              <p className={styles.aboutCardText}>
+                Shopifyを含むECカートとつながる、実用的で運用しやすいアプリとして形にします。
+              </p>
               <div className={styles.aboutCardImageWrap}>
                 <img
-                  src="/rocket_18366278.png"
+                  src="/rocket_18366278.webp"
                   alt="実装と前進を表すアイコン"
+                  width="512"
+                  height="512"
+                  loading="lazy"
+                  decoding="async"
                   className={styles.aboutCardImage}
                 />
               </div>
@@ -97,30 +148,42 @@ export default function HomePage() {
             <div className={styles.aboutBody}>
               <p className={styles.aboutIntro}>
                 Mix-Juiceは、EC事業者さまの日々の業務に丁寧に向き合い、
-                <span className={styles.aboutEmphasis}>本当に必要なツール</span>をつくる開発チームです。
+                <span className={styles.aboutEmphasis}>本当に必要なツール</span>
+                をつくる開発チームです。
               </p>
               <p>
                 ECの運営には、商品登録や在庫管理、表示対応など、
-                <span className={styles.aboutSoftEmphasis}>細かな作業</span>が数多くあります。
-                私たちは、その一つひとつを丁寧に見つめ、
-                <span className={styles.aboutQuote}>「ここはアプリで楽にできる」</span>というポイントを見極め、
+                <span className={styles.aboutSoftEmphasis}>細かな作業</span>
+                が数多くあります。 私たちは、その一つひとつを丁寧に見つめ、
+                <span className={styles.aboutQuote}>
+                  「ここはアプリで楽にできる」
+                </span>
+                というポイントを見極め、
                 Shopifyを含むECカートに対応したアプリとして形にしています。
               </p>
               <p>
-                目指しているのは、
-                事業者さまが商品そのものに、<span className={styles.aboutSoftEmphasis}>もっと集中できる環境</span>をつくることです。
-                裏側の手間を減らし、
+                目指しているのは、 事業者さまが商品そのものに、
+                <span className={styles.aboutSoftEmphasis}>
+                  もっと集中できる環境
+                </span>
+                をつくることです。 裏側の手間を減らし、
                 より良い商品づくりや、お客さまとの関係づくりに時間を使えるように。
                 そんな環境を支えるアプリを、日々つくっています。
               </p>
             </div>
             <div className={styles.aboutVisual}>
               <img
-                src="/engineers-whiteboard.png"
+                src="/engineers-whiteboard.webp"
                 alt="ホワイトボードを前に議論するエンジニアチーム"
+                width="640"
+                height="640"
+                loading="lazy"
+                decoding="async"
                 className={styles.aboutImage}
               />
-              <p className={styles.aboutCaption}>課題を整理し、形にしていく開発チーム</p>
+              <p className={styles.aboutCaption}>
+                課題を整理し、形にしていく開発チーム
+              </p>
             </div>
           </div>
         </div>
@@ -137,16 +200,22 @@ export default function HomePage() {
             </p>
           </div>
           <div className={`${styles.serviceBody} reveal`}>
-            <article className={`${styles.serviceCategory} ${styles.serviceCategoryPrimary} glass-panel`}>
+            <article
+              className={`${styles.serviceCategory} ${styles.serviceCategoryPrimary} glass-panel`}
+            >
               <div className={styles.serviceCategoryHead}>
                 <div className={styles.productIcon}>
                   <Package size={32} color="var(--color-primary-dark)" />
                 </div>
                 <div>
-                  <h3 className={styles.serviceCategoryTitle}>自社Shopifyアプリ</h3>
+                  <h3 className={styles.serviceCategoryTitle}>
+                    自社Shopifyアプリ
+                  </h3>
                 </div>
               </div>
-              <p className={styles.serviceCategorySubtext}>現場の課題から生まれる自社プロダクト</p>
+              <p className={styles.serviceCategorySubtext}>
+                現場の課題から生まれる自社プロダクト
+              </p>
               <p className={styles.serviceDesc}>
                 リサーチとヒアリングを通じて、必要な機能をECカート対応アプリとして形にしています。
               </p>
@@ -157,14 +226,20 @@ export default function HomePage() {
               <div className={styles.productCard}>
                 <div className={styles.productThumb}>
                   <img
-                    src="/f-label.png"
+                    src="/f-label.webp"
                     alt="食品表示ラベラーのアイコン"
+                    width="1200"
+                    height="1200"
+                    loading="lazy"
+                    decoding="async"
                     className={styles.productThumbImage}
                   />
                 </div>
                 <div className={styles.productInfo}>
                   <p className={styles.productEyebrow}>提供中のアプリ</p>
-                  <h4 className={styles.productName}>Fラベル｜EC用の食品表示</h4>
+                  <h4 className={styles.productName}>
+                    Fラベル｜EC用の食品表示
+                  </h4>
                   <p className={styles.productDesc}>
                     日本の食品EC向け。食品表示を正しく管理・表示し、
                     商品説明欄へのコピペ運用を減らすShopifyアプリです。
@@ -177,16 +252,22 @@ export default function HomePage() {
               </div>
             </article>
 
-            <article className={`${styles.serviceCategory} ${styles.serviceCategorySecondary} glass-panel`}>
+            <article
+              className={`${styles.serviceCategory} ${styles.serviceCategorySecondary} glass-panel`}
+            >
               <div className={styles.serviceCategoryHead}>
                 <div className={styles.productIcon}>
                   <Wrench size={32} color="var(--color-primary-dark)" />
                 </div>
                 <div>
-                  <h3 className={styles.serviceCategoryTitle}>Shopifyカスタムアプリ開発</h3>
+                  <h3 className={styles.serviceCategoryTitle}>
+                    Shopifyカスタムアプリ開発
+                  </h3>
                 </div>
               </div>
-              <p className={styles.serviceCategorySubtext}>運用に合わせて設計する個別開発</p>
+              <p className={styles.serviceCategorySubtext}>
+                運用に合わせて設計する個別開発
+              </p>
               <p className={styles.serviceDesc}>
                 既製のアプリでは対応しきれない業務や運用に対して、
                 Shopifyとつながるアプリや管理機能を個別に設計・開発します。
@@ -194,15 +275,21 @@ export default function HomePage() {
               <ul className={styles.customList}>
                 <li className={styles.customListItem}>
                   <CheckCircle size={18} color="var(--color-primary-dark)" />
-                  <span>商品情報や在庫まわりの運用を、日々の業務フローに合わせて整理</span>
+                  <span>
+                    商品情報や在庫まわりの運用を、日々の業務フローに合わせて整理
+                  </span>
                 </li>
                 <li className={styles.customListItem}>
                   <CheckCircle size={18} color="var(--color-primary-dark)" />
-                  <span>Shopifyの標準機能では補いにくい作業を、使いやすい形で実装</span>
+                  <span>
+                    Shopifyの標準機能では補いにくい作業を、使いやすい形で実装
+                  </span>
                 </li>
                 <li className={styles.customListItem}>
                   <CheckCircle size={18} color="var(--color-primary-dark)" />
-                  <span>現場の流れを踏まえ、無理なく続けられる運用の仕組みを設計</span>
+                  <span>
+                    現場の流れを踏まえ、無理なく続けられる運用の仕組みを設計
+                  </span>
                 </li>
               </ul>
               <Link to="/contact" className={styles.productLink}>
@@ -215,7 +302,10 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className={styles.section} style={{ background: 'var(--color-bg-alt)' }}>
+      <section
+        className={styles.section}
+        style={{ background: 'var(--color-bg-alt)' }}
+      >
         <div className="container">
           <div className={`glass-panel ${styles.ctaBox} reveal`}>
             <span className={styles.sectionEn}>CONTACT</span>

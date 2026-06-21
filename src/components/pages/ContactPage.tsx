@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Send, CheckCircle } from 'lucide-react'
+import PageHero from '../PageHero'
 import styles from './ContactPage.module.css'
 
 export default function ContactPage() {
-
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -19,20 +19,12 @@ export default function ContactPage() {
 
   return (
     <div className={styles.page}>
-      <section className={styles.pageHero}>
-        <div className={styles.heroBg}>
-          <div className={styles.blob1} />
-          <div className={styles.blob2} />
-        </div>
-        <div className="container">
-          <p className={styles.pageLabel}>CONTACT</p>
-          <h1 className={styles.pageTitle}>まずはお気軽にご相談ください</h1>
-          <p className={styles.pageDesc}>
-            自社アプリについてのご質問や、Shopifyカスタムアプリ開発のご相談を承っています。
-            まずは、現場のお悩みをお聞かせください。
-          </p>
-        </div>
-      </section>
+      <PageHero
+        label="CONTACT"
+        title="まずはお気軽にご相談ください"
+        description="自社アプリについてのご質問や、Shopifyカスタムアプリ開発のご相談を承っています。まずは、現場のお悩みをお聞かせください。"
+        align="center"
+      />
 
       <section className={styles.formSection}>
         <div className="container">
@@ -40,7 +32,9 @@ export default function ContactPage() {
             {submitted ? (
               <div className={styles.successBox}>
                 <CheckCircle size={28} color="var(--color-primary-dark)" />
-                <h2 className={styles.successTitle}>送信ありがとうございました</h2>
+                <h2 className={styles.successTitle}>
+                  送信ありがとうございました
+                </h2>
                 <p className={styles.successText}>
                   内容を確認のうえ、折り返しご連絡します。
                 </p>
@@ -49,7 +43,9 @@ export default function ContactPage() {
               <>
                 <div className={styles.formIntro}>
                   <p className={styles.formEyebrow}>CONTACT FORM</p>
-                  <h2 className={styles.formTitle}>ご相談内容をお聞かせください</h2>
+                  <h2 className={styles.formTitle}>
+                    ご相談内容をお聞かせください
+                  </h2>
                   <p className={styles.formLead}>
                     自社アプリについてのご質問や、カスタムアプリ開発のご相談など、内容が固まっていない段階でも問題ありません。
                   </p>
@@ -66,7 +62,9 @@ export default function ContactPage() {
                       className={styles.input}
                       placeholder="例: 山田 太郎"
                       value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      onChange={(e) =>
+                        setForm({ ...form, name: e.target.value })
+                      }
                       required
                     />
                   </div>
@@ -81,7 +79,9 @@ export default function ContactPage() {
                       className={styles.input}
                       placeholder="例: info@example.com"
                       value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      onChange={(e) =>
+                        setForm({ ...form, email: e.target.value })
+                      }
                       required
                     />
                   </div>
@@ -96,12 +96,17 @@ export default function ContactPage() {
                       placeholder="現在の運用やお困りごと、実現したいことをご記入ください"
                       rows={7}
                       value={form.message}
-                      onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      onChange={(e) =>
+                        setForm({ ...form, message: e.target.value })
+                      }
                       required
                     />
                   </div>
 
-                  <button type="submit" className={`btn btn-primary ${styles.submitBtn}`}>
+                  <button
+                    type="submit"
+                    className={`btn btn-primary ${styles.submitBtn}`}
+                  >
                     送信する
                     <Send size={18} />
                   </button>

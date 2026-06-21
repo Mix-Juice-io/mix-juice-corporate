@@ -55,21 +55,29 @@ const organizationJsonLd = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
 
-    <script type="application/ld+json" set:html={JSON.stringify(organizationJsonLd)} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(organizationJsonLd)}
+    />
     <slot name="head" />
 
     {
       GA_ID && (
         <>
-          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
-          <script is:inline define:vars={{ GA_ID }}>
-            window.dataLayer = window.dataLayer || []
-            function gtag() {
-              window.dataLayer.push(arguments)
-            }
-            gtag('js', new Date())
-            gtag('config', GA_ID)
-          </script>
+          <script
+            is:inline
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          />
+          <script
+            is:inline
+            set:html={`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){ dataLayer.push(arguments); }
+              gtag('js', new Date());
+              gtag('config', '${GA_ID}');
+            `}
+          />
         </>
       )
     }
