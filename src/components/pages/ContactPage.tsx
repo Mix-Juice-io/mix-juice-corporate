@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Send, CheckCircle } from 'lucide-react'
 import styles from './ContactPage.module.css'
+import { trackEvent } from '../../lib/analytics'
 
 export default function ContactPage() {
 
@@ -15,6 +16,10 @@ export default function ContactPage() {
     e.preventDefault()
     console.log('Form submitted:', form)
     setSubmitted(true)
+    trackEvent('mix_contact_submit', {
+      form_id: 'contact_main',
+      surface: 'contact_page',
+    })
   }
 
   return (

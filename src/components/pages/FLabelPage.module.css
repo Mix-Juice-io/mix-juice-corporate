@@ -160,6 +160,22 @@
   border-top: 1px solid rgba(109, 103, 95, 0.16);
 }
 
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(109, 103, 95, 0.16);
+}
+
+.installCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .legalLinks {
   display: flex;
   gap: 18px;
