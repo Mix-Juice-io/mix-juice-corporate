@@ -7,7 +7,7 @@ const articles = await getPublishedArticles()
 ---
 
 <Layout
-  title="記事一覧 | Mix-Juice"
+  title="食品EC・食品表示・Shopifyの実務ガイド | Mix-Juice"
   description="Mix-JuiceによるEC・Shopify・食品表示まわりの実務に役立つ記事をお届けします。"
 >
   <div class="art-page">
@@ -33,7 +33,7 @@ const articles = await getPublishedArticles()
           ) : (
             <div class="art-grid">
               {articles.map((article) => (
-                <a class="art-card reveal" href={`/articles/${article.id}`}>
+                <a class="art-card reveal" href={`/articles/${article.id}/`}>
                   <div class="art-card-meta">
                     {article.data.category && (
                       <span class="art-card-cat">{article.data.category}</span>

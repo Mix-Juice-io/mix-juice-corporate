@@ -381,10 +381,10 @@ export default function FLabelPrivacyPage() {
             </div>
 
             <div className={styles.linkRow}>
-              <Link to="/service/f-label" className={styles.link}>
+              <Link to="/service/f-label/" className={styles.link}>
                 Fラベル詳細へ戻る
               </Link>
-              <Link to="/service/f-label/terms" className={styles.link}>
+              <Link to="/service/f-label/terms/" className={styles.link}>
                 利用規約
               </Link>
             </div>

@@ -92,7 +92,7 @@ export default function ServicePage() {
                 </ul>
               </div>
 
-              <Link to="/service/f-label" className={styles.inlineLink}>
+              <Link to="/service/f-label/" className={styles.inlineLink}>
                 アプリの詳細を見る
                 <ArrowRight size={16} />
               </Link>
@@ -124,7 +124,7 @@ export default function ServicePage() {
                 </li>
               ))}
             </ul>
-            <Link to="/contact" className={styles.inlineLink}>
+            <Link to="/contact/" className={styles.inlineLink}>
               開発について相談する
               <ArrowRight size={16} />
             </Link>
@@ -139,7 +139,7 @@ export default function ServicePage() {
             <p className={styles.ctaDesc}>
               自社アプリについてのご質問や、カスタムアプリ開発のご相談を承っています。
             </p>
-            <Link to="/contact" className="btn btn-primary">
+            <Link to="/contact/" className="btn btn-primary">
               ご相談はこちら
               <ArrowRight size={18} />
             </Link>

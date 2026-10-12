@@ -264,6 +264,121 @@
   color: var(--color-primary-dark);
 }
 
+/* ---- Breadcrumbs ---- */
+.art-crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-bottom: 18px;
+}
+
+.art-crumbs a {
+  color: var(--color-text-light);
+}
+
+.art-crumbs a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.art-crumbs-current {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* ---- Share buttons ---- */
+.art-share {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  max-width: 760px;
+  margin: 24px auto 0;
+}
+
+.art-share-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-light);
+  margin-right: 4px;
+}
+
+.art-share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text);
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.art-share-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary-dark);
+  transform: translateY(-2px);
+}
+
+/* ---- Related articles ---- */
+.art-related {
+  max-width: 760px;
+  margin: 48px auto 0;
+}
+
+.art-related-title {
+  font-family: var(--font-jp);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--color-text);
+}
+
+.art-related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.art-related-card {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.64);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 12px 30px rgba(24, 33, 51, 0.05);
+  border-radius: 18px;
+  transition:
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s ease;
+}
+
+.art-related-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 46px rgba(255, 179, 138, 0.18);
+}
+
+.art-related-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-text);
+  margin: 6px 0 14px;
+  flex: 1;
+}
+
 @media (max-width: 768px) {
   .art-title {
     font-size: 1.9rem;
@@ -271,5 +386,9 @@
 
   .art-body {
     padding: 28px 20px;
+  }
+
+  .art-related-grid {
+    grid-template-columns: 1fr;
   }
 }

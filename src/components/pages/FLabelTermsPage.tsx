@@ -87,10 +87,10 @@ export default function FLabelTermsPage() {
             </section>
 
             <div className={styles.linkRow}>
-              <Link to="/service/f-label" className={styles.link}>
+              <Link to="/service/f-label/" className={styles.link}>
                 Fラベル詳細へ戻る
               </Link>
-              <Link to="/service/f-label/privacy" className={styles.link}>
+              <Link to="/service/f-label/privacy/" className={styles.link}>
                 プライバシーポリシー
               </Link>
             </div>

@@ -81,10 +81,10 @@ export default function FLabelPage() {
             </div>
 
             <div className={styles.legalLinks}>
-              <Link to="/service/f-label/terms" className={styles.legalLink}>
+              <Link to="/service/f-label/terms/" className={styles.legalLink}>
                 利用規約
               </Link>
-              <Link to="/service/f-label/privacy" className={styles.legalLink}>
+              <Link to="/service/f-label/privacy/" className={styles.legalLink}>
                 プライバシーポリシー
               </Link>
             </div>

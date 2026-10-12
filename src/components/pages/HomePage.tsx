@@ -245,7 +245,7 @@ export default function HomePage() {
                     商品説明欄へのコピペ運用を減らすShopifyアプリです。
                   </p>
                 </div>
-                <Link to="/service/f-label" className={styles.productLink}>
+                <Link to="/service/f-label/" className={styles.productLink}>
                   アプリを見る
                   <ArrowRight size={16} />
                 </Link>
@@ -292,7 +292,7 @@ export default function HomePage() {
                   </span>
                 </li>
               </ul>
-              <Link to="/contact" className={styles.productLink}>
+              <Link to="/contact/" className={styles.productLink}>
                 開発を相談する
                 <ArrowRight size={16} />
               </Link>
@@ -315,7 +315,7 @@ export default function HomePage() {
               <br />
               まずは、現場のお悩みをお聞かせください。
             </p>
-            <Link to="/contact" className="btn btn-primary">
+            <Link to="/contact/" className="btn btn-primary">
               ご相談はこちら
               <ArrowRight size={18} />
             </Link>

@@ -3,16 +3,14 @@ import styles from './Header.module.css'
 
 const navItems = [
   { to: '/', label: 'Home' },
-  { to: '/service', label: 'Service' },
-  { to: '/articles', label: 'Articles' },
-  { to: '/contact', label: 'Contact' },
+  { to: '/service/', label: 'Service' },
+  { to: '/articles/', label: 'Articles' },
+  { to: '/contact/', label: 'Contact' },
 ]
 
-const pathname = Astro.url.pathname.replace(/\/$/, '') || '/'
+const pathname = Astro.url.pathname
 const isActive = (to: string) =>
-  to === '/'
-    ? pathname === '/'
-    : pathname === to || pathname.startsWith(`${to}/`)
+  to === '/' ? pathname === '/' : pathname.startsWith(to)
 ---
 
 <header class={styles.header}>
