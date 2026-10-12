@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&display=swap');
 
 :root {
-  --color-primary: #FFB38A;
-  --color-primary-light: #FFD6C0;
-  --color-primary-dark: #FF945A;
+  --color-primary: #ffb38a;
+  --color-primary-light: #ffd6c0;
+  --color-primary-dark: #ff945a;
 
-  --color-secondary: #8AD6FF;
-  --color-secondary-light: #C0EAFF;
+  --color-secondary: #8ad6ff;
+  --color-secondary-light: #c0eaff;
 
   --color-bg: #f1f2f3;
   --color-bg-alt: #e9ebee;
@@ -15,8 +15,8 @@
   --color-text-light: #666666;
   --color-text-muted: #999999;
 
-  --color-white: #FFFFFF;
-  --color-border: #D1D5DB;
+  --color-white: #ffffff;
+  --color-border: #d1d5db;
 
   --glass-bg: rgba(255, 255, 255, 0.75);
   --glass-border: rgba(255, 255, 255, 0.6);
@@ -46,7 +46,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-jp);
   font-weight: 700;
   line-height: 1.2;
@@ -78,7 +83,11 @@ img {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-dark),
+    var(--color-primary)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -115,7 +124,11 @@ img {
   display: block;
   width: 40px;
   height: 3px;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-primary-dark)
+  );
   margin: 10px auto 0;
   border-radius: 2px;
 }
@@ -142,7 +155,11 @@ img {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-primary-dark)
+  );
   color: var(--color-white);
   box-shadow: 0 4px 15px rgba(255, 148, 90, 0.3);
 }
@@ -166,7 +183,9 @@ img {
 .reveal {
   opacity: 0;
   transform: translateY(40px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal.active {
@@ -174,13 +193,21 @@ img {
   transform: translateY(0);
 }
 
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+.reveal-delay-3 {
+  transition-delay: 0.3s;
+}
 
 /* Service Card */
 .service-card {
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+  transition:
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s ease;
 }
 
 .service-card:hover {

@@ -1,7 +1,11 @@
 ---
 import { render } from 'astro:content'
 import Layout from '../../layouts/Layout.astro'
-import { getPublishedArticles, formatDate } from '../../lib/articles'
+import {
+  getPublishedArticles,
+  getRelatedArticles,
+  formatDate,
+} from '../../lib/articles'
 import '../../styles/articles.css'
 
 export async function getStaticPaths() {
@@ -16,20 +20,72 @@ const { article } = Astro.props
 const { Content } = await render(article)
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href
+const publishedTime = article.data.publishDate.toISOString()
+const modifiedTime = (
+  article.data.updatedDate ?? article.data.publishDate
+).toISOString()
 const blogPostingJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: article.data.title,
   description: article.data.description,
-  datePublished: article.data.publishDate.toISOString(),
-  dateModified: (article.data.updatedDate ?? article.data.publishDate).toISOString(),
-  author: { '@type': 'Organization', name: article.data.author },
+  datePublished: publishedTime,
+  dateModified: modifiedTime,
+  inLanguage: 'ja',
+  url: canonical,
+  ...(article.data.ogImage && {
+    image: new URL(article.data.ogImage, Astro.site).href,
+  }),
+  author: {
+    '@type': 'Organization',
+    name: article.data.author,
+    ...(article.data.author === 'Mix-Juice' && { url: Astro.site?.href }),
+  },
   publisher: {
     '@type': 'Organization',
+    '@id': new URL('/#organization', Astro.site).href,
     name: 'Mix-Juice',
-    logo: { '@type': 'ImageObject', url: new URL('/logo.png', Astro.site).href },
+    logo: {
+      '@type': 'ImageObject',
+      url: new URL('/logo.png', Astro.site).href,
+    },
   },
   mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+}
+
+const related = await getRelatedArticles(article, 3)
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'ホーム',
+      item: new URL('/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: '記事一覧',
+      item: new URL('/articles/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: article.data.title,
+      item: canonical,
+    },
+  ],
+}
+
+const encodedUrl = encodeURIComponent(canonical)
+const encodedTitle = encodeURIComponent(article.data.title)
+const shareLinks = {
+  x: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
+  line: `https://social-plugins.line.me/lineit/share?url=${encodedUrl}`,
+  hatena: `https://b.hatena.ne.jp/entry/${canonical.replace(/^https?:\/\//, '')}`,
 }
 ---
 
@@ -38,10 +94,18 @@ const blogPostingJsonLd = {
   description={article.data.description}
   ogType="article"
   ogImage={article.data.ogImage ?? '/logo.png'}
+  noindex={article.data.draft}
 >
+  <meta property="article:published_time" content={publishedTime} slot="head" />
+  <meta property="article:modified_time" content={modifiedTime} slot="head" />
   <script
     type="application/ld+json"
-    set:html={JSON.stringify(blogPostingJsonLd)}
+    set:html={JSON.stringify(blogPostingJsonLd).replace(/</g, '\\u003c')}
+    slot="head"
+  />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c')}
     slot="head"
   />
   <div class="art-page">
@@ -51,9 +115,20 @@ const blogPostingJsonLd = {
         <div class="art-blob2"></div>
       </div>
       <div class="container">
+        <nav class="art-crumbs" aria-label="パンくずリスト">
+          <a href="/">ホーム</a>
+          <span class="art-crumbs-sep" aria-hidden="true">/</span>
+          <a href="/articles/">記事一覧</a>
+          <span class="art-crumbs-sep" aria-hidden="true">/</span>
+          <span class="art-crumbs-current">{article.data.title}</span>
+        </nav>
         <p class="art-label">ARTICLE</p>
         <div class="art-detail-meta">
-          {article.data.category && <span class="art-detail-cat">{article.data.category}</span>}
+          {
+            article.data.category && (
+              <span class="art-detail-cat">{article.data.category}</span>
+            )
+          }
           <time datetime={article.data.publishDate.toISOString()}>
             {formatDate(article.data.publishDate)}
           </time>
@@ -74,8 +149,67 @@ const blogPostingJsonLd = {
         <article class="art-body">
           <Content />
         </article>
+
+        <div class="art-share">
+          <span class="art-share-label">この記事をシェア</span>
+          <a
+            class="art-share-btn"
+            href={shareLinks.x}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Xでシェア"
+          >
+            X
+          </a>
+          <a
+            class="art-share-btn"
+            href={shareLinks.line}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LINEでシェア"
+          >
+            LINE
+          </a>
+          <a
+            class="art-share-btn"
+            href={shareLinks.hatena}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="はてなブックマークに追加"
+          >
+            B!
+          </a>
+        </div>
+
+        {
+          related.length > 0 && (
+            <section class="art-related">
+              <h2 class="art-related-title">関連記事</h2>
+              <div class="art-related-grid">
+                {related.map((r) => (
+                  <a
+                    class="art-related-card reveal"
+                    href={`/articles/${r.id}/`}
+                  >
+                    <div class="art-card-meta">
+                      {r.data.category && (
+                        <span class="art-card-cat">{r.data.category}</span>
+                      )}
+                      <time datetime={r.data.publishDate.toISOString()}>
+                        {formatDate(r.data.publishDate)}
+                      </time>
+                    </div>
+                    <h3 class="art-related-card-title">{r.data.title}</h3>
+                    <span class="art-card-more">記事を読む →</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+          )
+        }
+
         <div class="art-back">
-          <a href="/articles">← 記事一覧へ戻る</a>
+          <a href="/articles/">← 記事一覧へ戻る</a>
         </div>
       </div>
     </section>
