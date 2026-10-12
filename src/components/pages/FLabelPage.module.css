@@ -87,6 +87,18 @@
   border-top: 1px solid rgba(109, 103, 95, 0.16);
 }
 
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.ctaRow a {
+  white-space: normal;
+  text-align: center;
+}
+
 .legalLinks {
   display: flex;
   gap: 18px;

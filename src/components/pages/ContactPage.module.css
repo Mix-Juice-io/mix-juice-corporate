@@ -98,6 +98,29 @@
   margin-top: 6px;
 }
 
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.error {
+  color: #9f2222;
+  line-height: 1.8;
+}
+
+.privacyNote {
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+
 .successBox {
   min-height: 320px;
   display: flex;

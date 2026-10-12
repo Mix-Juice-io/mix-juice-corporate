@@ -109,6 +109,17 @@ const websiteJsonLd = {
     <Footer />
 
     <script>
+      import '../scripts/click-tracking'
+      import '../scripts/article-tracking'
+      import { trackEvent } from '../lib/analytics'
+
+      const path = window.location.pathname.replace(/\/$/, '') || '/'
+      if (path === '/service/f-label') {
+        trackEvent('mix_lp_view', { lp_variant: 'flabel_v1' })
+      }
+    </script>
+
+    <script>
       // Scroll-reveal: progressively enhance any `.reveal` element.
       const reveal = () => {
         const els = document.querySelectorAll('.reveal:not(.active)')

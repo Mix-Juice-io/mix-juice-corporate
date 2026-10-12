@@ -6,7 +6,7 @@ import prettier from 'eslint-config-prettier'
 import globals from 'globals'
 
 export default tseslint.config(
-  { ignores: ['dist/', '.astro/', 'node_modules/'] },
+  { ignores: ['dist/', '.astro/', '.wrangler/', 'node_modules/'] },
 
   // TypeScript / TSX
   ...tseslint.configs.recommended,
