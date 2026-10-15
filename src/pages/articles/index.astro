@@ -4,6 +4,14 @@ import { getPublishedArticles, formatDate } from '../../lib/articles'
 import '../../styles/articles.css'
 
 const articles = await getPublishedArticles()
+
+// The guide that should rank for "shopify 食品". Search Console showed those
+// queries landing on this list page instead, so link it prominently here.
+const FEATURED_ARTICLE_ID = 'shopify-food-sales-complete-guide'
+const featured = articles.find((a) => a.id === FEATURED_ARTICLE_ID)
+if (!featured) {
+  throw new Error(`Featured article "${FEATURED_ARTICLE_ID}" is not published`)
+}
 ---
 
 <Layout
@@ -27,29 +35,34 @@ const articles = await getPublishedArticles()
 
     <section class="art-content">
       <div class="container">
-        {
-          articles.length === 0 ? (
-            <p class="art-empty">記事は近日公開予定です。</p>
-          ) : (
-            <div class="art-grid">
-              {articles.map((article) => (
-                <a class="art-card reveal" href={`/articles/${article.id}/`}>
-                  <div class="art-card-meta">
-                    {article.data.category && (
-                      <span class="art-card-cat">{article.data.category}</span>
-                    )}
-                    <time datetime={article.data.publishDate.toISOString()}>
-                      {formatDate(article.data.publishDate)}
-                    </time>
-                  </div>
-                  <h2 class="art-card-title">{article.data.title}</h2>
-                  <p class="art-card-desc">{article.data.description}</p>
-                  <span class="art-card-more">記事を読む →</span>
-                </a>
-              ))}
-            </div>
-          )
-        }
+        <a
+          class="art-card art-featured reveal"
+          href={`/articles/${featured.id}/`}
+        >
+          <p class="art-featured-label">Shopifyで食品を販売するなら</p>
+          <h2 class="art-card-title">{featured.data.title}</h2>
+          <p class="art-card-desc">{featured.data.description}</p>
+          <span class="art-card-more">ガイドを読む →</span>
+        </a>
+        <div class="art-grid">
+          {
+            articles.map((article) => (
+              <a class="art-card reveal" href={`/articles/${article.id}/`}>
+                <div class="art-card-meta">
+                  {article.data.category && (
+                    <span class="art-card-cat">{article.data.category}</span>
+                  )}
+                  <time datetime={article.data.publishDate.toISOString()}>
+                    {formatDate(article.data.publishDate)}
+                  </time>
+                </div>
+                <h2 class="art-card-title">{article.data.title}</h2>
+                <p class="art-card-desc">{article.data.description}</p>
+                <span class="art-card-more">記事を読む →</span>
+              </a>
+            ))
+          }
+        </div>
       </div>
     </section>
   </div>
