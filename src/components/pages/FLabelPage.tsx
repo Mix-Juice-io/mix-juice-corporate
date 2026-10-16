@@ -1,7 +1,9 @@
 import Link from '../Link'
-import { CheckCircle } from 'lucide-react'
+import { ArrowRight, CheckCircle } from 'lucide-react'
 import PageHero from '../PageHero'
 import styles from './FLabelPage.module.css'
+
+const SHOPIFY_APP_URL = 'https://apps.shopify.com/f-ec'
 
 export default function FLabelPage() {
   const features = [
@@ -53,6 +55,21 @@ export default function FLabelPage() {
                   商品説明欄へのコピペや手作業の更新で運用しているケースが少なくありません。
                   Fラベルは、そうした食品表示業務を整理し、日々の更新負荷を軽くするためのアプリです。
                 </p>
+                <div className={styles.ctaRow}>
+                  <a
+                    href={SHOPIFY_APP_URL}
+                    className="btn btn-primary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-track-event="mix_outbound_shopify_app,mix_lp_cta_click"
+                    data-track-surface="flabel_lp_primary_cta"
+                    data-track-cta-position="hero"
+                    data-track-cta-id="flabel_lp_install"
+                  >
+                    Shopifyアプリストアで見る
+                    <ArrowRight size={18} />
+                  </a>
+                </div>
               </div>
             </div>
 
