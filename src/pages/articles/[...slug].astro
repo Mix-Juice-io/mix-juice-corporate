@@ -19,6 +19,8 @@ export async function getStaticPaths() {
 const { article } = Astro.props
 const { Content } = await render(article)
 
+const FLABEL_APP_URL = 'https://apps.shopify.com/f-ec'
+
 const canonical = new URL(Astro.url.pathname, Astro.site).href
 const publishedTime = article.data.publishDate.toISOString()
 const modifiedTime = (
@@ -149,6 +151,53 @@ const shareLinks = {
         <article class="art-body">
           <Content />
         </article>
+
+        <aside class="art-flabel" aria-labelledby="art-flabel-title">
+          <img
+            class="art-flabel-icon"
+            src="/f-label.webp"
+            alt=""
+            width="1200"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="art-flabel-body">
+            <p class="art-flabel-badge">Shopify App</p>
+            <h2 id="art-flabel-title" class="art-flabel-title">
+              食品表示の管理は「Fラベル」で
+            </h2>
+            <p class="art-flabel-desc">
+              原材料・添加物・アレルゲン・栄養成分をまとめて管理し、Shopifyの商品ページに食品表示を掲載できるアプリです。原材料マスターの再利用とCSVインポートで、登録・更新の手間を減らせます。
+            </p>
+            <div class="art-flabel-cta">
+              <a
+                class="btn btn-primary"
+                href={FLABEL_APP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track-event="mix_outbound_shopify_app,mix_cta_click"
+                data-track-surface="article_flabel_box"
+                data-track-cta-position="article_end"
+                data-track-cta-id="article_flabel_install"
+                data-track-article-slug={article.id}
+              >
+                Shopifyアプリストアで見る
+              </a>
+              <a
+                class="btn btn-outline"
+                href="/service/f-label/"
+                data-track-event="mix_cta_click"
+                data-track-surface="article_flabel_box"
+                data-track-cta-position="article_end"
+                data-track-cta-id="article_flabel_detail"
+                data-track-article-slug={article.id}
+              >
+                Fラベルの詳細を見る
+              </a>
+            </div>
+          </div>
+        </aside>
 
         <div class="art-share">
           <span class="art-share-label">この記事をシェア</span>

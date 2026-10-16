@@ -291,6 +291,61 @@
 }
 
 /* ---- Share buttons ---- */
+.art-flabel {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  max-width: 760px;
+  margin: 32px auto 0;
+  padding: 28px 32px;
+  background: rgba(255, 255, 255, 0.64);
+  border: 1px solid var(--color-primary-light);
+  box-shadow: 0 18px 40px rgba(24, 33, 51, 0.06);
+  border-radius: 24px;
+}
+
+.art-flabel-icon {
+  flex-shrink: 0;
+  width: 88px;
+  height: 88px;
+  border-radius: 20px;
+}
+
+.art-flabel-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-primary-dark);
+  margin-bottom: 6px;
+}
+
+.art-flabel-title {
+  font-family: var(--font-jp);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-text);
+  margin-bottom: 10px;
+}
+
+.art-flabel-desc {
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--color-text-light);
+  margin-bottom: 18px;
+}
+
+.art-flabel-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.art-flabel-cta .btn {
+  padding: 12px 24px;
+  font-size: 0.92rem;
+}
+
 .art-share {
   display: flex;
   flex-wrap: wrap;
@@ -386,6 +441,17 @@
 
   .art-body {
     padding: 28px 20px;
+  }
+
+  .art-flabel {
+    flex-direction: column;
+    padding: 24px 20px;
+  }
+
+  .art-flabel-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
   }
 
   .art-related-grid {
