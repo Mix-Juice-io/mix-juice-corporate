@@ -7,5 +7,8 @@ import ContactPage from '../components/pages/ContactPage.tsx'
   title="お問い合わせ | Mix-Juice"
   description="自社アプリについてのご質問や、Shopifyカスタムアプリ開発のご相談を承っています。お気軽にお問い合わせください。"
 >
-  <ContactPage client:load />
+  <ContactPage
+    siteKey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY}
+    client:load
+  />
 </Layout>
