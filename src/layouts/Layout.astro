@@ -121,27 +121,33 @@ const websiteJsonLd = {
     </script>
 
     <script>
-      // Scroll-reveal: progressively enhance any `.reveal` element.
-      const reveal = () => {
-        const els = document.querySelectorAll('.reveal:not(.active)')
-        if (!('IntersectionObserver' in window)) {
-          els.forEach((el) => el.classList.add('active'))
-          return
-        }
+      // Scroll-reveal: progressively enhance any `.reveal` element. Elements
+      // already in view are left alone; only those starting below the
+      // viewport are marked pending (hidden) and faded in when scrolled to.
+      // State lives in a data attribute, and React islands are skipped, so
+      // hydrated components never see their markup changed beforehand.
+      const reduceMotion = matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches
+      if ('IntersectionObserver' in window && !reduceMotion) {
         const observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('active')
-                observer.unobserve(entry.target)
-              }
+              if (!entry.isIntersecting) return
+              const el = entry.target as HTMLElement
+              delete el.dataset.reveal
+              observer.unobserve(el)
             })
           },
           { threshold: 0.1 },
         )
-        els.forEach((el) => observer.observe(el))
+        document.querySelectorAll<HTMLElement>('.reveal').forEach((el) => {
+          if (el.closest('astro-island')) return
+          if (el.getBoundingClientRect().top < window.innerHeight) return
+          el.dataset.reveal = 'pending'
+          observer.observe(el)
+        })
       }
-      reveal()
     </script>
   </body>
 </html>
