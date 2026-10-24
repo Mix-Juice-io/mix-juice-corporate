@@ -2,8 +2,7 @@ import Link from '../Link'
 import { ArrowRight, CheckCircle } from 'lucide-react'
 import PageHero from '../PageHero'
 import styles from './FLabelPage.module.css'
-
-const SHOPIFY_APP_URL = 'https://apps.shopify.com/f-ec'
+import { FLABEL_APP_URL } from '../../lib/urls'
 
 export default function FLabelPage() {
   const features = [
@@ -57,7 +56,7 @@ export default function FLabelPage() {
                 </p>
                 <div className={styles.ctaRow}>
                   <a
-                    href={SHOPIFY_APP_URL}
+                    href={FLABEL_APP_URL}
                     className="btn btn-primary"
                     target="_blank"
                     rel="noopener noreferrer"

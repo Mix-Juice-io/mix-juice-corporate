@@ -11,7 +11,7 @@ const articles = defineCollection({
     publishDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     author: z.string().default('Mix-Juice'),
-    category: z.string().optional(),
+    category: z.enum(['食品表示', 'Shopify']).optional(),
     tags: z.array(z.string()).default([]),
     ogImage: z.string().optional(),
     draft: z.boolean().default(false),
