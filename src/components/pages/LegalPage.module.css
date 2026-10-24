@@ -125,7 +125,7 @@
   content: '・';
   position: absolute;
   left: 0;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
 }
 
 .linkRow {
@@ -139,7 +139,7 @@
 .link {
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
 }
 
 .link:hover {
