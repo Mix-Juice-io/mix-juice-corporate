@@ -1,20 +1,37 @@
-# Monthly dependency updates. Related packages are grouped so each family
-# lands as one PR that CI can verify together. Security updates are raised
-# separately by Dependabot as soon as an advisory is published.
+# Monthly dependency updates. Each package family gets two grouped PRs:
+# minor/patch updates, which should pass CI as-is, and major updates, which
+# usually need code changes and are upgraded deliberately. Security updates
+# are raised separately by Dependabot as soon as an advisory is published.
 version: 2
 updates:
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: monthly
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 10
     groups:
       astro:
+        update-types: [minor, patch]
+        patterns:
+          - astro
+          - '@astrojs/*'
+          - prettier-plugin-astro
+      astro-major:
+        update-types: [major]
         patterns:
           - astro
           - '@astrojs/*'
           - prettier-plugin-astro
       eslint:
+        update-types: [minor, patch]
+        patterns:
+          - eslint
+          - '@eslint/*'
+          - eslint-*
+          - typescript-eslint
+          - globals
+      eslint-major:
+        update-types: [major]
         patterns:
           - eslint
           - '@eslint/*'
@@ -22,6 +39,14 @@ updates:
           - typescript-eslint
           - globals
       react:
+        update-types: [minor, patch]
+        patterns:
+          - react
+          - react-dom
+          - '@types/react'
+          - '@types/react-dom'
+      react-major:
+        update-types: [major]
         patterns:
           - react
           - react-dom
