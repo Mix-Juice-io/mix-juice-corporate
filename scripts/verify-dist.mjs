@@ -21,9 +21,6 @@ const ALLOWED_CLICK_EVENTS = new Set([
   'mix_outbound_shopify_app',
 ])
 
-// 404.html is served for unknown paths; its canonical (/404/) is tracked in #63.
-const SKIP_LINK_CHECK = new Set(['404.html'])
-
 const RELATED_MIN = 1
 const RELATED_MAX = 3
 
@@ -106,32 +103,27 @@ for (const file of files) {
   const html = readFileSync(file, 'utf8')
   const tags = startTags(html)
   const urlPath = pageUrlPath(file)
-  const rel = relative(DIST, file).split(sep).join('/')
 
   // (a) internal links and assets
-  if (!SKIP_LINK_CHECK.has(rel)) {
-    for (const { name, attrs } of tags) {
-      const refs = []
-      if (attrs.href !== undefined && (name === 'a' || name === 'link')) {
-        refs.push(attrs.href)
-      }
-      if (attrs.src !== undefined) refs.push(attrs.src)
-      if (attrs.srcset !== undefined) {
-        refs.push(
-          ...attrs.srcset.split(',').map((s) => s.trim().split(/\s+/)[0]),
-        )
-      }
-      for (const ref of refs) {
-        const target = internalPath(ref, urlPath)
-        if (target === null) continue
-        linkCount++
-        if (!resolvesInDist(target)) {
-          const hint =
-            !target.endsWith('/') && extname(target) === ''
-              ? ' (page links need a trailing slash)'
-              : ''
-          report(file, `<${name}> ${ref} does not resolve${hint}`)
-        }
+  for (const { name, attrs } of tags) {
+    const refs = []
+    if (attrs.href !== undefined && (name === 'a' || name === 'link')) {
+      refs.push(attrs.href)
+    }
+    if (attrs.src !== undefined) refs.push(attrs.src)
+    if (attrs.srcset !== undefined) {
+      refs.push(...attrs.srcset.split(',').map((s) => s.trim().split(/\s+/)[0]))
+    }
+    for (const ref of refs) {
+      const target = internalPath(ref, urlPath)
+      if (target === null) continue
+      linkCount++
+      if (!resolvesInDist(target)) {
+        const hint =
+          !target.endsWith('/') && extname(target) === ''
+            ? ' (page links need a trailing slash)'
+            : ''
+        report(file, `<${name}> ${ref} does not resolve${hint}`)
       }
     }
   }

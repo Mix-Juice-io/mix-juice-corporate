@@ -14,6 +14,11 @@ import Layout from '../layouts/Layout.astro'
       お探しのページは移動または削除された可能性があります。
     </p>
     <a class="btn btn-primary" href="/">トップへ戻る</a>
+    <nav class="notfound-links" aria-label="主なページ">
+      <a class="btn btn-outline" href="/articles/">記事一覧</a>
+      <a class="btn btn-outline" href="/service/f-label/">Fラベル</a>
+      <a class="btn btn-outline" href="/contact/">お問い合わせ</a>
+    </nav>
   </div>
 </Layout>
 
@@ -45,5 +50,13 @@ import Layout from '../layouts/Layout.astro'
   .notfound-desc {
     color: var(--color-text-light);
     margin-bottom: 16px;
+  }
+
+  .notfound-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
   }
 </style>

@@ -54,8 +54,13 @@ const websiteJsonLd = {
     <link rel="icon" type="image/png" href="/logo.png" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {
+      noindex ? (
+        <meta name="robots" content="noindex, nofollow" />
+      ) : (
+        <link rel="canonical" href={canonical} />
+      )
+    }
 
     <meta property="og:type" content={ogType} />
     <meta property="og:title" content={title} />
