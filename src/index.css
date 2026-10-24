@@ -35,6 +35,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Keep anchor targets and focused elements clear of the 72px fixed header. */
+  scroll-padding-top: 88px;
 }
 
 body {

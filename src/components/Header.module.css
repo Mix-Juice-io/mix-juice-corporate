@@ -4,10 +4,19 @@
   left: 0;
   right: 0;
   z-index: 100;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* The blur lives on a pseudo-element: backdrop-filter on .header itself would
+   make it the containing block for the fixed mobile nav and clip its height. */
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: rgba(26, 26, 46, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .inner {
@@ -71,7 +80,12 @@
 
 @media (max-width: 768px) {
   .menuBtn {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-right: -10px;
   }
 
   .nav {
@@ -87,14 +101,28 @@
     background: rgba(26, 26, 46, 0.95);
     backdrop-filter: blur(16px);
     transform: translateX(100%);
-    transition: transform 0.3s ease;
+    /* Hidden while closed so its links are skipped by Tab and screen readers;
+       visibility flips after the slide-out finishes. */
+    visibility: hidden;
+    transition:
+      transform 0.3s ease,
+      visibility 0s linear 0.3s;
   }
 
   .navOpen {
     transform: translateX(0);
+    visibility: visible;
+    transition: transform 0.3s ease;
   }
 
   .navLink {
     font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .nav,
+  .navOpen {
+    transition: none;
   }
 }

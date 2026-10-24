@@ -13,7 +13,7 @@ const isActive = (to: string) =>
   to === '/' ? pathname === '/' : pathname.startsWith(to)
 ---
 
-<header class={styles.header}>
+<header class={styles.header} data-header>
   <div class={`container ${styles.inner}`}>
     <a href="/" class={styles.logo}>
       <img
@@ -26,23 +26,12 @@ const isActive = (to: string) =>
       />
     </a>
 
-    <nav class={styles.nav} data-nav>
-      {
-        navItems.map((item) => (
-          <a
-            href={item.to}
-            class={`${styles.navLink} ${isActive(item.to) ? styles.navLinkActive : ''}`}
-          >
-            {item.label}
-          </a>
-        ))
-      }
-    </nav>
-
     <button
+      type="button"
       class={styles.menuBtn}
       data-menu-btn
       aria-label="メニュー"
+      aria-controls="site-nav"
       aria-expanded="false"
     >
       <svg
@@ -75,6 +64,20 @@ const isActive = (to: string) =>
         <path d="m6 6 12 12"></path>
       </svg>
     </button>
+
+    <nav id="site-nav" class={styles.nav} data-nav>
+      {
+        navItems.map((item) => (
+          <a
+            href={item.to}
+            class={`${styles.navLink} ${isActive(item.to) ? styles.navLinkActive : ''}`}
+            aria-current={isActive(item.to) ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
   </div>
 </header>
 
@@ -91,13 +94,41 @@ const isActive = (to: string) =>
 </style>
 
 <script define:vars={{ navOpenClass: styles.navOpen }}>
+  const header = document.querySelector('[data-header]')
   const btn = document.querySelector('[data-menu-btn]')
   const nav = document.querySelector('[data-nav]')
-  if (btn && nav) {
+  if (header && btn && nav) {
+    const isOpen = () => btn.getAttribute('aria-expanded') === 'true'
+    const setOpen = (open) => {
+      btn.setAttribute('aria-expanded', String(open))
+      nav.classList.toggle(navOpenClass, open)
+    }
+
     btn.addEventListener('click', () => {
-      const open = btn.getAttribute('aria-expanded') === 'true'
-      btn.setAttribute('aria-expanded', String(!open))
-      nav.classList.toggle(navOpenClass)
+      const open = !isOpen()
+      setOpen(open)
+      if (open) nav.querySelector('a')?.focus()
+    })
+
+    // Escape closes the menu and returns focus to the toggle button.
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen()) {
+        setOpen(false)
+        btn.focus()
+      }
+    })
+
+    // Close when keyboard focus leaves the header, so Tab never lands on
+    // page content hidden behind the open menu.
+    header.addEventListener('focusout', (e) => {
+      if (isOpen() && e.relatedTarget && !header.contains(e.relatedTarget)) {
+        setOpen(false)
+      }
+    })
+
+    // Reset when the viewport grows past the mobile breakpoint.
+    matchMedia('(min-width: 769px)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false)
     })
   }
 </script>
