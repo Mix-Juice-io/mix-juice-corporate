@@ -54,13 +54,11 @@ const websiteJsonLd = {
     <link rel="icon" type="image/png" href="/logo.png" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {
-      noindex ? (
-        <meta name="robots" content="noindex, nofollow" />
-      ) : (
-        <link rel="canonical" href={canonical} />
-      )
-    }
+    {noindex ? (
+      <meta name="robots" content="noindex, nofollow" />
+    ) : (
+      <link rel="canonical" href={canonical} />
+    )}
 
     <meta property="og:type" content={ogType} />
     <meta property="og:title" content={title} />
@@ -78,21 +76,18 @@ const websiteJsonLd = {
       type="application/ld+json"
       set:html={JSON.stringify(organizationJsonLd)}
     />
-    {
-      Astro.url.pathname === '/' && (
-        <script
-          type="application/ld+json"
-          set:html={JSON.stringify(websiteJsonLd)}
-        />
-      )
-    }
+    {Astro.url.pathname === '/' && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(websiteJsonLd)}
+      />
+    )}
     <slot name="head" />
 
-    {
-      GA_ID && GA_HOST && (
-        <script
-          is:inline
-          set:html={`
+    {GA_ID && GA_HOST && (
+      <script
+        is:inline
+        set:html={`
             if (location.hostname === ${JSON.stringify(GA_HOST)}) {
               window.dataLayer = window.dataLayer || [];
               window.gtag = function () { dataLayer.push(arguments); };
@@ -104,9 +99,8 @@ const websiteJsonLd = {
               document.head.appendChild(s);
             }
           `}
-        />
-      )
-    }
+      />
+    )}
   </head>
   <body>
     <Header />

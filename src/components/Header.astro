@@ -66,17 +66,15 @@ const isActive = (to: string) =>
     </button>
 
     <nav id="site-nav" class={styles.nav} data-nav>
-      {
-        navItems.map((item) => (
-          <a
-            href={item.to}
-            class={`${styles.navLink} ${isActive(item.to) ? styles.navLinkActive : ''}`}
-            aria-current={isActive(item.to) ? 'page' : undefined}
-          >
-            {item.label}
-          </a>
-        ))
-      }
+      {navItems.map((item) => (
+        <a
+          href={item.to}
+          class={`${styles.navLink} ${isActive(item.to) ? styles.navLinkActive : ''}`}
+          aria-current={isActive(item.to) ? 'page' : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
     </nav>
   </div>
 </header>

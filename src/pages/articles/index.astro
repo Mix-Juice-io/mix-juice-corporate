@@ -45,23 +45,21 @@ if (!featured) {
           <span class="art-card-more">ガイドを読む →</span>
         </a>
         <div class="art-grid">
-          {
-            articles.map((article) => (
-              <a class="art-card reveal" href={`/articles/${article.id}/`}>
-                <div class="art-card-meta">
-                  {article.data.category && (
-                    <span class="art-card-cat">{article.data.category}</span>
-                  )}
-                  <time datetime={article.data.publishDate.toISOString()}>
-                    {formatDate(article.data.publishDate)}
-                  </time>
-                </div>
-                <h2 class="art-card-title">{article.data.title}</h2>
-                <p class="art-card-desc">{article.data.description}</p>
-                <span class="art-card-more">記事を読む →</span>
-              </a>
-            ))
-          }
+          {articles.map((article) => (
+            <a class="art-card reveal" href={`/articles/${article.id}/`}>
+              <div class="art-card-meta">
+                {article.data.category && (
+                  <span class="art-card-cat">{article.data.category}</span>
+                )}
+                <time datetime={article.data.publishDate.toISOString()}>
+                  {formatDate(article.data.publishDate)}
+                </time>
+              </div>
+              <h2 class="art-card-title">{article.data.title}</h2>
+              <p class="art-card-desc">{article.data.description}</p>
+              <span class="art-card-more">記事を読む →</span>
+            </a>
+          ))}
         </div>
       </div>
     </section>
