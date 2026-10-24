@@ -15,8 +15,8 @@
   inset: 0;
   z-index: -1;
   background: rgba(26, 26, 46, 0.92);
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
 
 .inner {

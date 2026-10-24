@@ -118,26 +118,26 @@ const shareLinks = {
       <div class="container">
         <nav class="art-crumbs" aria-label="パンくずリスト">
           <a href="/">ホーム</a>
-          <span class="art-crumbs-sep" aria-hidden="true">/</span>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
           <a href="/articles/">記事一覧</a>
-          <span class="art-crumbs-sep" aria-hidden="true">/</span>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
           <span class="art-crumbs-current">{article.data.title}</span>
         </nav>
         <p class="art-label">ARTICLE</p>
         <div class="art-detail-meta">
-          {
-            article.data.category && (
-              <span class="art-detail-cat">{article.data.category}</span>
-            )
-          }
+          {article.data.category && (
+            <span class="art-detail-cat">{article.data.category}</span>
+          )}
           <time datetime={article.data.publishDate.toISOString()}>
             {formatDate(article.data.publishDate)}
           </time>
-          {
-            article.data.updatedDate && (
-              <span>更新: {formatDate(article.data.updatedDate)}</span>
-            )
-          }
+          {article.data.updatedDate && (
+            <span>更新: {formatDate(article.data.updatedDate)}</span>
+          )}
           <span>{article.data.author}</span>
         </div>
         <h1 class="art-title">{article.data.title}</h1>
@@ -229,32 +229,27 @@ const shareLinks = {
           </a>
         </div>
 
-        {
-          related.length > 0 && (
-            <section class="art-related">
-              <h2 class="art-related-title">関連記事</h2>
-              <div class="art-related-grid">
-                {related.map((r) => (
-                  <a
-                    class="art-related-card reveal"
-                    href={`/articles/${r.id}/`}
-                  >
-                    <div class="art-card-meta">
-                      {r.data.category && (
-                        <span class="art-card-cat">{r.data.category}</span>
-                      )}
-                      <time datetime={r.data.publishDate.toISOString()}>
-                        {formatDate(r.data.publishDate)}
-                      </time>
-                    </div>
-                    <h3 class="art-related-card-title">{r.data.title}</h3>
-                    <span class="art-card-more">記事を読む →</span>
-                  </a>
-                ))}
-              </div>
-            </section>
-          )
-        }
+        {related.length > 0 && (
+          <section class="art-related">
+            <h2 class="art-related-title">関連記事</h2>
+            <div class="art-related-grid">
+              {related.map((r) => (
+                <a class="art-related-card reveal" href={`/articles/${r.id}/`}>
+                  <div class="art-card-meta">
+                    {r.data.category && (
+                      <span class="art-card-cat">{r.data.category}</span>
+                    )}
+                    <time datetime={r.data.publishDate.toISOString()}>
+                      {formatDate(r.data.publishDate)}
+                    </time>
+                  </div>
+                  <h3 class="art-related-card-title">{r.data.title}</h3>
+                  <span class="art-card-more">記事を読む →</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
 
         <div class="art-back">
           <a href="/articles/">← 記事一覧へ戻る</a>
