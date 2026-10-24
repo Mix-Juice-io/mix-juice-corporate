@@ -50,7 +50,7 @@
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
   background: rgba(255, 179, 138, 0.15);
   padding: 4px 12px;
   border-radius: 20px;
@@ -70,7 +70,7 @@
 .productTagline {
   font-size: 0.95rem;
   line-height: 1.8;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
   font-weight: 600;
   margin-bottom: 14px;
 }
@@ -110,7 +110,7 @@
 .legalLink {
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
 }
 
 .legalLink:hover {

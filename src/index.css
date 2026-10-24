@@ -4,6 +4,10 @@
   --color-primary: #ffb38a;
   --color-primary-light: #ffd6c0;
   --color-primary-dark: #ff945a;
+  /* Orange for text. --color-primary-dark is too light for text (about 2:1),
+     so it is kept for decoration; this one passes WCAG AA (4.5:1) on every
+     page background, including the ABOUT section (#e1dfdc). */
+  --color-accent-text: #ad3e0b;
 
   --color-secondary: #8ad6ff;
   --color-secondary-light: #c0eaff;
@@ -13,7 +17,7 @@
 
   --color-text: #333333;
   --color-text-light: #666666;
-  --color-text-muted: #999999;
+  --color-text-muted: #6b6b6b;
 
   --color-white: #ffffff;
   --color-border: #d1d5db;
@@ -107,24 +111,22 @@ img {
   letter-spacing: 0.05em;
 }
 
+/* White text needs a darker orange than the brand tones: 4.7:1 on #c84b12,
+   6.05:1 on --color-accent-text. */
 .btn-primary {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary),
-    var(--color-primary-dark)
-  );
+  background: linear-gradient(135deg, #c84b12, var(--color-accent-text));
   color: var(--color-white);
-  box-shadow: 0 4px 15px rgba(255, 148, 90, 0.3);
+  box-shadow: 0 4px 15px rgba(173, 62, 11, 0.3);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 148, 90, 0.4);
+  box-shadow: 0 6px 20px rgba(173, 62, 11, 0.4);
 }
 
 .btn-outline {
   background: white;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
   border: 2px solid var(--color-primary);
 }
 

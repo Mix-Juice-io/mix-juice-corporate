@@ -46,7 +46,7 @@
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.15em;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
   margin-bottom: 12px;
   display: inline-block;
 }
@@ -120,7 +120,7 @@
 .art-card-cat {
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
 }
 
 .art-card-title {
@@ -145,7 +145,7 @@
   gap: 6px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
 }
 
 .art-featured {
@@ -158,7 +158,7 @@
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
   margin-bottom: 10px;
 }
 
@@ -176,7 +176,7 @@
 .art-detail-cat {
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
 }
 
 .art-body {
@@ -219,7 +219,7 @@
 }
 
 .art-body a {
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
   text-decoration: underline;
 }
 
@@ -294,7 +294,7 @@
   gap: 6px;
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
 }
 
 /* ---- Breadcrumbs ---- */
@@ -313,7 +313,7 @@
 }
 
 .art-crumbs a:hover {
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -348,7 +348,7 @@
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
   margin-bottom: 6px;
 }
 
@@ -416,7 +416,7 @@
 
 .art-share-btn:hover {
   border-color: var(--color-primary);
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
   transform: translateY(-2px);
 }
 

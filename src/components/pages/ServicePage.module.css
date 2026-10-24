@@ -38,7 +38,7 @@
 .serviceEyebrow {
   font-size: 0.82rem;
   line-height: 1.7;
-  color: #8a8278;
+  color: #615b54;
   margin-bottom: 4px;
 }
 
@@ -107,7 +107,7 @@
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
   background: rgba(255, 179, 138, 0.15);
   padding: 4px 12px;
   border-radius: 20px;
@@ -127,7 +127,7 @@
 .productTagline {
   font-size: 0.94rem;
   line-height: 1.8;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
   font-weight: 600;
   margin-bottom: 14px;
 }
@@ -190,7 +190,7 @@
   margin-top: 28px;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
   transition: gap 0.3s ease;
 }
 

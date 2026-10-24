@@ -109,7 +109,8 @@
 }
 
 .heroGradient {
-  background: linear-gradient(135deg, #d87028, #d84878, #3c78a8);
+  /* Each stop keeps 3:1 (large text) even over the peach hero glow. */
+  background: linear-gradient(135deg, #bd6122, #d74475, #3c78a8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -119,7 +120,8 @@
   font-size: 1rem;
   font-weight: 700;
   line-height: 2.2;
-  color: var(--color-text-light);
+  /* Darker than --color-text-light: the hero blobs lighten the background. */
+  color: #555555;
   margin-bottom: 28px;
 }
 
@@ -397,7 +399,7 @@
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.15em;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
   margin-bottom: 14px;
   position: relative;
 }
@@ -452,7 +454,7 @@
   margin-top: 14px;
   font-size: 1rem;
   line-height: 1.8;
-  color: #6d675f;
+  color: #5f5850;
 }
 
 .serviceHead .sectionEn {
@@ -538,7 +540,8 @@
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.04em;
-  color: rgba(255, 148, 90, 0.38);
+  /* Large text: needs 3:1 on the card background. */
+  color: #d0500f;
   position: relative;
   z-index: 1;
 }
@@ -609,7 +612,7 @@
 .aboutBody p {
   font-size: 1rem;
   line-height: 2;
-  color: var(--color-text-light);
+  color: #5c5c5c;
   margin-bottom: 16px;
 }
 
@@ -673,7 +676,7 @@
   margin-top: 10px;
   font-size: 0.78rem;
   line-height: 1.6;
-  color: #7a746d;
+  color: #5f5850;
   text-align: right;
 }
 
@@ -727,7 +730,7 @@
 .serviceCategorySubtext {
   font-size: 0.88rem;
   line-height: 1.9;
-  color: #8a8278;
+  color: #615b54;
   max-width: 760px;
   margin-bottom: 14px;
 }
@@ -778,7 +781,7 @@
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: #8a8278;
+  color: #615b54;
   margin-bottom: 8px;
 }
 
@@ -802,7 +805,7 @@
   gap: 6px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--color-primary-dark);
+  color: var(--color-accent-text);
   flex-shrink: 0;
   transition: gap 0.3s ease;
 }
