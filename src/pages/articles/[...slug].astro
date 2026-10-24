@@ -6,6 +6,7 @@ import {
   getRelatedArticles,
   formatDate,
 } from '../../lib/articles'
+import { FLABEL_APP_URL } from '../../lib/urls'
 import '../../styles/articles.css'
 
 export async function getStaticPaths() {
@@ -18,8 +19,6 @@ export async function getStaticPaths() {
 
 const { article } = Astro.props
 const { Content } = await render(article)
-
-const FLABEL_APP_URL = 'https://apps.shopify.com/f-ec'
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href
 const publishedTime = article.data.publishDate.toISOString()
