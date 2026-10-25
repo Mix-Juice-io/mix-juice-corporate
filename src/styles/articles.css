@@ -1,5 +1,6 @@
-/* Shared styling for the /articles/ section. Reuses the design tokens from
-   src/index.css so the blog matches the existing site tone. */
+/* Shared styling for the /articles/ section, also used by the /tools/ pages
+   for their hero, explanations, and F-label box. Reuses the design tokens
+   from src/index.css so the blog matches the existing site tone. */
 
 .art-page {
   padding-top: 72px;

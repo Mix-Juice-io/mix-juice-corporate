@@ -1,13 +1,15 @@
-// Article-page tracking: scroll depth, read complete, internal link clicks.
+// Article-page tracking: scroll depth, read complete, internal link clicks,
+// and clicks on links from the article body to the free tools (/tools/).
 //
 // Active on /articles/<slug> only. The script reads the slug from the URL and
 // uses `IntersectionObserver` against the article body to determine 25/50/75/
 // 100% read depth. `mix_article_read_complete` fires once when both 100% and a
 // minimum 60s dwell time are reached.
 
-import { trackEvent } from '../lib/analytics'
+import { cleanUrl, trackEvent } from '../lib/analytics'
 
 const ARTICLE_PATH = /^\/articles\/([^/?#]+)/
+const TOOL_PATH = /^\/tools\//
 
 const DEPTHS = [25, 50, 75, 100] as const
 const READ_COMPLETE_MIN_DWELL_MS = 60_000
@@ -141,6 +143,20 @@ function init(): void {
       if (url.origin !== window.location.origin) return
       // Same-page anchors (table of contents) are not article-to-article links.
       if (url.pathname === window.location.pathname) return
+      // Markdown links cannot carry data-track-* attributes, so tool links in
+      // the body are reported here, as the CTA they are. Annotated links are
+      // left to click-tracking.ts to avoid counting a click twice.
+      if (TOOL_PATH.test(url.pathname)) {
+        if (!anchor.closest('.art-body') || anchor.dataset.trackEvent) return
+        trackEvent('mix_cta_click', {
+          surface: 'article_body',
+          cta_id: 'article_tool_link',
+          article_slug: slug,
+          link_text: anchor.textContent?.trim().slice(0, 100),
+          destination: cleanUrl(anchor.href),
+        })
+        return
+      }
       const m = ARTICLE_PATH.exec(url.pathname)
       if (!m) return
       trackEvent('mix_internal_link_click', {
