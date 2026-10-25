@@ -2,11 +2,64 @@
 import styles from './Footer.module.css'
 
 const year = new Date().getFullYear()
+
+// Site-wide links. Add the site privacy policy (#49) and company profile
+// (#52) here once those pages exist.
+const groups = [
+  {
+    id: 'footer-service',
+    title: 'サービス',
+    links: [
+      { href: '/service/', label: 'サービス一覧' },
+      { href: '/service/f-label/', label: 'Fラベル', ctaId: 'footer_flabel' },
+    ],
+  },
+  {
+    id: 'footer-content',
+    title: '記事・お問い合わせ',
+    links: [
+      { href: '/articles/', label: '記事一覧' },
+      { href: '/contact/', label: 'お問い合わせ', ctaId: 'footer_contact' },
+    ],
+  },
+  {
+    id: 'footer-legal',
+    title: 'Fラベルの規約',
+    links: [
+      { href: '/service/f-label/terms/', label: '利用規約' },
+      { href: '/service/f-label/privacy/', label: 'プライバシーポリシー' },
+    ],
+  },
+]
 ---
 
 <footer class={styles.footer}>
   <div class={`container ${styles.inner}`}>
     <div class={styles.top}>
+      <nav class={styles.nav} aria-label="フッター">
+        {groups.map((group) => (
+          <div class={styles.group}>
+            <p id={group.id} class={styles.groupTitle}>
+              {group.title}
+            </p>
+            <ul class={styles.linkList} aria-labelledby={group.id}>
+              {group.links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    class={styles.link}
+                    data-track-event={link.ctaId ? 'mix_cta_click' : undefined}
+                    data-track-surface={link.ctaId ? 'footer' : undefined}
+                    data-track-cta-id={link.ctaId}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </nav>
       <div class={styles.social}>
         <div class={styles.socialLinks}>
           <a
