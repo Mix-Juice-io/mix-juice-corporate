@@ -134,18 +134,34 @@ img {
   background: var(--color-primary-light);
 }
 
-/* Scroll Reveal */
+/* Scroll Reveal: content is visible by default. The reveal script in
+   Layout.astro marks only elements that start below the viewport as pending,
+   so nothing stays hidden when JavaScript fails or motion is reduced. */
 .reveal {
-  opacity: 0;
-  transform: translateY(40px);
   transition:
     opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reveal.active {
-  opacity: 1;
-  transform: translateY(0);
+.reveal[data-reveal='pending'] {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Covers the hero shooting stars (they rest at opacity 0), hover lifts,
+     and every other transition or animation. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Responsive */
