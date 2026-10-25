@@ -4,6 +4,7 @@ import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
 import { unified } from '@astrojs/markdown-remark'
 import rehypeWrapTables from './src/lib/rehype-wrap-tables.mjs'
+import rehypeTaskListLabels from './src/lib/rehype-task-list-labels.mjs'
 import { articleLastmod } from './src/lib/article-lastmod.mjs'
 
 const lastmod = articleLastmod()
@@ -25,9 +26,11 @@ export default defineConfig({
   // elements; keep the Astro 6 behavior so rendered text does not change.
   compressHTML: true,
   // Astro 7 renders Markdown with Sätteri by default; keep the remark/rehype
-  // pipeline for rehype-wrap-tables.
+  // pipeline for our rehype plugins (table wrapping, task list labels).
   markdown: {
-    processor: unified({ rehypePlugins: [rehypeWrapTables] }),
+    processor: unified({
+      rehypePlugins: [rehypeWrapTables, rehypeTaskListLabels],
+    }),
   },
   vite: {
     build: {
