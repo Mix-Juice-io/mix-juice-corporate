@@ -44,6 +44,21 @@ if (!featured) {
           <p class="art-card-desc">{featured.data.description}</p>
           <span class="art-card-more">ガイドを読む →</span>
         </a>
+        <a
+          class="art-card art-featured reveal"
+          href="/tools/nutrition-labeling-check/"
+          data-track-event="mix_cta_click"
+          data-track-surface="articles_index_tool"
+          data-track-cta-id="articles_tool_nutrition_check"
+          data-track-link-text="栄養成分表示、うちは必要？"
+        >
+          <p class="art-featured-label">無料ツール</p>
+          <h2 class="art-card-title">栄養成分表示、うちは必要？</h2>
+          <p class="art-card-desc">
+            店頭・ネット・卸など売り方ごとに、栄養成分表示が必要か、省略できるかを判定します。容器包装リサイクル法の対象かどうかも確認できます。
+          </p>
+          <span class="art-card-more">ツールを使う →</span>
+        </a>
         <div class="art-grid">
           {articles.map((article) => (
             <a class="art-card reveal" href={`/articles/${article.id}/`}>
