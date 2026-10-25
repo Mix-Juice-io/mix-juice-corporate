@@ -4,12 +4,23 @@ import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
 import { unified } from '@astrojs/markdown-remark'
 import rehypeWrapTables from './src/lib/rehype-wrap-tables.mjs'
+import { articleLastmod } from './src/lib/article-lastmod.mjs'
+
+const lastmod = articleLastmod()
 
 // Production site origin. Used for canonical URLs, OGP, and sitemap generation.
 export default defineConfig({
   site: 'https://mix-juice.io',
   trailingSlash: 'always',
-  integrations: [react(), sitemap()],
+  integrations: [
+    react(),
+    sitemap({
+      serialize(item) {
+        const date = lastmod.get(new URL(item.url).pathname)
+        return date ? { ...item, lastmod: date } : item
+      },
+    }),
+  ],
   // Astro 7 defaults to 'jsx', which strips whitespace between inline
   // elements; keep the Astro 6 behavior so rendered text does not change.
   compressHTML: true,
