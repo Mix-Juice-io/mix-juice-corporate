@@ -29,13 +29,7 @@ export default function FLabelPrivacyPage() {
                 <dd>水沢孟由</dd>
                 <dt>製品サイト</dt>
                 <dd>
-                  <a
-                    href="https://mix-juice.io/service/f-label/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-describedby="new-tab-note"
-                    className={styles.link}
-                  >
+                  <a href="/service/f-label/" className={styles.link}>
                     https://mix-juice.io/service/f-label/
                   </a>
                 </dd>
