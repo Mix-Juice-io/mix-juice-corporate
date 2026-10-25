@@ -3,6 +3,8 @@
 //
 //   (a) Every internal href/src resolves to a file in dist/. Page links must
 //       end with "/" because astro.config uses trailingSlash: 'always'.
+//       In-page "#id" links point to an element on the page, and ids are
+//       unique per page (table of contents anchors depend on both).
 //   (b) Each article page shows 1-3 related articles, none pointing to itself.
 //   (c) Every data-track-event names only allowed GA4 events and carries
 //       data-track-surface and data-track-cta-id (see src/scripts/click-tracking.ts).
@@ -103,6 +105,21 @@ for (const file of files) {
   const html = readFileSync(file, 'utf8')
   const tags = startTags(html)
   const urlPath = pageUrlPath(file)
+
+  // (a) in-page anchors and unique ids
+  const ids = tags.filter(({ attrs }) => attrs.id).map(({ attrs }) => attrs.id)
+  const idSet = new Set(ids)
+  for (const id of idSet) {
+    if (ids.indexOf(id) !== ids.lastIndexOf(id))
+      report(file, `duplicate id "${id}"`)
+  }
+  for (const { name, attrs } of tags) {
+    if (name !== 'a' || !attrs.href?.startsWith('#') || attrs.href === '#')
+      continue
+    linkCount++
+    const id = decodeURIComponent(decodeEntities(attrs.href.slice(1)))
+    if (!idSet.has(id)) report(file, `<a> ${attrs.href} has no matching id`)
+  }
 
   // (a) internal links and assets
   for (const { name, attrs } of tags) {

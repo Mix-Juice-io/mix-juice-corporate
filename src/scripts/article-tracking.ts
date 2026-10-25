@@ -139,6 +139,8 @@ function init(): void {
       if (!anchor) return
       const url = new URL(anchor.href, window.location.origin)
       if (url.origin !== window.location.origin) return
+      // Same-page anchors (table of contents) are not article-to-article links.
+      if (url.pathname === window.location.pathname) return
       const m = ARTICLE_PATH.exec(url.pathname)
       if (!m) return
       trackEvent('mix_internal_link_click', {

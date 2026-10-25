@@ -18,7 +18,11 @@ export async function getStaticPaths() {
 }
 
 const { article } = Astro.props
-const { Content } = await render(article)
+const { Content, headings } = await render(article)
+// Table of contents from the article's own h2 headings (ids come from the
+// Markdown pipeline), shown only when there is enough structure to navigate.
+const toc = headings.filter((heading) => heading.depth === 2)
+const showToc = toc.length >= 3
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href
 const publishedTime = article.data.publishDate.toISOString()
@@ -148,6 +152,20 @@ const shareLinks = {
     <section class="art-content">
       <div class="container">
         <article class="art-body">
+          {showToc && (
+            <nav class="art-toc" aria-labelledby="art-toc-title">
+              <p id="art-toc-title" class="art-toc-title">
+                目次
+              </p>
+              <ol class="art-toc-list">
+                {toc.map((heading) => (
+                  <li>
+                    <a href={`#${heading.slug}`}>{heading.text}</a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )}
           <Content />
         </article>
 
