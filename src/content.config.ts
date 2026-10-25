@@ -10,6 +10,8 @@ const articles = defineCollection({
     title: z.string(),
     description: z.string(),
     publishDate: z.coerce.date(),
+    // Set only for substantive updates (body, structured data, links). It
+    // becomes the sitemap <lastmod> (src/lib/article-lastmod.mjs).
     updatedDate: z.coerce.date().optional(),
     author: z.string().default('Mix-Juice'),
     category: z.enum(['食品表示', 'Shopify']).optional(),
