@@ -108,6 +108,12 @@ const websiteJsonLd = {
       <slot />
     </main>
     <Footer />
+    <!-- Accessible description for links that open a new tab
+         (aria-describedby="new-tab-note"); kept out of link text so GA4
+         link_text stays the same. -->
+    <span id="new-tab-note" hidden>
+      新しいタブで開きます
+    </span>
 
     <script>
       import '../scripts/click-tracking'

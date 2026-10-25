@@ -94,7 +94,7 @@ export default function HomePage() {
               <div className={styles.aboutCardImageWrap}>
                 <img
                   src="/research_18366281.webp"
-                  alt="AIリサーチを表すアイコン"
+                  alt=""
                   width="512"
                   height="512"
                   loading="lazy"
@@ -114,7 +114,7 @@ export default function HomePage() {
               <div className={styles.aboutCardImageWrap}>
                 <img
                   src="/discussion_18366397.webp"
-                  alt="ヒアリングと対話を表すアイコン"
+                  alt=""
                   width="512"
                   height="512"
                   loading="lazy"
@@ -134,7 +134,7 @@ export default function HomePage() {
               <div className={styles.aboutCardImageWrap}>
                 <img
                   src="/rocket_18366278.webp"
-                  alt="実装と前進を表すアイコン"
+                  alt=""
                   width="512"
                   height="512"
                   loading="lazy"
@@ -227,7 +227,7 @@ export default function HomePage() {
                 <div className={styles.productThumb}>
                   <img
                     src="/f-label.webp"
-                    alt="食品表示ラベラーのアイコン"
+                    alt="Fラベル"
                     width="1200"
                     height="1200"
                     loading="lazy"

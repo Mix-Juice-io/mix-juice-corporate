@@ -53,7 +53,7 @@ export default function ServicePage() {
                   <div className={styles.productIconCard}>
                     <img
                       src="/f-label.webp"
-                      alt="Fラベルのアイコン"
+                      alt="Fラベル"
                       width="1200"
                       height="1200"
                       loading="lazy"

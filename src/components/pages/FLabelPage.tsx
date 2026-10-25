@@ -34,7 +34,7 @@ export default function FLabelPage() {
               <div className={styles.iconCard}>
                 <img
                   src="/f-label.webp"
-                  alt="Fラベルのアイコン"
+                  alt="Fラベル"
                   width="1200"
                   height="1200"
                   loading="lazy"
@@ -60,6 +60,7 @@ export default function FLabelPage() {
                     className="btn btn-primary"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-describedby="new-tab-note"
                     data-track-event="mix_outbound_shopify_app,mix_lp_cta_click"
                     data-track-surface="flabel_lp_primary_cta"
                     data-track-cta-position="hero"

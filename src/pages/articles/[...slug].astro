@@ -155,7 +155,7 @@ const shareLinks = {
           <img
             class="art-flabel-icon"
             src="/f-label.webp"
-            alt=""
+            alt="Fラベル"
             width="1200"
             height="1200"
             loading="lazy"
@@ -175,6 +175,7 @@ const shareLinks = {
                 href={FLABEL_APP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-describedby="new-tab-note"
                 data-track-event="mix_outbound_shopify_app,mix_cta_click"
                 data-track-surface="article_flabel_box"
                 data-track-cta-position="article_end"
@@ -205,6 +206,7 @@ const shareLinks = {
             href={shareLinks.x}
             target="_blank"
             rel="noopener noreferrer"
+            aria-describedby="new-tab-note"
             aria-label="Xでシェア"
           >
             X
@@ -214,6 +216,7 @@ const shareLinks = {
             href={shareLinks.line}
             target="_blank"
             rel="noopener noreferrer"
+            aria-describedby="new-tab-note"
             aria-label="LINEでシェア"
           >
             LINE
@@ -223,7 +226,8 @@ const shareLinks = {
             href={shareLinks.hatena}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="はてなブックマークに追加"
+            aria-describedby="new-tab-note"
+            aria-label="B! はてなブックマークに追加"
           >
             B!
           </a>

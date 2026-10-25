@@ -11,8 +11,9 @@ export default tseslint.config(
   // TypeScript / TSX
   ...tseslint.configs.recommended,
 
-  // Astro components (.astro)
+  // Astro components (.astro), including accessibility rules for their markup
   ...astro.configs.recommended,
+  ...astro.configs['flat/jsx-a11y-recommended'],
 
   // React hooks correctness + accessibility for the React islands
   {

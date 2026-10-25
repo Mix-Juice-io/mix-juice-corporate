@@ -33,6 +33,7 @@ export default function FLabelPrivacyPage() {
                     href="https://mix-juice.io/service/f-label/"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-describedby="new-tab-note"
                     className={styles.link}
                   >
                     https://mix-juice.io/service/f-label/

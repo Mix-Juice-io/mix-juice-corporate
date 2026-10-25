@@ -214,11 +214,11 @@ Shopifyでの食品表示の管理を効率化したい方は、食品表示管�
 
 ## 参考情報
 
-- [消費者庁：インターネット販売における食品表示の情報提供に関するガイドブック](https://www.caa.go.jp/policies/policy/food_labeling/food_labeling_act/assets/food_labeling_cms202_220615_02.pdf)
+- [消費者庁：インターネット販売における食品表示の情報提供に関するガイドブック（PDF）](https://www.caa.go.jp/policies/policy/food_labeling/food_labeling_act/assets/food_labeling_cms202_220615_02.pdf)
 - [消費者庁：食物アレルギー表示に関する情報](https://www.caa.go.jp/policies/policy/food_labeling/food_sanitation/allergy/index.html)
 - [厚生労働省：営業規制（営業許可、営業届出）に関する情報](https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/shokuhin/kigu/index_00010.html)
 - [国税庁：酒類の販売業免許に関するQ&A](https://www.nta.go.jp/taxes/sake/qa/03b/08.htm)
-- [国税庁：通信販売酒類小売業免許申請の手引](https://www.nta.go.jp/taxes/sake/menkyo/tebiki/8285.pdf)
+- [国税庁：通信販売酒類小売業免許申請の手引（PDF）](https://www.nta.go.jp/taxes/sake/menkyo/tebiki/8285.pdf)
 - [Shopifyヘルプセンター：日本向けの特定商取引法に基づく表記（英語）](https://help.shopify.com/en/manual/intro-to-shopify/initial-setup/sell-in-japan/japan-checkout-page)
 - [Shopifyヘルプセンター：配送プロファイル（英語）](https://help.shopify.com/en/manual/fulfillment/setup/shipping-profiles)
 - [Shopifyヘルプセンター：Shopify Subscriptions（英語）](https://help.shopify.com/en/manual/products/purchase-options/subscriptions/shopify-subscriptions)
