@@ -22,10 +22,18 @@ function parseDate(file, name, raw) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(raw) || Number.isNaN(date.valueOf())) {
     throw new Error(`${file}: ${name} "${raw}" is not a YYYY-MM-DD date`)
   }
-  if (date > new Date()) {
+  // Compare calendar days in Japan time: the authors date articles in JST,
+  // and the build may run in UTC (Cloudflare) or before 09:00 JST.
+  if (raw > todayInJapan()) {
     throw new Error(`${file}: ${name} ${raw} is in the future`)
   }
   return date
+}
+
+function todayInJapan() {
+  return new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Tokyo' }).format(
+    new Date(),
+  )
 }
 
 /** @returns {Map<string, string>} URL path -> YYYY-MM-DD */
