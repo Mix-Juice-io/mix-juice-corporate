@@ -256,6 +256,32 @@
   padding: 0;
 }
 
+/* Table of contents (h2 headings), first block inside the article body */
+.art-toc {
+  margin: 0 0 28px;
+  padding: 18px 22px;
+  background: var(--color-bg-alt);
+  border-radius: 14px;
+}
+
+.art-toc-title {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.art-toc-list {
+  margin: 0;
+  padding-left: 1.4em;
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.art-toc-list li {
+  margin: 4px 0;
+}
+
 /* Tables are wrapped by rehype-wrap-tables so wide ones scroll on their own. */
 .art-table-wrap {
   margin: 20px 0;
