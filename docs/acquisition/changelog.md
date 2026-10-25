@@ -15,3 +15,5 @@
 | 2026-10-25 05:08 | #71 | 文字・主要ボタンのコントラストを WCAG AA に（CTA を濃いオレンジに） | CTA のクリック率 |
 | 2026-10-25 05:39 | #72 | 404 ページに主要ページへのリンク、noindex のページで canonical を出さない | 404 からの離脱 |
 | 2026-10-25 05:39 | #75 | セキュリティヘッダー、静的アセットの長期キャッシュ、pages.dev の noindex | 表示速度、pages.dev の検索露出 |
+| 2026-10-26 03:49 | #113 | 無料ツール「栄養成分表示の要否チェック」（`/tools/nutrition-labeling-check/`）と `/tools/` 一覧を公開。記事一覧の枠、記事3本の本文、フッターから導線 | ツール2ページの検索表示・クリック、`mix_tool_start`・`mix_tool_result`、`mix_cta_click`（surface `article_body`・`articles_index_tool`・`footer`） |
+| 2026-10-26 | — | Search Console で `/tools/` とツールのページのインデックス登録、記事3本と記事一覧の再クロールをリクエスト。サイトマップを再送信 | 2ページのインデックス登録 |
