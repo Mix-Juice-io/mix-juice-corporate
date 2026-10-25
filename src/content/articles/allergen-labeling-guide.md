@@ -108,5 +108,5 @@ Mix-Juiceが提供する食品表示管理アプリ「[Fラベル](/service/f-la
 ## 参考情報
 
 - [消費者庁：食物アレルギー表示に関する情報](https://www.caa.go.jp/policies/policy/food_labeling/food_sanitation/allergy/index.html)
-- [消費者庁：2026年4月の改正に関する事務連絡](https://www.caa.go.jp/policies/policy/food_labeling/food_sanitation/allergy/assets/food_labeling_cms204_260401_03.pdf)
-- [消費者庁：インターネット販売における食品表示の情報提供に関するガイドブック](https://www.caa.go.jp/policies/policy/food_labeling/food_labeling_act/assets/food_labeling_cms202_220615_02.pdf)
+- [消費者庁：2026年4月の改正に関する事務連絡（PDF）](https://www.caa.go.jp/policies/policy/food_labeling/food_sanitation/allergy/assets/food_labeling_cms204_260401_03.pdf)
+- [消費者庁：インターネット販売における食品表示の情報提供に関するガイドブック（PDF）](https://www.caa.go.jp/policies/policy/food_labeling/food_labeling_act/assets/food_labeling_cms202_220615_02.pdf)

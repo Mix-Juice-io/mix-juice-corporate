@@ -105,5 +105,5 @@ draft: false
 
 ## 参考情報
 
-- [消費者庁：インターネット販売における食品表示の情報提供に関するガイドブック](https://www.caa.go.jp/policies/policy/food_labeling/food_labeling_act/assets/food_labeling_cms202_220615_02.pdf)
+- [消費者庁：インターネット販売における食品表示の情報提供に関するガイドブック（PDF）](https://www.caa.go.jp/policies/policy/food_labeling/food_labeling_act/assets/food_labeling_cms202_220615_02.pdf)
 - [消費者庁：食物アレルギー表示に関する情報](https://www.caa.go.jp/policies/policy/food_labeling/food_sanitation/allergy/index.html)
