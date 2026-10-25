@@ -30,6 +30,7 @@ mix-juice.io の検索流入と成果（F-label の App Store 遷移・問い合
 
 - 直近28日の「イベント」と「トラフィック獲得（セッションのメインのチャネル グループ）」。
 - 主なイベント：`mix_outbound_shopify_app`（App Store への遷移、キーイベント）、`mix_lp_cta_click`、`mix_cta_click`、`mix_lp_view`、`mix_article_scroll_depth`。
+- 無料ツール（`/tools/`）：`mix_tool_start`（最初の回答）、`mix_tool_result`（結果の表示）。パラメータは `tool_id` だけで、回答の内容は送らない。
 - 2026-10-25 の PR #68 より前は、Preview 環境とローカルのアクセスも本番の GA4 に記録されていた。それ以前の Direct の数値には内部アクセスが混ざっている可能性がある。
 
 ## 次回の確認

@@ -17,20 +17,21 @@ Mix-Juice のコーポレートサイト（https://mix-juice.io ）。Astro の�
 | `npm run check` | 型・テンプレートの検査（`astro check`） |
 | `npm run lint` | ESLint（`.astro` と React の a11y ルールを含む） |
 | `npm run format` / `format:check` | Prettier で整形／整形の確認 |
+| `npm test` | 単体テスト（`src/**/*.test.ts` を Node の標準テストランナーで実行） |
 | `npm run verify` | ビルド結果の検証（下記）。`build` の後に実行する |
 
-CI（`.github/workflows/ci.yml`）は `check` → `lint` → `format:check` → `build` → `verify` を順に実行する。デプロイはしない。
+CI（`.github/workflows/ci.yml`）は `check` → `lint` → `format:check` → `test` → `build` → `verify` を順に実行する。デプロイはしない。
 
 ## 構成
 
 ```
 src/
-  pages/            ルーティング（.astro）。記事は articles/[...slug].astro
+  pages/            ルーティング（.astro）。記事は articles/[...slug].astro、無料ツールは tools/
   layouts/          共通レイアウト（head、GA4、スクロール演出）
-  components/       ヘッダー・フッター・各ページの React コンポーネント
+  components/       ヘッダー・フッター・各ページの React コンポーネント（ツール本体は tools/）
   content/articles/ 記事（Markdown）
   content.config.ts 記事 frontmatter のスキーマ
-  lib/              定数・計測・記事取得・Markdown 用プラグイン
+  lib/              定数・計測・記事取得・Markdown 用プラグイン・ツールの判定ロジック（nutrition-check/）
   scripts/          クリック・記事の計測（GA4）
   styles/           記事ページの CSS
 public/             画像、_headers（Cloudflare のレスポンスヘッダー）、robots.txt
@@ -75,7 +76,7 @@ docs/acquisition/   アクセス改善の記録（施策の公開日と検索実
 
 PR を出す前に：
 
-1. `npm run check`・`npm run lint`・`npm run format:check`・`npm run build`・`npm run verify` が通る
+1. `npm run check`・`npm run lint`・`npm run format:check`・`npm test`・`npm run build`・`npm run verify` が通る
 2. 変更した画面を実際のブラウザで確認する。少なくとも 390px（スマホ）と 1280px、キーボードだけでの操作
 3. 見た目に関わる変更は、変更前後のスクリーンショットを比べる
 4. PR には「変更点」「検証（確認した方法と結果）」「未検証」を書く
