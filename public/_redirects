@@ -1,0 +1,7 @@
+# Cloudflare Pages redirects. https://developers.cloudflare.com/pages/configuration/redirects/
+# Keep old article URLs working when articles are merged (record why below).
+
+# 2026-10-26: "食品ECで押さえておきたい食品表示の基本" was a shorter subset of the
+# complete guide and competed for the same searches (#30).
+/articles/food-labeling-basics-for-ec/ /articles/food-labeling-complete-guide/ 301
+/articles/food-labeling-basics-for-ec /articles/food-labeling-complete-guide/ 301
