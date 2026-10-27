@@ -31,7 +31,7 @@ src/
   components/       ヘッダー・フッター・各ページの React コンポーネント（ツール本体は tools/）
   content/articles/ 記事（Markdown）
   content.config.ts 記事 frontmatter のスキーマ
-  lib/              定数・計測・記事取得・Markdown 用プラグイン・ツールの判定ロジック（nutrition-check/、origin-check/、共通の配合表 recipe/）
+  lib/              定数・計測・記事取得・Markdown 用プラグイン・ツールの判定ロジック（nutrition-check/、origin-check/、expiry-record/、共通の配合表 recipe/）
   scripts/          クリック・記事の計測（GA4）
   styles/           記事ページの CSS
 public/             画像、_headers（Cloudflare のレスポンスヘッダー）、robots.txt
