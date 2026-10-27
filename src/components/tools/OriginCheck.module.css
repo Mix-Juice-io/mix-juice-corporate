@@ -1,0 +1,178 @@
+/* Origin labeling check. Cards, questions, choices, and badges come from
+   NutritionCheck.module.css and the row fields from RecipeInput.module.css;
+   this file adds the per-ingredient questions and the label previews. */
+
+/* ---- Questions without a number (follow-ups inside a step) ---- */
+
+.subHint {
+  margin: 0 0 12px;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--color-text-light);
+}
+
+.subError {
+  margin: 0 0 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #b42318;
+}
+
+.sub {
+  margin-left: 38px;
+}
+
+/* Paragraphs inside a multi-line hint. */
+.subHint p + p,
+.details + p {
+  margin-top: 6px;
+}
+
+.details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--color-accent-text);
+  text-decoration: underline;
+}
+
+.details ol {
+  margin: 8px 0 0;
+  padding-left: 1.6em;
+  line-height: 1.75;
+}
+
+.status {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--color-bg-alt);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.7;
+  color: var(--color-text);
+}
+
+/* ---- Questions about one target ingredient ---- */
+
+.target {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(109, 103, 95, 0.16);
+}
+
+.targetTitle {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  word-break: auto-phrase;
+}
+
+.inline {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.inlineLabel {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.fieldError {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #b42318;
+}
+
+.originHeader,
+.originRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) minmax(0, 1fr) 44px;
+  gap: 8px;
+  align-items: center;
+}
+
+.originHeader {
+  padding: 0 4px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-text-light);
+}
+
+/* ---- Result ---- */
+
+.option {
+  border-color: rgba(173, 62, 11, 0.25);
+}
+
+.labels {
+  margin: 8px 0 4px;
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+.labels dt {
+  margin-top: 10px;
+  color: var(--color-text-light);
+}
+
+.labels dd {
+  margin: 4px 0 0;
+}
+
+.labelText {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 768px) {
+  .sub {
+    margin-left: 0;
+  }
+}
+
+/* Phones: domestic/foreign and the place on the first line, the share and
+   the delete button on the second, keeping the visual order the same as
+   the focus order. Children alternate hidden label and field, so the place
+   input is the 4th child and the share input the 6th. */
+@media (max-width: 560px) {
+  .originHeader {
+    display: none;
+  }
+
+  .originRow {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) 44px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(109, 103, 95, 0.16);
+  }
+
+  .originRow > :nth-child(4) {
+    grid-column: 2 / -1;
+  }
+
+  .originRow > :nth-child(6) {
+    grid-column: 1 / 3;
+  }
+}
+
+@media print {
+  .labelText {
+    border-color: #999;
+    background: none;
+  }
+}

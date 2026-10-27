@@ -1,0 +1,136 @@
+/* Recipe rows for the food labeling tools. Fields follow the contact form
+   (grey border with 3:1 contrast, orange focus ring). */
+
+.recipe {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.header,
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.3fr) 44px;
+  gap: 8px;
+  align-items: center;
+}
+
+.header {
+  padding: 0 4px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-text-light);
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.field {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  /* 3:1 against white so the field boundary is visible (WCAG 1.4.11). */
+  border: 1px solid #8a8f98;
+  border-radius: 10px;
+  font-family: var(--font-jp);
+  font-size: 1rem;
+  color: var(--color-text);
+  background: var(--color-white);
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.field:focus {
+  border-color: var(--color-accent-text);
+  box-shadow: 0 0 0 3px rgba(173, 62, 11, 0.25);
+}
+
+.field::placeholder {
+  color: var(--color-text-muted);
+}
+
+.field[aria-invalid='true'] {
+  border-color: #b42318;
+  box-shadow: inset 0 0 0 1px #b42318;
+}
+
+.remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: var(--color-text-light);
+  cursor: pointer;
+}
+
+.remove:hover {
+  background: var(--color-bg-alt);
+  color: var(--color-text);
+}
+
+.remove:focus-visible,
+.add:focus-visible {
+  outline: 3px solid rgba(173, 62, 11, 0.35);
+  outline-offset: 2px;
+}
+
+.add {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px dashed #8a8f98;
+  border-radius: 10px;
+  background: var(--color-white);
+  color: var(--color-accent-text);
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add:hover {
+  border-color: var(--color-accent-text);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Phones: the name takes the first line, the rest share the second. */
+@media (max-width: 560px) {
+  .header {
+    display: none;
+  }
+
+  .row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) 44px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(109, 103, 95, 0.16);
+  }
+
+  .name {
+    grid-column: 1 / -1;
+  }
+}
