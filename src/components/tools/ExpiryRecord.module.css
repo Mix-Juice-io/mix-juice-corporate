@@ -1,0 +1,170 @@
+/* Expiry date record. Cards, questions, choices, and badges come from
+   NutritionCheck.module.css and the fields from RecipeInput.module.css;
+   this file adds labeled fields, the test cards, and the printable sheet. */
+
+/* ---- Questions without a number (follow-ups inside a step) ---- */
+
+.sub {
+  margin-top: 4px;
+}
+
+.subHint {
+  margin: 0 0 12px;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--color-text-light);
+}
+
+.subError {
+  margin: 0 0 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #b42318;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 14px;
+}
+
+/* ---- Labeled fields ---- */
+
+.textField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.fieldLabel {
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+.fieldError {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #b42318;
+}
+
+.textarea {
+  min-height: 72px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.status {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--color-bg-alt);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.7;
+  color: var(--color-text);
+}
+
+/* ---- Test results ---- */
+
+.tests {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.testCard {
+  padding: 14px 16px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-white);
+}
+
+.testHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.testTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.testGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: 12px 14px;
+}
+
+/* ---- Record sheet ---- */
+
+.sheetWrap {
+  margin-top: 12px;
+  overflow-x: auto;
+}
+
+.sheet {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  background: var(--color-white);
+}
+
+.sheet caption {
+  margin-bottom: 8px;
+  font-weight: 700;
+  text-align: left;
+  color: var(--color-text);
+}
+
+.sheet th,
+.sheet td {
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  vertical-align: top;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.sheet th {
+  width: 11em;
+  background: var(--color-bg);
+  font-weight: 600;
+  color: var(--color-text-light);
+}
+
+@media (max-width: 560px) {
+  .sheet th,
+  .sheet td {
+    display: block;
+    width: auto;
+  }
+
+  .sheet th {
+    border-bottom: none;
+  }
+
+  .sheet td {
+    border-top: none;
+  }
+}
+
+@media print {
+  .sheet th {
+    background: none;
+    color: #000;
+  }
+
+  .sheet th,
+  .sheet td {
+    border-color: #666;
+  }
+}
