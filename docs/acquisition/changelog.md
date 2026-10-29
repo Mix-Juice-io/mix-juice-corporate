@@ -24,3 +24,5 @@
 | 2026-10-28 | — | Search Console で `/tools/expiry-date-record/` のインデックス登録、`/tools/` と食品表示の完全ガイドの再クロールをリクエスト | ツールのページのインデックス登録 |
 | 2026-10-30 01:25 | #122 | 無料ツール「容器包装のポジティブリスト確認台帳」（`/tools/packaging-positive-list-ledger/`）を公開。`/tools/` 一覧のカードと、Shopify 食品販売ガイドの「配送・梱包の設定」の節から導線。台帳はブラウザに保存し、CSVの書き出し・読み込みができる | ツールのページの検索表示・クリック、`mix_tool_start`・`mix_tool_result`（`tool_id` が `packaging_pl_ledger`。結果は資材の追加・印刷・CSV書き出しのうち最初の1回）、`mix_cta_click`（surface `article_body`・`tool_flabel_box`） |
 | 2026-10-30 | — | Search Console で `/tools/packaging-positive-list-ledger/` のインデックス登録、`/tools/` と Shopify 食品販売ガイドの再クロールをリクエスト | ツールのページのインデックス登録 |
+| 2026-10-30 03:03 | #125 | 無料ツール「食品表示ラベルの作成」（`/tools/food-label-maker/`）を公開。配合から一括表示と、ネットショップの商品ページ用のテキスト・HTMLを作る。`/tools/` 一覧の先頭のカードと、食品表示の完全ガイドの「商品ページvs実物ラベルの整合」から導線。結果のすぐ下に F-label の枠 | ツールのページの検索表示・クリック（「食品表示ラベル 作成」系の語）、`mix_tool_start`・`mix_tool_result`（`tool_id` が `food_label_maker`）、`mix_cta_click`・`mix_outbound_shopify_app`（surface `tool_result`・`tool_flabel_box`・`article_body`） |
+| 2026-10-30 | — | Search Console で `/tools/food-label-maker/` のインデックス登録、`/tools/` と食品表示の完全ガイドの再クロールをリクエスト | ツールのページのインデックス登録 |
