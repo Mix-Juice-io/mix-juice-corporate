@@ -20,3 +20,5 @@
 | 2026-10-26 | — | GA4 にカスタムディメンション（イベント単位）を登録：Tool ID（`tool_id`）、Surface（`surface`）、CTA ID（`cta_id`）、Article slug（`article_slug`）。登録より前のデータには適用されない | 導線別・記事別・ツール別のクリックと利用の内訳（この日以降） |
 | 2026-10-27 10:02 | #117 | 無料ツール「原料原産地表示のチェック」（`/tools/origin-labeling-check/`）を公開。`/tools/` 一覧のカードと、食品表示の完全ガイドの本文から導線 | ツールのページの検索表示・クリック、`mix_tool_start`・`mix_tool_result`（`tool_id` が `origin_labeling_check`）、`mix_cta_click`（surface `article_body`・`tool_flabel_box`） |
 | 2026-10-27 | — | Search Console で `/tools/origin-labeling-check/` のインデックス登録、`/tools/` と食品表示の完全ガイドの再クロールをリクエスト | ツールのページのインデックス登録 |
+| 2026-10-28 06:15 | #119 | 無料ツール「期限表示の設定根拠の記録票」（`/tools/expiry-date-record/`）を公開。`/tools/` 一覧のカードと、食品表示の完全ガイドの本文から導線 | ツールのページの検索表示・クリック、`mix_tool_start`・`mix_tool_result`（`tool_id` が `expiry_date_record`）、`mix_cta_click`（surface `article_body`・`tool_flabel_box`） |
+| 2026-10-28 | — | Search Console で `/tools/expiry-date-record/` のインデックス登録、`/tools/` と食品表示の完全ガイドの再クロールをリクエスト | ツールのページのインデックス登録 |
