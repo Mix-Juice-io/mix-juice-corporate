@@ -32,6 +32,7 @@ mix-juice.io の検索流入と成果（F-label の App Store 遷移・問い合
 - 主なイベント：`mix_outbound_shopify_app`（App Store への遷移、キーイベント）、`mix_lp_cta_click`、`mix_cta_click`、`mix_lp_view`、`mix_article_scroll_depth`。
 - 無料ツール（`/tools/`）：`mix_tool_start`（最初の回答）、`mix_tool_result`（結果の表示）。パラメータは `tool_id` だけで、回答の内容は送らない。容器包装の確認台帳（`packaging_pl_ledger`）は結果の画面がないため、資材の追加・台帳や依頼文の印刷・CSVの書き出しのうち最初の1回を `mix_tool_result` として1訪問に1回送る。
 - ツールへの導線は `mix_cta_click` の `surface` で区別する：`article_body`（記事本文のリンク、`cta_id` は `article_tool_link`、`article_slug` 付き）、`articles_index_tool`（記事一覧の枠）、`footer`（`cta_id` は `footer_tools`）。
+- ツールから F-label への導線：ページ末尾の枠は `surface` が `tool_flabel_box`。食品表示ラベルの作成（`food_label_maker`）は結果のすぐ下にも枠があり、`surface` が `tool_result`、`cta_id` が `tool_result_flabel_install`（`mix_outbound_shopify_app` と同時に送る）。
 - 2026-10-25 の PR #68 より前は、Preview 環境とローカルのアクセスも本番の GA4 に記録されていた。それ以前の Direct の数値には内部アクセスが混ざっている可能性がある。
 
 ## 次回の確認
