@@ -1,0 +1,367 @@
+/* Packaging positive list ledger. Cards, questions, choices, and badges come
+   from NutritionCheck.module.css, the fields from RecipeInput.module.css, and
+   labeled fields from ExpiryRecord.module.css; this file adds the ledger
+   table, the request letter, and the save controls. */
+
+/* ---- Messages ---- */
+
+/* Always rendered so screen readers announce changes (role="status"). */
+.notice {
+  margin: -12px 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.7;
+  color: var(--color-text);
+}
+
+.notice:empty {
+  display: none;
+}
+
+.linkButton {
+  margin-left: 8px;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: var(--color-accent-text);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.linkButton:focus-visible {
+  outline: 3px solid rgba(173, 62, 11, 0.35);
+  outline-offset: 2px;
+}
+
+.empty {
+  margin-top: 16px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: var(--color-bg-alt);
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: var(--color-text);
+}
+
+.counts {
+  margin-top: 12px;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--color-text);
+}
+
+.overdueNote {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.7;
+  color: #8a2f06;
+}
+
+/* ---- Ledger table ---- */
+
+.tableWrap {
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  background: var(--color-white);
+}
+
+.table th,
+.table td {
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  vertical-align: top;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.table thead th {
+  background: var(--color-bg);
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--color-text-light);
+}
+
+.table tbody th {
+  font-weight: 400;
+  min-width: 7em;
+}
+
+.itemName {
+  display: block;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.82rem;
+  color: var(--color-text-light);
+}
+
+.sub[data-overdue] {
+  font-weight: 700;
+  color: #8a2f06;
+}
+
+.status {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status[data-tone='positive'] {
+  background: #e3f4ea;
+  color: #17603d;
+}
+
+.status[data-tone='attention'] {
+  background: #fdeee6;
+  color: #8a2f06;
+}
+
+.status[data-tone='neutral'] {
+  background: #eceef1;
+  color: #374151;
+}
+
+/* Short names and notes wrap almost per character at the 760px card width. */
+.table td[data-label='仕入先'],
+.memo {
+  min-width: 5em;
+}
+
+.memo {
+  white-space: pre-wrap;
+}
+
+.actionsCell {
+  width: 1%;
+  white-space: nowrap;
+  padding: 4px;
+}
+
+/* Phones: each row becomes a card with its column names. */
+@media (max-width: 560px) {
+  .table thead {
+    display: none;
+  }
+
+  .table,
+  .table tbody,
+  .table tr,
+  .table th,
+  .table td {
+    display: block;
+    width: auto;
+  }
+
+  .table tr {
+    margin-bottom: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .table th,
+  .table td {
+    border: none;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .table tbody th {
+    border-top: none;
+    background: var(--color-bg);
+  }
+
+  .table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+  }
+
+  .table td[data-label]:empty {
+    display: none;
+  }
+
+  .actionsCell {
+    width: auto;
+    text-align: right;
+  }
+}
+
+/* ---- Request letter ---- */
+
+.requestControls {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.letter {
+  padding: 32px 36px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-white);
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: var(--color-text);
+}
+
+.letter p + p,
+.letter ul {
+  margin-top: 10px;
+}
+
+.letter ul {
+  padding-left: 1.2em;
+  list-style: disc;
+}
+
+.letterTo {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.letterFrom {
+  margin-top: 4px;
+  text-align: right;
+}
+
+.letterFrom p + p {
+  margin-top: 0;
+}
+
+.letterTitle {
+  margin: 24px 0 16px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.letterCenter {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.letterEnd {
+  margin-top: 12px;
+  text-align: right;
+}
+
+.letterTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.letterTable th,
+.letterTable td {
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  vertical-align: top;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.letterTable th {
+  background: var(--color-bg);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.letterTable td:first-child {
+  width: 3em;
+  text-align: center;
+}
+
+.letterTable td:nth-child(2) {
+  min-width: 7em;
+}
+
+@media (max-width: 560px) {
+  .letter {
+    padding: 20px 16px;
+  }
+}
+
+/* ---- Save controls ---- */
+
+.confirm {
+  margin-top: 16px;
+  padding: 16px 18px;
+  border: 1px solid var(--color-primary);
+  border-radius: 12px;
+  background: #fff6f1;
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: var(--color-text);
+}
+
+.confirmActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.confirmActions :global(.btn) {
+  padding: 10px 20px;
+  font-size: 0.9rem;
+}
+
+/* ---- Print: only the part asked for ---- */
+
+@media print {
+  .tool[data-print-target='ledger'] .request,
+  .tool[data-print-target='request'] .ledger {
+    display: none;
+  }
+
+  .tool {
+    max-width: none;
+  }
+
+  .table thead th,
+  .letterTable th {
+    background: none;
+    color: #000;
+  }
+
+  .table th,
+  .table td,
+  .letterTable th,
+  .letterTable td {
+    border-color: #666;
+  }
+
+  .status {
+    padding: 0;
+    background: none !important;
+    color: #000 !important;
+  }
+
+  .letter {
+    padding: 0;
+    border: none;
+  }
+}
