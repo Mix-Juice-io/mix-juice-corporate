@@ -1,0 +1,381 @@
+---
+import Layout from '../../../layouts/Layout.astro'
+import LabelMaker from '../../../components/tools/LabelMaker.tsx'
+import { getPublishedArticles, formatDate } from '../../../lib/articles'
+import { CHECKED_ON, SOURCES } from '../../../lib/label-maker/sources'
+import { FLABEL_APP_URL } from '../../../lib/urls'
+import '../../../styles/articles.css'
+
+const TITLE =
+  '食品表示ラベルの作り方｜配合から一括表示とネットショップ用の表示を無料で作成'
+const DESCRIPTION =
+  '配合（原材料と重量）と表示事項を入れると、原材料・添加物を重量順に並べた一括表示と、ネットショップの商品ページに貼れるテキスト・HTMLを作る無料ツールです。アレルゲンの一括表示、原料原産地、栄養成分表示にも対応しています。'
+
+const checkedOn = formatDate(new Date(`${CHECKED_ON}T00:00:00Z`))
+
+// Articles that explain the same rules in more depth.
+const RELATED_IDS = [
+  'food-labeling-complete-guide',
+  'allergen-labeling-guide',
+  'shopify-food-sales-complete-guide',
+]
+const articles = await getPublishedArticles()
+const related = RELATED_IDS.map((id) =>
+  articles.find((a) => a.id === id),
+).filter((a) => a !== undefined)
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'ホーム',
+      item: new URL('/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: '無料ツール',
+      item: new URL('/tools/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: '食品表示ラベルの作成',
+      item: new URL(Astro.url.pathname, Astro.site).href,
+    },
+  ],
+}
+---
+
+<Layout title={`${TITLE} | Mix-Juice`} description={DESCRIPTION}>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c')}
+    slot="head"
+  />
+  <div class="art-page">
+    <section class="art-hero">
+      <div class="art-hero-bg">
+        <div class="art-blob1"></div>
+        <div class="art-blob2"></div>
+      </div>
+      <div class="container">
+        <nav class="art-crumbs" aria-label="パンくずリスト">
+          <a href="/">ホーム</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href="/tools/">無料ツール</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <span class="art-crumbs-current">食品表示ラベルの作成</span>
+        </nav>
+        <p class="art-label">FREE TOOL</p>
+        <h1 class="art-title">食品表示ラベル、どう作る？</h1>
+        <p class="art-desc">
+          配合と表示事項を入れると、容器包装に貼る一括表示と、ネットショップの商品ページに貼れるテキスト・HTMLを作ります。原材料と添加物は重量の多い順に並べ、アレルゲンは原材料名の最後にまとめます。
+        </p>
+        <p class="tool-meta">
+          消費者庁の食品表示基準Q&A・インターネット販売のガイドブックなどにもとづく
+          ／ 最終確認日：{checkedOn}
+        </p>
+      </div>
+    </section>
+
+    <section class="art-content">
+      <div class="container">
+        <noscript>
+          <p class="tool-noscript">
+            このツールは、JavaScriptを使って表示を作ります。ブラウザでJavaScriptを有効にするか、下の「一括表示の書き方」をご覧ください。
+          </p>
+        </noscript>
+
+        <LabelMaker client:load />
+
+        <article class="art-body tool-guide" data-print="hide">
+          <h2 id="about">このツールについて</h2>
+          <ul>
+            <li>
+              国内で製造し、容器包装に入れて売る加工食品の一括表示を作ります。生鮮食品や輸入品（原産国名）、酒類の表示は扱いません。
+            </li>
+            <li>
+              入力した内容を表示の形に並べるツールです。原材料名・添加物の名前や栄養成分の値が正しいかどうかは判断しません。表示の責任は、表示する事業者にあります。
+            </li>
+            <li>
+              結果は目安です。表示の最終的な判断は、管轄の保健所や消費者庁などにご確認ください。
+            </li>
+            <li>
+              入力した内容は送信も保存もしません。ページの閲覧やツールの利用回数は、Googleアナリティクスで計測しています。
+            </li>
+          </ul>
+
+          <h2 id="how">一括表示の書き方</h2>
+          <h3>項目と順番</h3>
+          <p>
+            容器包装の一括表示は、食品表示基準の別記様式一にもとづいて、次の順に書きます。表示が要らない項目（輸入品でない場合の原産国名など）は書きません。
+          </p>
+          <div class="art-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">項目</th>
+                  <th scope="col">書き方</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>名称</td>
+                  <td>
+                    内容を表す一般的な名称（例：焼菓子）。商品名とは別です
+                  </td>
+                </tr>
+                <tr>
+                  <td>原材料名</td>
+                  <td>
+                    原材料を重量の多い順に書き、「／」などで区切って添加物を重量の多い順に続けます
+                  </td>
+                </tr>
+                <tr>
+                  <td>原料原産地名</td>
+                  <td>
+                    重量1位の原材料の産地。原材料名の後に括弧で書けます（例：豚肉（国産））
+                  </td>
+                </tr>
+                <tr>
+                  <td>内容量</td>
+                  <td>
+                    重量（g）・体積（ml）・個数などを、単位を付けて書きます
+                  </td>
+                </tr>
+                <tr>
+                  <td>賞味期限・消費期限</td>
+                  <td>
+                    年月日で書きます。一括表示の中に書くのが難しい場合は、「枠外下部に記載」のように場所を書きます
+                  </td>
+                </tr>
+                <tr>
+                  <td>保存方法</td>
+                  <td>
+                    「10℃以下で保存」のように具体的に。常温で保存すること以外に留意することがなければ省略できます
+                  </td>
+                </tr>
+                <tr>
+                  <td>製造者・加工者・販売者</td>
+                  <td>
+                    表示に責任を持つ事業者の名前と住所。製造所が別なら、製造所の所在地と製造者名も書きます
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>原材料名と添加物</h3>
+          <p>
+            原材料は、製造するときの配合で重量の多いものから順に書きます。添加物は、添加物の中で重量の多い順です。添加物の欄を分けない場合は、「小麦粉、バター、砂糖／膨張剤、香料」のように、記号や改行で原材料と明確に区分します。区切らずに続けて書くことはできません。添加物を使っていない場合に「添加物：なし」と書くことは認められていません。
+          </p>
+          <p>
+            チョコレートやマヨネーズのような複合原材料は、「チョコレート（砂糖、カカオマス、ココアバター）」のように内訳を括弧で書きます。複合原材料が製品の原材料の5%未満の場合や、名称から原材料が明らかな場合は、内訳を省略できます。
+          </p>
+
+          <h3>アレルゲン</h3>
+          <p>
+            特定原材料（えび、カシューナッツ、かに、くるみ、小麦、そば、卵、乳、落花生）は表示の義務があり、特定原材料に準ずるもの20品目は表示が推奨されています。原則は原材料ごとに「（小麦を含む）」と書く個別表示で、個別表示によりがたい場合などは、原材料名の欄の最後に「（一部に小麦・卵・乳成分を含む）」とまとめる一括表示ができます。このツールは一括表示を作ります。詳しくは
+            <a href="/articles/allergen-labeling-guide/">
+              アレルギー表示の記事
+            </a>
+            をご覧ください。
+          </p>
+
+          <h2 id="shop">ネットショップの商品ページに載せる</h2>
+          <p>
+            商品ページへの食品表示の掲載は、食品表示基準の対象外で、法律上の義務ではありません。それでも消費者庁のガイドブックは、買う前に容器包装を見られない消費者のために、できるだけ同じ表示事項を載せることが望ましいとしています。特に期限とアレルゲンは、健康に関わるため、実際に届く商品と食い違わないことが大切です。
+          </p>
+          <p>
+            このツールの商品ページ用の出力では、期限を「製造日から60日（お届け時に30日以上）」のような目安に置き換えられ、アレルゲンを独立した行にしています。容器包装の表示は、商品ページに載せても省略できません。
+          </p>
+
+          <h2 id="faq">よくある疑問</h2>
+          <h3>個人のお店です。屋号で書いてもいいですか</h3>
+          <p>
+            表示に責任を持つ事業者は、法人なら法人名、個人事業者なら氏名で書きます。屋号だけでは足りません。住所は、住居表示に従って住居番号まで書きます。
+          </p>
+          <h3>水は原材料名に書きますか</h3>
+          <p>
+            水を原材料名に書くかどうかについて、明文の決まりは見当たりません。消費者庁のQ&Aでは、水は「慣例として表示していない場合が多い」とされています。このツールでは書かないのを既定にし、書く場合は重量の順の位置に入れます。
+          </p>
+          <h3>小さな袋で、全部書ききれません</h3>
+          <p>
+            容器包装の表示可能面積がおおむね30cm²以下なら、原材料名・添加物・内容量・原料原産地名・栄養成分などを省略できます。名称・期限・保存方法・表示責任者・アレルゲンには、面積を理由に省略できる規定がありません。文字の大きさは8ポイント以上（表示可能面積がおおむね150cm²以下なら5.5ポイント以上）です。
+          </p>
+          <h3>栄養成分表示は必要ですか</h3>
+          <p>
+            消費税の免税事業者や小規模企業者が販売する食品などは、栄養成分表示を省略できます。売り方によって扱いが変わるので、
+            <a href="/tools/nutrition-labeling-check/">
+              栄養成分表示の要否チェック
+            </a>
+            で確認できます。期限の決め方は
+            <a href="/tools/expiry-date-record/">期限表示の設定根拠の記録票</a>
+            を、原料原産地の書き方は
+            <a href="/tools/origin-labeling-check/">原料原産地表示のチェック</a>
+            をご覧ください。
+          </p>
+
+          <h2 id="sources">参考情報</h2>
+          <ul>
+            {Object.entries(SOURCES).map(([, source]) => (
+              <li>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-describedby="new-tab-note"
+                >
+                  {source.title}
+                </a>
+                （{source.publisher}）：{source.sections}
+              </li>
+            ))}
+          </ul>
+          <p>最終確認日：{checkedOn}</p>
+        </article>
+
+        <aside
+          class="art-flabel"
+          aria-labelledby="tool-flabel-title"
+          data-print="hide"
+        >
+          <img
+            class="art-flabel-icon"
+            src="/f-label.webp"
+            alt="Fラベル"
+            width="1200"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="art-flabel-body">
+            <p class="art-flabel-badge">Shopify App</p>
+            <h2 id="tool-flabel-title" class="art-flabel-title">
+              ネットショップの食品表示は「Fラベル」で
+            </h2>
+            <p class="art-flabel-desc">
+              原材料・添加物・アレルゲン・栄養成分をまとめて管理し、Shopifyの商品ページに食品表示を掲載できるアプリです。原材料マスターの再利用とCSVインポートで、登録・更新の手間を減らせます。
+            </p>
+            <div class="art-flabel-cta">
+              <a
+                class="btn btn-primary"
+                href={FLABEL_APP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-describedby="new-tab-note"
+                data-track-event="mix_outbound_shopify_app,mix_cta_click"
+                data-track-surface="tool_flabel_box"
+                data-track-cta-position="tool_end"
+                data-track-cta-id="tool_flabel_install"
+                data-track-tool-id="food_label_maker"
+              >
+                Shopifyアプリストアで見る
+              </a>
+              <a
+                class="btn btn-outline"
+                href="/service/f-label/"
+                data-track-event="mix_cta_click"
+                data-track-surface="tool_flabel_box"
+                data-track-cta-position="tool_end"
+                data-track-cta-id="tool_flabel_detail"
+                data-track-tool-id="food_label_maker"
+              >
+                Fラベルの詳細を見る
+              </a>
+            </div>
+          </div>
+        </aside>
+
+        {related.length > 0 && (
+          <section class="art-related" data-print="hide">
+            <h2 class="art-related-title">関連記事</h2>
+            <div class="art-related-grid">
+              {related.map((r) => (
+                <a class="art-related-card reveal" href={`/articles/${r.id}/`}>
+                  <div class="art-card-meta">
+                    {r.data.category && (
+                      <span class="art-card-cat">{r.data.category}</span>
+                    )}
+                    <time datetime={r.data.publishDate.toISOString()}>
+                      {formatDate(r.data.publishDate)}
+                    </time>
+                  </div>
+                  <h3 class="art-related-card-title">{r.data.title}</h3>
+                  <span class="art-card-more">記事を読む →</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <div class="art-back" data-print="hide">
+          <a href="/tools/">← 無料ツール一覧へ</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Keep words together when the title wraps on phones (Chromium; other
+     browsers break as before). */
+  .art-title {
+    word-break: auto-phrase;
+  }
+
+  .tool-meta {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .tool-noscript {
+    max-width: 760px;
+    margin: 0 auto 20px;
+    padding: 14px 18px;
+    border: 1px solid var(--color-primary);
+    border-radius: 12px;
+    background: #fff6f1;
+    color: var(--color-text);
+  }
+
+  .tool-guide {
+    margin-top: 32px;
+  }
+
+  /* Articles open with a table of contents; here the first block is a
+     heading, so drop its top margin to match the card padding. */
+  .tool-guide > h2:first-child {
+    margin-top: 0;
+  }
+</style>
+
+<style is:global>
+  /* Print only the result: the site chrome, form, and explanations are
+     marked data-print="hide" or are the shared header and footer. */
+  @media print {
+    body > header,
+    body > footer,
+    .art-hero,
+    [data-print='hide'] {
+      display: none !important;
+    }
+
+    body {
+      background: #fff;
+    }
+
+    .art-page {
+      padding-top: 0;
+    }
+  }
+</style>

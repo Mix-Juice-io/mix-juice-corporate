@@ -12,7 +12,6 @@ import {
   asksBasis,
   asksOrderFlips,
   checkDraft,
-  currentTargets,
   emptyTarget,
   evaluate,
   GROUP22_ITEMS,
@@ -35,7 +34,7 @@ import {
   type YesNoUnknown,
 } from '../../lib/origin-check/rules'
 import { SOURCES, type SourceId } from '../../lib/origin-check/sources'
-import type { Ingredient } from '../../lib/recipe/recipe'
+import { currentTargets, type Ingredient } from '../../lib/recipe/recipe'
 import { trackEvent } from '../../lib/analytics'
 import RecipeInput, { blankRow, KIND_LABELS } from './RecipeInput'
 // The form and result share the nutrition check's look, so both tools read
