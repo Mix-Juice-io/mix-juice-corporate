@@ -7,8 +7,10 @@
 // formats follow the examples in the Q&A (原原) and the MAFF manual.
 
 import {
+  currentTargets,
   heaviest,
   parsePositive,
+  ROW_PROBLEM_TEXT,
   rowProblems,
   toIngredients,
   type Ingredient,
@@ -176,17 +178,6 @@ export function needsRecipe(d: Pick<Draft, 'scope' | 'special' | 'majority'>) {
   return !(d.special === 'group22' && d.majority === 'yes')
 }
 
-/** The heaviest recipe rows among those filled in so far (ties included). */
-export function currentTargets(
-  rows: RecipeRowDraft[],
-): (Ingredient & { key: string })[] {
-  const keyed = rows.flatMap((row) => {
-    const [ingredient] = toIngredients([row])
-    return ingredient ? [{ ...ingredient, key: row.key }] : []
-  })
-  return heaviest(keyed)
-}
-
 function isBlankOrigin(o: OriginDraft): boolean {
   return o.side === '' && o.place.trim() === '' && o.share.trim() === ''
 }
@@ -219,12 +210,6 @@ export interface Problem {
   field: string
   message: string
 }
-
-export const ROW_PROBLEM_TEXT = {
-  name: '原材料名を入れてください',
-  weight: '重量を数字で入れてください',
-  kind: '種類を選んでください',
-} as const
 
 /** Strip label suffixes users may type themselves (「タイ産」「タイ製造」). */
 function bareCountry(place: string): string {

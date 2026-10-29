@@ -62,6 +62,12 @@ export function rowProblems(row: RecipeRowDraft): RowProblem[] {
   return problems
 }
 
+export const ROW_PROBLEM_TEXT: Record<RowProblem, string> = {
+  name: '原材料名を入れてください',
+  weight: '重量を数字で入れてください',
+  kind: '種類を選んでください',
+}
+
 /** Valid rows as ingredients, in input order. Invalid rows are skipped. */
 export function toIngredients(rows: RecipeRowDraft[]): Ingredient[] {
   return rows.flatMap((row) => {
@@ -82,4 +88,15 @@ export function heaviest<T extends Ingredient>(ingredients: T[]): T[] {
   if (candidates.length === 0) return []
   const max = Math.max(...candidates.map((i) => i.weight))
   return candidates.filter((i) => i.weight === max)
+}
+
+/** The heaviest recipe rows among those filled in so far (ties included). */
+export function currentTargets(
+  rows: RecipeRowDraft[],
+): (Ingredient & { key: string })[] {
+  const keyed = rows.flatMap((row) => {
+    const [ingredient] = toIngredients([row])
+    return ingredient ? [{ ...ingredient, key: row.key }] : []
+  })
+  return heaviest(keyed)
 }
