@@ -1,0 +1,507 @@
+---
+import Layout from '../../../layouts/Layout.astro'
+import '../../../styles/articles.css'
+
+const TITLE = '原料原産地表示チェックの使い方｜入力例と画面つきで手順を解説'
+const DESCRIPTION =
+  '無料の原料原産地表示チェックの使い方を、いちごジャムの入力例と画面つきで説明します。売り方・配合・産地の入れ方から、又は表示などの書き方の例と、保管する根拠書類の見方までの手順です。'
+
+const TOOL_PATH = '/tools/origin-labeling-check/'
+const IMG = '/tools/origin-labeling-check/how-to'
+
+// Screenshots are taken at 2x; width/height are the image's pixel size and
+// CSS shows it at half that.
+const shots = {
+  scope: {
+    w: 1084,
+    h: 1031,
+    alt: '売り方の質問で「容器包装に入れて、消費者向けに売る」を選んだ画面',
+  },
+  special: {
+    w: 1084,
+    h: 974,
+    alt: '個別のルールがある品目の質問で「どれにも当たらない」を選んだ画面',
+  },
+  recipe: {
+    w: 1084,
+    h: 1060,
+    alt: '配合の欄に、いちご・砂糖・レモン果汁の3行を入れ、下に「重量1位：いちご」と表示された画面',
+  },
+  variation: {
+    w: 1084,
+    h: 730,
+    alt: '重量1位の「いちご」についての質問で、産地の変わり方に「変わり、そのたびに表示を替えるのは難しい」を選んだ画面',
+  },
+  origins: {
+    w: 1084,
+    h: 634,
+    alt: 'いちごの産地の欄に、国内60と、外国・アメリカ40の2行を入れた画面',
+  },
+  basis: {
+    w: 1084,
+    h: 629,
+    alt: '産地の順番の根拠に「使用実績」を選び、注意書きに書く期間に「令和7年」と入れた画面',
+  },
+  'result-howto': {
+    w: 1084,
+    h: 1561,
+    alt: '判定結果。「重量1位の「いちご」の産地を表示します」と、又は表示の書き方の例「いちご（国産又はアメリカ）」と注意書き「※いちごの産地は、令和7年の使用実績順」',
+  },
+  'result-records': {
+    w: 1084,
+    h: 1453,
+    alt: '保管する根拠書類の一覧と、裏付けになる資料の例、保管期間',
+  },
+  'error-summary': {
+    w: 1084,
+    h: 261,
+    alt: '「入力が足りない項目があります」の赤い枠に「売り方を選んでください」と表示された画面',
+  },
+} as const
+
+const toc = [
+  { id: 'prepare', label: '始める前に用意するもの' },
+  { id: 'example', label: 'この記事の入力例' },
+  { id: 'steps', label: '入力の手順' },
+  { id: 'result', label: '結果の見方' },
+  { id: 'trouble', label: 'うまくいかないとき' },
+]
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'ホーム',
+      item: new URL('/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: '無料ツール',
+      item: new URL('/tools/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: '原料原産地表示のチェック',
+      item: new URL(TOOL_PATH, Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 4,
+      name: '使い方',
+      item: new URL(Astro.url.pathname, Astro.site).href,
+    },
+  ],
+}
+---
+
+<Layout title={`${TITLE} | Mix-Juice`} description={DESCRIPTION}>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c')}
+    slot="head"
+  />
+  <div class="art-page">
+    <section class="art-hero">
+      <div class="art-hero-bg">
+        <div class="art-blob1"></div>
+        <div class="art-blob2"></div>
+      </div>
+      <div class="container">
+        <nav class="art-crumbs" aria-label="パンくずリスト">
+          <a href="/">ホーム</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href="/tools/">無料ツール</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href={TOOL_PATH}>原料原産地表示のチェック</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <span class="art-crumbs-current">使い方</span>
+        </nav>
+        <p class="art-label">HOW TO</p>
+        <h1 class="art-title">原料原産地表示チェックの使い方</h1>
+        <p class="art-desc">
+          いちごジャムを例に、入力する順番と、結果の見方を画面つきで説明します。入力は5分ほどです。
+        </p>
+        <div class="howto-cta">
+          <a
+            class="btn btn-primary"
+            href={TOOL_PATH}
+            data-track-event="mix_cta_click"
+            data-track-surface="tool_howto"
+            data-track-cta-position="hero"
+            data-track-cta-id="howto_open_tool"
+            data-track-tool-id="origin_labeling_check"
+          >
+            ツールを開く
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="art-content">
+      <div class="container">
+        <article class="art-body howto">
+          <nav class="art-toc" aria-labelledby="howto-toc-title">
+            <p id="howto-toc-title" class="art-toc-title">
+              目次
+            </p>
+            <ol class="art-toc-list">
+              {toc.map((t) => (
+                <li>
+                  <a href={`#${t.id}`}>{t.label}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+
+          <h2 id="prepare">始める前に用意するもの</h2>
+          <ul>
+            <li>
+              <strong>配合表</strong>
+              ：原材料ごとの、製造するときの重量。g・kg・%のどれでもかまいません。重量1位の原材料が分かれば足りるので、量の少ない原材料は省けます。
+            </li>
+            <li>
+              <strong>重量1位の原材料の産地が分かる資料</strong>
+              ：仕入先の規格書や納品書など。産地が複数あるなら、産地ごとの使用量（割合）も確認します。
+            </li>
+          </ul>
+          <p>
+            入力した内容は送信も保存もしません。ページを閉じたり再読み込みしたりすると消えるので、結果は印刷して残してください。
+          </p>
+
+          <h2 id="example">この記事の入力例</h2>
+          <p>
+            架空の洋菓子店「洋菓子店ミックス」が、自分の店で作ったいちごジャムを瓶に詰めて、店頭とネットショップで売る場合です。いちごは、旬の時期は国産、それ以外はアメリカ産を使い、時期によって切り替わります。
+          </p>
+          <div class="art-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">原材料名</th>
+                  <th scope="col">重量</th>
+                  <th scope="col">種類</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>いちご</td>
+                  <td>500</td>
+                  <td>生鮮食品</td>
+                </tr>
+                <tr>
+                  <td>砂糖</td>
+                  <td>300</td>
+                  <td>加工品</td>
+                </tr>
+                <tr>
+                  <td>レモン果汁</td>
+                  <td>20</td>
+                  <td>加工品</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            いちごの産地ごとの使用量は、昨年（令和7年）の実績で国産60%、アメリカ40%だったとします。
+          </p>
+
+          <h2 id="steps">入力の手順</h2>
+          <p>
+            ツールの質問に、上から順に答えます。答えによって、次の質問が出てきたり消えたりします。番号はツールの画面と同じです。
+          </p>
+
+          <h3>1. 売り方</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/scope.webp`}
+              alt={shots.scope.alt}
+              width={shots.scope.w}
+              height={shots.scope.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            容器包装に入れて、ネットショップや催事、スーパーへの卸などで売るなら「容器包装に入れて、消費者向けに売る」を選びます。例のように店頭とネットショップの両方で売る場合は、作った店の外で売る分（ネットショップ）について答えます。
+          </p>
+          <p class="howto-point">
+            <strong>ポイント</strong>
+            ほかの売り方（作った店でだけ売る、容器包装に入れずに売る、輸入品の小分け、業務用）を選ぶと、2.以降の質問は出ません。そのまま「結果を見る」を押すと、表示が要るかどうかが分かります。
+          </p>
+
+          <h3>2. 個別のルールがある品目か</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/special.webp`}
+              alt={shots.special.alt}
+              width={shots.special.w}
+              height={shots.special.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            ケーキや焼き菓子、パンの多くは「どれにも当たらない」です。ただし、あんやもちをそのまま売る場合などは22食品群に当たることがあります。乾燥野菜・もち・こんにゃく・味付けした肉などが当たるかは、「22食品群の一覧を見る」を押すと確認できます。
+          </p>
+          <p class="howto-point">
+            <strong>ポイント</strong>
+            「22食品群のどれか」を選ぶと、1つの生鮮原材料が重量の50%以上を占めるかの質問が出ます。そこで「はい」を選んだ場合と、「農産物漬物・野菜冷凍食品・うなぎ加工品・かつお削りぶし」を選んだ場合は、配合の質問が出ずに、そのまま結果を見られます。
+          </p>
+
+          <h3>3. 配合（原材料と重量）</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/recipe.webp`}
+              alt={shots.recipe.alt}
+              width={shots.recipe.w}
+              height={shots.recipe.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <ol>
+            <li>
+              1行に1つずつ、原材料名・重量・種類を入れます。最初は3行あり、足りなければ「行を追加」を押します。
+            </li>
+            <li>
+              3つとも入れた行から、重量がいちばん多い原材料が欄の下に「重量1位：いちご」のように出ます。
+            </li>
+          </ol>
+          <p class="howto-point">
+            <strong>ポイント</strong>
+            種類は原材料名の付け方で決まります。「鶏卵」は生鮮食品、「液卵」は加工品、「はちみつ」は生鮮食品と同じ扱いです。種類の「水」「添加物」は、重量1位の判定から外れます。
+          </p>
+
+          <h3>4. 重量1位の原材料の産地</h3>
+          <p>
+            重量1位が決まると、その原材料についての質問が出ます。まず、今後1年間で産地や重量の順位が変わるかを選びます。
+          </p>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/variation.webp`}
+              alt={shots.variation.alt}
+              width={shots.variation.w}
+              height={shots.variation.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            例のいちごは季節で産地が切り替わり、そのたびに瓶のラベルを替えるのは難しいので、「変わり、そのたびに表示を替えるのは難しい」を選びます。産地ごとにラベルを用意して貼り替えられるなら「変わるが、そのたびに表示を替えられる」です。
+          </p>
+          <p>次に、産地を1行に1つずつ入れます。</p>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/origins.webp`}
+              alt={shots.origins.alt}
+              width={shots.origins.w}
+              height={shots.origins.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <ul>
+            <li>
+              <strong>国内・外国</strong>
+              ：国内を選んで国・地域を空欄にすると「国産」と書きます。外国なら、国・地域に国名を入れます。
+            </li>
+            <li>
+              <strong>割合</strong>
+              ：産地が2つ以上なら、それぞれの割合（%）か重量を入れます。産地が1つなら空欄でかまいません。
+            </li>
+            <li>2つ目の産地は「産地を追加」を押して入れます。</li>
+          </ul>
+          <p>
+            産地が2つ以上で「表示を替えるのは難しい」を選んでいると、産地の順番を何にもとづいて決めるかの質問が出ます。
+          </p>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/basis.webp`}
+              alt={shots.basis.alt}
+              width={shots.basis.w}
+              height={shots.basis.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            これまでの実績で決めるなら「使用実績」、新しい商品や仕入先の変更が決まっている場合は「使用計画」です。「注意書きに書く期間」に入れた内容（例：令和7年）は、結果の注意書きの文に入ります。
+          </p>
+          <p class="howto-point">
+            <strong>ポイント</strong>
+            重量1位が小麦粉や砂糖のような加工品のときは、最初に「製造地を書く」か「生鮮原材料までさかのぼって産地を書く」かを選ぶ質問が出ます。また、国産と外国3か国以上を入れて「表示を替えるのは難しい」を選ぶと、輸入の合計と国産の多い・少ないが入れ替わるかの質問も出ます（加工品は、さかのぼって書く場合だけ）。
+          </p>
+
+          <h2 id="result">結果の見方</h2>
+          <p>
+            入力が終わったら「結果を見る」を押します。同じ画面の下に、判定結果が出ます。
+          </p>
+
+          <h3>表示が必要かと、書き方の例</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/result-howto.webp`}
+              alt={shots['result-howto'].alt}
+              width={shots['result-howto'].w}
+              height={shots['result-howto'].h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <ul>
+            <li>いちばん上に、表示が必要かどうかが出ます。</li>
+            <li>
+              重量1位の原材料ごとに、使える書き方の例が出ます。原材料名の欄に括弧で書く場合と、「原料原産地名」の欄を設けて書く場合の両方があるので、ラベルに合うほうを使います。候補が複数あるときは、上にあるものほど原則に近い書き方です。
+            </li>
+            <li>
+              又は表示のように注意書きが要る書き方では、注意書きの文も出ます。原料原産地名の近くに書きます。
+            </li>
+          </ul>
+          <p>
+            例で、産地の変わり方を「変わらない」か「変わるが、そのたびに表示を替えられる」にすると、割合の多い順に「いちご（国産、アメリカ）」と書く国別重量順表示が出ます。5通りの書き方の違いは、ツールのページの
+            <a href={`${TOOL_PATH}#how`}>判定の考え方</a>
+            で説明しています。
+          </p>
+
+          <h3>保管する根拠書類</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/result-records.webp`}
+              alt={shots['result-records'].alt}
+              width={shots['result-records'].w}
+              height={shots['result-records'].h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            「根拠書類の保管が必要」と付いた書き方を使う場合に、作っておく資料と保管期間の一覧です。この下に「あわせて確認すること」と「あなたの入力」が続きます。
+          </p>
+          <p>
+            「結果を印刷する」を押すと、入力欄を除いて結果だけを印刷できます。別の商品を確かめるときは「最初から入力し直す」を押すと、入力がすべて消えて最初に戻ります。
+          </p>
+
+          <h2 id="trouble">うまくいかないとき</h2>
+
+          <h3>「入力が足りない項目があります」と出る</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/error-summary.webp`}
+              alt={shots['error-summary'].alt}
+              width={shots['error-summary'].w}
+              height={shots['error-summary'].h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            答えていない質問があると、フォームの上にまとめて出ます。項目の文字を押すと、その質問に移動します。
+          </p>
+
+          <h3>配合の質問（3.）が出てこない</h3>
+          <p>
+            1.で「容器包装に入れて、消費者向けに売る」以外を選んでいるか、2.で配合が要らない品目を選んでいます。2.のポイントを確かめてください。
+          </p>
+
+          <h3>産地の質問（4.）が出てこない</h3>
+          <p>
+            配合の行に、原材料名・重量・種類の3つがそろっていないと出ません。種類が「種類を選ぶ」のままの行がないか確かめてください。水と添加物だけでは重量1位が決まらないので、出てきません。
+          </p>
+
+          <h3>産地の質問が2組以上出る</h3>
+          <p>
+            重量1位の原材料が同じ重さで並んでいると、どれも対象になります。それぞれについて答えてください。
+          </p>
+
+          <h3>
+            「国産は1行にまとめてください」「同じ国が2行以上あります」と出る
+          </h3>
+          <p>国内の産地は1行にまとめ、同じ国は2行に分けずに1行で入れます。</p>
+
+          <h3>入力を直したのに、結果が変わらない</h3>
+          <p>
+            結果は自動では更新されません。入力を直したら、もう一度「結果を見る」を押してください。
+          </p>
+
+          <div class="howto-cta howto-cta-end">
+            <a
+              class="btn btn-primary"
+              href={TOOL_PATH}
+              data-track-event="mix_cta_click"
+              data-track-surface="tool_howto"
+              data-track-cta-position="end"
+              data-track-cta-id="howto_open_tool"
+              data-track-tool-id="origin_labeling_check"
+            >
+              ツールを開いてチェックする
+            </a>
+          </div>
+        </article>
+
+        <div class="art-back">
+          <a href="/tools/">← 無料ツール一覧へ</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Keep words together when the title wraps on phones (Chromium; other
+     browsers break as before). */
+  .art-title {
+    word-break: auto-phrase;
+  }
+
+  .howto-cta {
+    margin-top: 20px;
+  }
+
+  .howto-cta-end {
+    margin-top: 36px;
+    text-align: center;
+  }
+
+  /* .art-body a underlines links; buttons keep their own look. */
+  .art-body .howto-cta a.btn {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  /* Screenshots are 2x; show them at their natural size, never stretched. */
+  .howto-shot {
+    margin: 16px 0;
+  }
+
+  .howto-shot img {
+    display: block;
+    width: 542px;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+  }
+
+  .howto-point {
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: var(--color-bg-alt);
+  }
+
+  .howto-point strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--color-accent-text);
+  }
+</style>
