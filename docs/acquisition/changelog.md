@@ -27,3 +27,4 @@
 | 2026-10-30 03:03 | #125 | 無料ツール「食品表示ラベルの作成」（`/tools/food-label-maker/`）を公開。配合から一括表示とネットショップ用のテキスト・HTMLを作る。`/tools/` 一覧の先頭のカードと、食品表示の完全ガイドの本文から導線 | ツールのページの検索表示・クリック、`mix_tool_start`・`mix_tool_result`（`tool_id` が `food_label_maker`）、`mix_cta_click`（surface `article_body`・`tool_result`・`tool_flabel_box`） |
 | 2026-10-30 14:18 | #128 | 無料ツール5つそれぞれに使い方ページ（`/tools/<tool>/how-to/`）を公開。架空の入力例と画面つきの手順。各ツールのページのタイトル下から導線 | 使い方ページの検索表示・クリック、`mix_cta_click`（surface `tool_hero`・cta_id `tool_howto`／surface `tool_howto`・cta_id `howto_open_tool`） |
 | 2026-10-30 | — | Search Console で使い方ページ5つのインデックス登録をリクエスト | 使い方ページのインデックス登録 |
+| 2026-10-31 | — | Search Console で `/tools/` の再クロールをリクエスト（前回のクロールは食品表示ラベルの作成のカード追加前）。`/tools/food-label-maker/` と食品表示の完全ガイドは公開直後（2026-10-30 03:06〜03:07）にクロール・インデックス登録済み | `/tools/` からツールのページへの導線 |
