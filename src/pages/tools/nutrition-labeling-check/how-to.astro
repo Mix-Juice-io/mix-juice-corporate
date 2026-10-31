@@ -1,0 +1,540 @@
+---
+import Layout from '../../../layouts/Layout.astro'
+import '../../../styles/articles.css'
+
+const TITLE = '栄養成分表示の要否チェックの使い方｜回答例と画面つきで手順を解説'
+const DESCRIPTION =
+  '無料の「栄養成分表示の要否チェック」の使い方を、洋菓子店の回答例と画面つきで説明します。7つの質問の答え方、売り方ごとの判定結果と容器包装リサイクル法の結果の見方、結果に応じた次の一手までの手順です。'
+
+const TOOL_PATH = '/tools/nutrition-labeling-check/'
+const IMG = '/tools/nutrition-labeling-check/how-to'
+
+// Screenshots are taken at 2x; width/height are the image's pixel size and
+// CSS shows it at half that.
+const shots = {
+  channels: {
+    w: 1084,
+    h: 948,
+    alt: '売り方の質問で「作った店で、お客さんに直接売る」と「自社で、ほかの場所やネットで売る」を選んだ画面',
+  },
+  traits: {
+    w: 1084,
+    h: 672,
+    alt: '商品に当てはまるものの質問（任意）で、何も選んでいない画面',
+  },
+  claim: {
+    w: 1084,
+    h: 650,
+    alt: '容器包装の栄養成分や熱量に関する表現の質問で「ない」を選んだ画面',
+  },
+  tax: {
+    w: 1084,
+    h: 650,
+    alt: '消費税の質問で「課税事業者（申告・納税している）」を選んだ画面',
+  },
+  business: {
+    w: 1084,
+    h: 744,
+    alt: '主な事業の質問で「わからない」を選んだ画面',
+  },
+  employees: {
+    w: 1084,
+    h: 600,
+    alt: '従業員の数の質問で「5人以下」を選んだ画面',
+  },
+  sales: {
+    w: 1084,
+    h: 721,
+    alt: '年間の売上高の質問で「7,000万円以下」を選んだ画面',
+  },
+  'result-nutrition': {
+    w: 1084,
+    h: 1870,
+    alt: '栄養成分表示の判定結果。作った店で売る分は「表示は不要」、自社で、ほかの場所やネットで売る分は「省略できる」と表示された画面',
+  },
+  'result-other': {
+    w: 1084,
+    h: 954,
+    alt: '原材料名・アレルゲンなどの表示についての結果の画面',
+  },
+  'result-packaging': {
+    w: 1084,
+    h: 721,
+    alt: '容器包装リサイクル法の結果で「対象外」と表示された画面',
+  },
+  'error-summary': {
+    w: 1084,
+    h: 549,
+    alt: '「まだ答えていない質問があります」と、答えていない質問の一覧が赤い枠で表示された画面',
+  },
+} as const
+
+const toc = [
+  { id: 'prepare', label: '始める前に用意するもの' },
+  { id: 'example', label: 'この記事の回答例' },
+  { id: 'steps', label: '質問の答え方' },
+  { id: 'result', label: '結果の見方と次にすること' },
+  { id: 'trouble', label: 'うまくいかないとき' },
+]
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'ホーム',
+      item: new URL('/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: '無料ツール',
+      item: new URL('/tools/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: '栄養成分表示の要否チェック',
+      item: new URL(TOOL_PATH, Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 4,
+      name: '使い方',
+      item: new URL(Astro.url.pathname, Astro.site).href,
+    },
+  ],
+}
+---
+
+<Layout title={`${TITLE} | Mix-Juice`} description={DESCRIPTION}>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c')}
+    slot="head"
+  />
+  <div class="art-page">
+    <section class="art-hero">
+      <div class="art-hero-bg">
+        <div class="art-blob1"></div>
+        <div class="art-blob2"></div>
+      </div>
+      <div class="container">
+        <nav class="art-crumbs" aria-label="パンくずリスト">
+          <a href="/">ホーム</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href="/tools/">無料ツール</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href={TOOL_PATH}>栄養成分表示の要否チェック</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <span class="art-crumbs-current">使い方</span>
+        </nav>
+        <p class="art-label">HOW TO</p>
+        <h1 class="art-title">栄養成分表示の要否チェックの使い方</h1>
+        <p class="art-desc">
+          洋菓子店を例に、7つの質問の答え方と、結果の見方を画面つきで説明します。回答は2〜3分ほどです。
+        </p>
+        <div class="howto-cta">
+          <a
+            class="btn btn-primary"
+            href={TOOL_PATH}
+            data-track-event="mix_cta_click"
+            data-track-surface="tool_howto"
+            data-track-cta-position="hero"
+            data-track-cta-id="howto_open_tool"
+            data-track-tool-id="nutrition_labeling_check"
+          >
+            チェックを始める
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="art-content">
+      <div class="container">
+        <article class="art-body howto">
+          <nav class="art-toc" aria-labelledby="howto-toc-title">
+            <p id="howto-toc-title" class="art-toc-title">
+              目次
+            </p>
+            <ol class="art-toc-list">
+              {toc.map((t) => (
+                <li>
+                  <a href={`#${t.id}`}>{t.label}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+
+          <h2 id="prepare">始める前に用意するもの</h2>
+          <p>
+            書類を集める必要はありません。次のことが分かっていれば答えられます。
+          </p>
+          <ul>
+            <li>
+              <strong>判定する商品</strong>
+              ：結果は商品ごとに変わることがあります。代表的な商品を1つ決め、その容器包装を手元に置いておくと、質問3に答えやすくなります。
+            </li>
+            <li>
+              <strong>消費税の申告をしているか</strong>
+              ：インボイスの発行事業者として登録しているかどうかも含めて確認します。
+            </li>
+            <li>
+              <strong>従業員の数</strong>
+              ：前の事業年度で最も多かった時点の人数です。
+            </li>
+            <li>
+              <strong>年間の売上高</strong>
+              ：食品以外も含めた、事業全体の売上高です。
+            </li>
+          </ul>
+          <p>
+            回答は送信も保存もしません。ページを閉じたり再読み込みしたりすると消えるので、結果は印刷して残してください。
+          </p>
+
+          <h2 id="example">この記事の回答例</h2>
+          <p>
+            架空の洋菓子店「洋菓子店ミックス」が、店で焼いた焼き菓子の詰め合わせを、店頭と自社のネットショップで売る場合です。
+          </p>
+          <ul>
+            <li>袋や箱に、栄養成分や熱量に関する言葉は書いていない</li>
+            <li>インボイスの発行事業者として登録している（課税事業者）</li>
+            <li>常時使用する従業員は4人</li>
+            <li>年間の売上高は3,000万円ほど</li>
+          </ul>
+
+          <h2 id="steps">質問の答え方</h2>
+          <p>
+            質問は7つです。上から順に答えて、最後に「結果を見る」を押します。番号はツールの画面と同じです。
+          </p>
+
+          <h3>1. この商品を、どのように売っていますか</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/channels.webp`}
+              alt={shots.channels.alt}
+              width={shots.channels.w}
+              height={shots.channels.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            当てはまるものを、すべて選びます。例では、店頭で売る分の「作った店で、お客さんに直接売る」と、ネットショップで売る分の「自社で、ほかの場所やネットで売る」の2つです。結果は、選んだ売り方ごとに出ます。
+          </p>
+          <p class="howto-point">
+            <strong>ポイント</strong>
+            道の駅や直売所に置いてもらっている場合、売れるまで商品が自社のもので、相手は会計だけを行う形（委託販売）なら「自社で、ほかの場所やネットで売る」です。相手が買い取って売る場合は「卸す」のどちらかを選びます。卸先がスーパー・百貨店など小規模でない事業者なら「スーパーなどに卸す」、個人商店などなら「小規模な事業者に卸す」です。
+          </p>
+
+          <h3>2. この商品に当てはまるものはありますか（任意）</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/traits.webp`}
+              alt={shots.traits.alt}
+              width={shots.traits.w}
+              height={shots.traits.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            酒類、表示できる面積がおおむね30cm²以下の小さな包装、茶葉やスパイスのように1日にとる量がごくわずかなもの、3日以内にレシピが変わるものは、栄養成分表示を省略できます。当てはまらなければ、何も選ばずに次へ進みます。例の焼き菓子は当てはまらないので、選びません。
+          </p>
+
+          <h3>3. 容器包装に、栄養成分や熱量に関する表現がありますか</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/claim.webp`}
+              alt={shots.claim.alt}
+              width={shots.claim.w}
+              height={shots.claim.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            袋や箱、シールに「たんぱく質」「ビタミン」「食物繊維」「カロリー」「うす塩」のような言葉があれば「ある」を選びます。原材料名の欄に書いてあるだけの場合や、「甘さひかえめ」のような味の表現は当たりません。
+          </p>
+          <p class="howto-point">
+            <strong>ポイント</strong>
+            「ある」を選ぶと、ほかの答えにかかわらず、どの売り方でも「表示が必要」になります。作った店で売る分も同じです。
+          </p>
+
+          <h3>4. 消費税の申告・納税をしていますか</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/tax.webp`}
+              alt={shots.tax.alt}
+              width={shots.tax.w}
+              height={shots.tax.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            インボイスの発行事業者として登録している場合は、課税事業者です。例の店は登録しているので「課税事業者」を選びます。分からなければ「わからない」を選べます。
+          </p>
+
+          <h3>5. 主な事業はどちらですか</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/business.webp`}
+              alt={shots.business.alt}
+              width={shots.business.w}
+              height={shots.business.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            売上がいちばん大きい事業で選びます。洋菓子店のように、作った商品を自分の店で売る製造小売がどちらに当たるかは、資料に明記がありません。迷う場合は、例のように「わからない」を選ぶと、両方の場合を示します。
+          </p>
+          <p class="howto-point">
+            <strong>ポイント</strong>
+            主な事業で結果が変わるのは、従業員が6〜20人の場合と、容器包装リサイクル法の判定です。従業員が5人以下なら、栄養成分表示の結果は主な事業によって変わりません。
+          </p>
+
+          <h3>6. 常時使用する従業員は何人ですか</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/employees.webp`}
+              alt={shots.employees.alt}
+              width={shots.employees.w}
+              height={shots.employees.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            数える人・数えない人は、画面の説明のとおりです。例の店は4人なので「5人以下」を選びます。
+          </p>
+
+          <h3>7. 年間の売上高（事業全体）はどのくらいですか</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/sales.webp`}
+              alt={shots.sales.alt}
+              width={shots.sales.w}
+              height={shots.sales.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            この答えは容器包装リサイクル法の判定だけに使い、栄養成分表示の結果には影響しません。例の店は「7,000万円以下」です。
+          </p>
+
+          <h2 id="result">結果の見方と次にすること</h2>
+          <p>
+            「結果を見る」を押すと、同じ画面の下に判定結果が出ます。結果は目安です。最終的な判断は、管轄の保健所や消費者庁、税務署などにご確認ください。
+          </p>
+
+          <h3>栄養成分表示</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/result-nutrition.webp`}
+              alt={shots['result-nutrition'].alt}
+              width={shots['result-nutrition'].w}
+              height={shots['result-nutrition'].h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            最初に、自社が「小規模の事業者」に当たるかが出ます。その下に、質問1で選んだ売り方ごとの結果が、理由と根拠の資料つきで並びます。例の店は課税事業者ですが、従業員が5人以下なので小規模の事業者に当たり、ネットショップで売る分は「省略できる」になりました。
+          </p>
+          <div class="art-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">結果</th>
+                  <th scope="col">次にすること</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>表示は不要</td>
+                  <td>栄養成分表示は要りません。</td>
+                </tr>
+                <tr>
+                  <td>省略できる</td>
+                  <td>
+                    表示しなくてもかまいませんが、できるだけ表示することが望ましいとされています。
+                  </td>
+                </tr>
+                <tr>
+                  <td>表示が必要</td>
+                  <td>
+                    熱量・たんぱく質・脂質・炭水化物・食塩相当量の5項目を表示します。
+                  </td>
+                </tr>
+                <tr>
+                  <td>卸先しだい</td>
+                  <td>卸先が小規模の事業者に当たるか、卸先に確認します。</td>
+                </tr>
+                <tr>
+                  <td>要確認</td>
+                  <td>
+                    結果に書かれたこと（免税事業者かどうか、主な事業など）を確かめて、もう一度答えます。
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            「表示は不要」以外の結果が1つでもあると、その下に「表示するときは」の説明が出ます。表示を作るときは、
+            <a href="/tools/food-label-maker/">食品表示ラベルの作成</a>
+            で、分析や計算で求めた値を一括表示と一緒に作れます。
+          </p>
+
+          <h3>原材料名・アレルゲンなどの表示</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/result-other.webp`}
+              alt={shots['result-other'].alt}
+              width={shots['result-other'].w}
+              height={shots['result-other'].h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            栄養成分表示を省略できる場合でも、ほかの表示が要らなくなるわけではありません。選んだ売り方に応じて、必要な表示が出ます。
+          </p>
+
+          <h3>容器包装リサイクル法</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/result-packaging.webp`}
+              alt={shots['result-packaging'].alt}
+              width={shots['result-packaging'].w}
+              height={shots['result-packaging'].h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            「義務の対象」「対象外」「要確認」のどれかが出ます。「義務の対象」の場合は、日本容器包装リサイクル協会に再商品化を委託するなどの方法で、義務を果たします。基準は、ツールのページの
+            <a href={`${TOOL_PATH}#how`}>判定の考え方</a>
+            にまとめています。
+          </p>
+          <p>
+            その下には、食品リサイクル法などの「その他の制度（参考）」と、「あなたの回答」の一覧が出ます。「結果を印刷する」で、回答と結果をまとめて印刷できます。別の商品を確かめるときは「最初から答え直す」を押します。
+          </p>
+
+          <h2 id="trouble">うまくいかないとき</h2>
+
+          <h3>「まだ答えていない質問があります」と出る</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/error-summary.webp`}
+              alt={shots['error-summary'].alt}
+              width={shots['error-summary'].w}
+              height={shots['error-summary'].h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            答えていない質問が、フォームの上にまとめて出ます。質問の文字を押すと、その質問の最初の選択肢に移動します。質問2は任意なので、答えなくても結果を見られます。
+          </p>
+
+          <h3>答えを変えたのに、結果が変わらない</h3>
+          <p>
+            結果は自動では更新されません。答えを変えたら、もう一度「結果を見る」を押してください。押すまでは、結果の欄に「この結果は変更前の回答にもとづいています」と出ます。
+          </p>
+
+          <h3>「要確認」が出た</h3>
+          <p>
+            消費税や主な事業を「わからない」と答えると、小規模の事業者に当たるかが決まらず「要確認」になることがあります。結果の理由に、何を確かめればよいかが書いてあります。免税事業者かどうかは、税理士や税務署に確認してください。
+          </p>
+
+          <h3>判定の理由をくわしく知りたい</h3>
+          <p>
+            売り方ごとの考え方や、小規模の事業者の基準は、ツールのページの
+            <a href={`${TOOL_PATH}#how`}>判定の考え方</a>と
+            <a href={`${TOOL_PATH}#faq`}>よくある疑問</a>
+            で説明しています。
+          </p>
+
+          <div class="howto-cta howto-cta-end">
+            <a
+              class="btn btn-primary"
+              href={TOOL_PATH}
+              data-track-event="mix_cta_click"
+              data-track-surface="tool_howto"
+              data-track-cta-position="end"
+              data-track-cta-id="howto_open_tool"
+              data-track-tool-id="nutrition_labeling_check"
+            >
+              チェックを始める
+            </a>
+          </div>
+        </article>
+
+        <div class="art-back">
+          <a href="/tools/">← 無料ツール一覧へ</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Keep words together when the title wraps on phones (Chromium; other
+     browsers break as before). */
+  .art-title {
+    word-break: auto-phrase;
+  }
+
+  .howto-cta {
+    margin-top: 20px;
+  }
+
+  .howto-cta-end {
+    margin-top: 36px;
+    text-align: center;
+  }
+
+  /* .art-body a underlines links; buttons keep their own look. */
+  .art-body .howto-cta a.btn {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  /* Screenshots are 2x; show them at their natural size, never stretched. */
+  .howto-shot {
+    margin: 16px 0;
+  }
+
+  .howto-shot img {
+    display: block;
+    width: 542px;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+  }
+
+  .howto-point {
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: var(--color-bg-alt);
+  }
+
+  .howto-point strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--color-accent-text);
+  }
+</style>

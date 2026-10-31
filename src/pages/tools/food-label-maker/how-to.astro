@@ -1,0 +1,542 @@
+---
+import Layout from '../../../layouts/Layout.astro'
+import '../../../styles/articles.css'
+
+const TITLE = '食品表示ラベル作成ツールの使い方｜入力例と画面つきで手順を解説'
+const DESCRIPTION =
+  '無料の食品表示ラベル作成ツールの使い方を、焼菓子の入力例と画面つきで説明します。配合・アレルゲン・期限・製造者の入れ方から、一括表示の印刷、ネットショップ用のテキスト・HTMLのコピーまでの手順です。'
+
+const TOOL_PATH = '/tools/food-label-maker/'
+const IMG = '/tools/food-label-maker/how-to'
+
+// Screenshots are taken at 2x; width/height are the image's pixel size and
+// CSS shows it at half that.
+const shots = {
+  name: { w: 1084, h: 410, alt: '名称の欄に「焼菓子」と入れた画面' },
+  recipe: {
+    w: 1084,
+    h: 1350,
+    alt: '配合の欄に、小麦粉・バター・砂糖・鶏卵・アーモンドパウダー・膨張剤の6行を入れ、下に「重量1位：小麦粉」と表示された画面',
+  },
+  origin: {
+    w: 1084,
+    h: 463,
+    alt: '「小麦粉」の原料原産地の欄に「国内製造」と入れた画面',
+  },
+  allergens: {
+    w: 1084,
+    h: 1559,
+    alt: 'アレルゲンのチェック欄で、小麦・卵・乳・アーモンドを選んだ画面',
+  },
+  content: {
+    w: 1084,
+    h: 1306,
+    alt: '内容量「8枚」、賞味期限、容器包装の期限「枠外下部に記載」、商品ページの期限の目安、保存方法を入れた画面',
+  },
+  role: {
+    w: 1084,
+    h: 990,
+    alt: '製造者を選び、氏名または名称と住所を入れた画面',
+  },
+  nutrition: {
+    w: 1084,
+    h: 1060,
+    alt: '栄養成分表示を入れるにチェックし、1枚（20g）当たりの熱量・たんぱく質・脂質・炭水化物・食塩相当量を入れた画面',
+  },
+  'result-label': {
+    w: 1084,
+    h: 1523,
+    alt: '作成した一括表示の表（名称、原材料名、内容量、賞味期限、保存方法、製造者）と栄養成分表示の表',
+  },
+  'result-shop': {
+    w: 1084,
+    h: 2054,
+    alt: 'ネットショップの商品ページ用のテキストとHTMLの欄、それぞれの「コピーする」ボタン',
+  },
+  'error-summary': {
+    w: 1084,
+    h: 664,
+    alt: '「入力が足りない項目があります」と、足りない項目の一覧が赤い枠で表示された画面',
+  },
+} as const
+
+const toc = [
+  { id: 'prepare', label: '始める前に用意するもの' },
+  { id: 'example', label: 'この記事の入力例' },
+  { id: 'steps', label: '入力の手順' },
+  { id: 'result', label: '表示を作って使う' },
+  { id: 'trouble', label: 'うまくいかないとき' },
+]
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'ホーム',
+      item: new URL('/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: '無料ツール',
+      item: new URL('/tools/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: '食品表示ラベルの作成',
+      item: new URL(TOOL_PATH, Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 4,
+      name: '使い方',
+      item: new URL(Astro.url.pathname, Astro.site).href,
+    },
+  ],
+}
+---
+
+<Layout title={`${TITLE} | Mix-Juice`} description={DESCRIPTION}>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c')}
+    slot="head"
+  />
+  <div class="art-page">
+    <section class="art-hero">
+      <div class="art-hero-bg">
+        <div class="art-blob1"></div>
+        <div class="art-blob2"></div>
+      </div>
+      <div class="container">
+        <nav class="art-crumbs" aria-label="パンくずリスト">
+          <a href="/">ホーム</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href="/tools/">無料ツール</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href={TOOL_PATH}>食品表示ラベルの作成</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <span class="art-crumbs-current">使い方</span>
+        </nav>
+        <p class="art-label">HOW TO</p>
+        <h1 class="art-title">食品表示ラベル作成ツールの使い方</h1>
+        <p class="art-desc">
+          焼菓子を例に、入力する順番と、結果の使い方を画面つきで説明します。入力は5〜10分ほどです。
+        </p>
+        <div class="howto-cta">
+          <a
+            class="btn btn-primary"
+            href={TOOL_PATH}
+            data-track-event="mix_cta_click"
+            data-track-surface="tool_howto"
+            data-track-cta-position="hero"
+            data-track-cta-id="howto_open_tool"
+            data-track-tool-id="food_label_maker"
+          >
+            ツールを開く
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="art-content">
+      <div class="container">
+        <article class="art-body howto">
+          <nav class="art-toc" aria-labelledby="howto-toc-title">
+            <p id="howto-toc-title" class="art-toc-title">
+              目次
+            </p>
+            <ol class="art-toc-list">
+              {toc.map((t) => (
+                <li>
+                  <a href={`#${t.id}`}>{t.label}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+
+          <h2 id="prepare">始める前に用意するもの</h2>
+          <ul>
+            <li>
+              <strong>配合表</strong>
+              ：原材料と添加物ごとの、製造するときの重量。g・kg・%のどれでもかまいません。
+            </li>
+            <li>
+              <strong>仕入先の規格書</strong>
+              ：アレルゲンと、重量がいちばん多い原材料の産地を確認するのに使います。
+            </li>
+            <li>
+              <strong>栄養成分の値</strong>
+              （載せる場合だけ）：ツールは値を計算しません。分析や計算で求めた値を用意します。
+            </li>
+          </ul>
+          <p>
+            入力した内容は送信も保存もしません。ページを閉じたり再読み込みしたりすると消えるので、結果は印刷するか、コピーして残してください。
+          </p>
+
+          <h2 id="example">この記事の入力例</h2>
+          <p>
+            架空の洋菓子店「洋菓子店ミックス」が、自分の店で焼いたバタークッキーを袋に入れて、店頭とネットショップで売る場合です。
+          </p>
+          <div class="art-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">原材料名</th>
+                  <th scope="col">重量</th>
+                  <th scope="col">種類</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>小麦粉</td>
+                  <td>300</td>
+                  <td>加工品</td>
+                </tr>
+                <tr>
+                  <td>バター</td>
+                  <td>200</td>
+                  <td>加工品</td>
+                </tr>
+                <tr>
+                  <td>砂糖</td>
+                  <td>150</td>
+                  <td>加工品</td>
+                </tr>
+                <tr>
+                  <td>鶏卵</td>
+                  <td>50</td>
+                  <td>生鮮食品</td>
+                </tr>
+                <tr>
+                  <td>アーモンドパウダー</td>
+                  <td>30</td>
+                  <td>加工品</td>
+                </tr>
+                <tr>
+                  <td>膨張剤</td>
+                  <td>3</td>
+                  <td>添加物</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="steps">入力の手順</h2>
+          <p>
+            ツールの質問に、上から順に答えます。番号はツールの画面と同じです。
+          </p>
+
+          <h3>1. 名称</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/name.webp`}
+              alt={shots.name.alt}
+              width={shots.name.w}
+              height={shots.name.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            商品名（ブランド名）ではなく、中身を表す一般的な名称を書きます。「ミックスのバタークッキー」ではなく「焼菓子」「クッキー」のように入れます。
+          </p>
+
+          <h3>2. 配合（原材料と重量）</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/recipe.webp`}
+              alt={shots.recipe.alt}
+              width={shots.recipe.w}
+              height={shots.recipe.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <ol>
+            <li>
+              1行に1つずつ、原材料名・重量・種類を入れます。行が足りなければ「行を追加」を押します。
+            </li>
+            <li>
+              並び順は気にしなくてかまいません。表示を作るときに、原材料と添加物をそれぞれ重量の多い順に並べ替えます。
+            </li>
+            <li>
+              3つとも入れた行から、重量がいちばん多い原材料が欄の下に「重量1位：小麦粉」のように出ます。
+            </li>
+          </ol>
+          <p class="howto-point">
+            <strong>ポイント</strong>
+            原材料名は、表示に書くとおりに入れます。チョコレートのような複合原材料は「チョコレート（砂糖、カカオマス、ココアバター）」と内訳を括弧で書き、添加物は「膨張剤」のように表示する名前で入れます。種類の「水」「添加物」は、重量1位の判定から外れます。
+          </p>
+
+          <h3>3. 重量1位の原材料の原料原産地</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/origin.webp`}
+              alt={shots.origin.alt}
+              width={shots.origin.w}
+              height={shots.origin.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            手順2で重量1位が決まると、この質問が出てきます。生鮮食品なら「国産」「アメリカ」、加工品なら「国内製造」のように入れます。例の小麦粉は国内の工場で製粉されたものなので「国内製造」です。書き方に迷ったら、
+            <a href="/tools/origin-labeling-check/">原料原産地表示のチェック</a>
+            で確かめられます。
+          </p>
+
+          <h3>4. 含まれるアレルゲン</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/allergens.webp`}
+              alt={shots.allergens.alt}
+              width={shots.allergens.w}
+              height={shots.allergens.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            商品に含まれるものを、すべてチェックします。例では、小麦粉の「小麦」、鶏卵の「卵」、バターの「乳」、アーモンドパウダーの「アーモンド」です。
+          </p>
+          <p class="howto-point">
+            <strong>ポイント</strong>
+            バターの乳のように、原材料名に品目名が出てこないものも選びます。仕入先の規格書で、原材料の原材料（二次原料）までさかのぼって確認してください。
+          </p>
+
+          <h3>5. 内容量と期限</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/content.webp`}
+              alt={shots.content.alt}
+              width={shots.content.w}
+              height={shots.content.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <ul>
+            <li>
+              <strong>容器包装の期限</strong>
+              ：ラベルに日付を直接書くなら「2026.12.31」、日付を袋に別に印字するなら「枠外下部に記載」のように、印字する場所を書きます。
+            </li>
+            <li>
+              <strong>商品ページに書く期限の目安</strong>
+              （任意）：ネットショップでは日付が決まらないので、「製造日から30日」のような目安を入れます。ここはネットショップ用の表示にだけ使います。
+            </li>
+          </ul>
+          <p>
+            賞味期限と消費期限のどちらにするか、期間を何日にするかを決めるときは、
+            <a href="/tools/expiry-date-record/">期限表示の設定根拠の記録票</a>
+            が使えます。
+          </p>
+
+          <h3>6. 表示に責任を持つ事業者</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/role.webp`}
+              alt={shots.role.alt}
+              width={shots.role.w}
+              height={shots.role.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            自分の店で作った商品なら「製造者」です。製造を委託した商品なら「販売者」を選びます。製造者以外を選ぶと、製造所の名前と所在地の欄が増えます。
+          </p>
+
+          <h3>7. 栄養成分表示</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/nutrition.webp`}
+              alt={shots.nutrition.alt}
+              width={shots.nutrition.w}
+              height={shots.nutrition.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            載せる場合は「栄養成分表示を入れる」にチェックし、値の単位（100g当たり、1枚当たりなど）と5つの値を入れます。食品成分表から計算した値なら「値は推定値（計算値など）」にもチェックします。表示が必要かどうかは
+            <a href="/tools/nutrition-labeling-check/">
+              栄養成分表示の要否チェック
+            </a>
+            で確認できます。
+          </p>
+
+          <h2 id="result">表示を作って使う</h2>
+          <p>
+            入力が終わったら「表示を作る」を押します。同じ画面の下に、作った表示が出ます。
+          </p>
+
+          <h3>容器包装に貼る一括表示</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/result-label.webp`}
+              alt={shots['result-label'].alt}
+              width={shots['result-label'].w}
+              height={shots['result-label'].h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            原材料は重量の多い順に、添加物は「／」のあとに並びます。重量1位の原材料には産地が括弧で付き、アレルゲンは最後に「（一部に〇〇・〇〇を含む）」とまとまります。
+          </p>
+          <p>
+            結果の下の「表示を印刷する」を押すと、入力欄やネットショップ用の部分を除いて、表示の表を印刷できます。ラベルのデザインに組み込む場合は、文言を写して使ってください。
+          </p>
+
+          <h3>ネットショップの商品ページに貼る</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/result-shop.webp`}
+              alt={shots['result-shop'].alt}
+              width={shots['result-shop'].w}
+              height={shots['result-shop'].h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <ul>
+            <li>
+              <strong>テキスト</strong>
+              ：「コピーする」を押して、商品説明の本文に貼ります。
+            </li>
+            <li>
+              <strong>HTML（表の形）</strong>
+              ：罫線つきの表になります。Shopifyなら、商品説明の編集欄を「&lt;/&gt;」ボタンでHTMLの表示に切り替えてから貼ります。
+            </li>
+          </ul>
+          <p>
+            別の商品を作るときは、結果の下の「最初から入力し直す」を押すと、入力がすべて消えて最初に戻ります。
+          </p>
+
+          <h2 id="trouble">うまくいかないとき</h2>
+
+          <h3>「入力が足りない項目があります」と出る</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/error-summary.webp`}
+              alt={shots['error-summary'].alt}
+              width={shots['error-summary'].w}
+              height={shots['error-summary'].h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            必須の欄が空いていると、フォームの上にまとめて出ます。項目の文字を押すと、その欄に移動します。
+          </p>
+
+          <h3>原料原産地の質問（3.）が出てこない</h3>
+          <p>
+            配合の行に、原材料名・重量・種類の3つがそろっていないと出ません。種類が「種類を選ぶ」のままの行がないか確かめてください。水と添加物だけでは重量1位が決まらないので、出てきません。
+          </p>
+
+          <h3>原料原産地の欄が2つ以上出る</h3>
+          <p>
+            重量1位の原材料が同じ重さで並んでいると、どれも対象になります。それぞれの産地を入れてください。
+          </p>
+
+          <h3>原材料名に「水」が入らない</h3>
+          <p>
+            種類を「水」にした行があると、配合の欄の下に「水を原材料名に書く」が出ます。水は書かない場合が多いため、チェックを入れたときだけ書きます。
+          </p>
+
+          <h3>入力を直したのに、表示が変わらない</h3>
+          <p>
+            表示は自動では更新されません。入力を直したら、もう一度「表示を作る」を押してください。
+          </p>
+
+          <h3>書き方のルールを知りたい</h3>
+          <p>
+            名称・原材料名・添加物・期限などの書き方は、ツールのページの
+            <a href={`${TOOL_PATH}#how`}>一括表示の書き方</a>
+            で説明しています。
+          </p>
+
+          <div class="howto-cta howto-cta-end">
+            <a
+              class="btn btn-primary"
+              href={TOOL_PATH}
+              data-track-event="mix_cta_click"
+              data-track-surface="tool_howto"
+              data-track-cta-position="end"
+              data-track-cta-id="howto_open_tool"
+              data-track-tool-id="food_label_maker"
+            >
+              ツールを開いて表示を作る
+            </a>
+          </div>
+        </article>
+
+        <div class="art-back">
+          <a href="/tools/">← 無料ツール一覧へ</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Keep words together when the title wraps on phones (Chromium; other
+     browsers break as before). */
+  .art-title {
+    word-break: auto-phrase;
+  }
+
+  .howto-cta {
+    margin-top: 20px;
+  }
+
+  .howto-cta-end {
+    margin-top: 36px;
+    text-align: center;
+  }
+
+  /* .art-body a underlines links; buttons keep their own look. */
+  .art-body .howto-cta a.btn {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  /* Screenshots are 2x; show them at their natural size, never stretched. */
+  .howto-shot {
+    margin: 16px 0;
+  }
+
+  .howto-shot img {
+    display: block;
+    width: 542px;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+  }
+
+  .howto-point {
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: var(--color-bg-alt);
+  }
+
+  .howto-point strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--color-accent-text);
+  }
+</style>

@@ -1,0 +1,575 @@
+---
+import Layout from '../../../layouts/Layout.astro'
+import '../../../styles/articles.css'
+
+const TITLE =
+  '容器包装のポジティブリスト確認台帳の使い方｜入力例と画面つきで手順を解説'
+const DESCRIPTION =
+  '無料の容器包装のポジティブリスト確認台帳の使い方を、洋菓子店の入力例と画面つきで説明します。資材の登録、仕入先への依頼文の印刷、受け取った書類の記録、CSVでの保存までの手順です。'
+
+const TOOL_PATH = '/tools/packaging-positive-list-ledger/'
+const IMG = '/tools/packaging-positive-list-ledger/how-to'
+
+// Screenshots are taken at 2x; w/h are the image's pixel size. Most are 600px
+// wide shots of the form, the ledger is a 1100px shot so its table fits.
+const shots = {
+  business: {
+    w: 1168,
+    h: 794,
+    alt: '事業者の情報に、事業者名「洋菓子店ミックス」と担当者・連絡先を入れた画面',
+  },
+  what: {
+    w: 1084,
+    h: 689,
+    alt: '品名「OPP袋 100×150」、使っている商品「バタークッキー」、仕入先「〇〇包材株式会社」を入れた画面',
+  },
+  material: {
+    w: 1084,
+    h: 1607,
+    alt: '材質で「合成樹脂（プラスチック）」、食品に直接触れるかで「食品に直接触れる」を選び、下に制度の対象についての説明が出た画面',
+  },
+  status: {
+    w: 1084,
+    h: 905,
+    alt: '仕入先からの情報で「まだ依頼していない」が選ばれ、メモの欄がある画面',
+  },
+  added: {
+    w: 1168,
+    h: 286,
+    alt: '「台帳に追加する」ボタンの下に「「OPP袋 100×150」を台帳に追加しました。」と出た画面',
+  },
+  ledger: {
+    w: 1584,
+    h: 2590,
+    alt: '4件の資材が並んだ確認台帳。3件が「まだ依頼していない」、ケーキ箱が「対象外と判断した」',
+  },
+  deleted: {
+    w: 1168,
+    h: 114,
+    alt: '「「ケーキ箱 4号」を台帳から削除しました。」の横に「元に戻す」が出た画面',
+  },
+  editing: {
+    w: 1084,
+    h: 380,
+    alt: '入力欄の見出しが「資材を編集する」に変わった画面',
+  },
+  request: {
+    w: 1168,
+    h: 2737,
+    alt: '〇〇包材株式会社あての依頼文。OPP袋とプリンカップの2件が表に並び、下に「依頼文を印刷する」「送ったので「依頼中」にする」ボタンがある',
+  },
+  statusReceived: {
+    w: 1084,
+    h: 1853,
+    alt: '仕入先からの情報で「受け取った」を選び、書類の種類「適合証明書・自己宣言書」、受け取った日、保管場所、使用条件を入れた画面',
+  },
+  ledgerFinal: {
+    w: 1584,
+    h: 2728,
+    alt: '確認台帳で、OPP袋が「依頼中」、プリンカップが「受け取った」になり、受け取った書類の欄に書類の種類・受領日・保管場所・条件が出た画面',
+  },
+  save: {
+    w: 1168,
+    h: 760,
+    alt: '台帳の保存の欄。「CSVを書き出す」「CSVを読み込む」「台帳をすべて消す」のボタン',
+  },
+} as const
+
+// Shown at half the pixel size: sharp on high-density screens, never
+// stretched past the size it was taken at.
+const size = (s: { w: number; h: number }) => ({
+  width: Math.round(s.w / 2),
+  height: Math.round(s.h / 2),
+})
+
+const toc = [
+  { id: 'prepare', label: '始める前に知っておくこと' },
+  { id: 'example', label: 'この記事の入力例' },
+  { id: 'add', label: '資材を台帳に入れる' },
+  { id: 'ledger', label: '台帳を見る・直す' },
+  { id: 'request', label: '仕入先に依頼する' },
+  { id: 'received', label: '書類を受け取ったら' },
+  { id: 'save', label: 'CSVで保存する・別のパソコンに移す' },
+  { id: 'trouble', label: 'うまくいかないとき' },
+]
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'ホーム',
+      item: new URL('/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: '無料ツール',
+      item: new URL('/tools/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: '容器包装のポジティブリスト確認台帳',
+      item: new URL(TOOL_PATH, Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 4,
+      name: '使い方',
+      item: new URL(Astro.url.pathname, Astro.site).href,
+    },
+  ],
+}
+---
+
+<Layout title={`${TITLE} | Mix-Juice`} description={DESCRIPTION}>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c')}
+    slot="head"
+  />
+  <div class="art-page">
+    <section class="art-hero">
+      <div class="art-hero-bg">
+        <div class="art-blob1"></div>
+        <div class="art-blob2"></div>
+      </div>
+      <div class="container">
+        <nav class="art-crumbs" aria-label="パンくずリスト">
+          <a href="/">ホーム</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href="/tools/">無料ツール</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href={TOOL_PATH}>容器包装のポジティブリスト確認台帳</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <span class="art-crumbs-current">使い方</span>
+        </nav>
+        <p class="art-label">HOW TO</p>
+        <h1 class="art-title">容器包装のポジティブリスト確認台帳の使い方</h1>
+        <p class="art-desc">
+          洋菓子店を例に、資材を台帳に入れてから、仕入先に書類を依頼し、受け取った書類を記録するまでの流れを画面つきで説明します。
+        </p>
+        <div class="howto-cta">
+          <a
+            class="btn btn-primary"
+            href={TOOL_PATH}
+            data-track-event="mix_cta_click"
+            data-track-surface="tool_howto"
+            data-track-cta-position="hero"
+            data-track-cta-id="howto_open_tool"
+            data-track-tool-id="packaging_pl_ledger"
+          >
+            ツールを開く
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="art-content">
+      <div class="container">
+        <article class="art-body howto">
+          <nav class="art-toc" aria-labelledby="howto-toc-title">
+            <p id="howto-toc-title" class="art-toc-title">
+              目次
+            </p>
+            <ol class="art-toc-list">
+              {toc.map((t) => (
+                <li>
+                  <a href={`#${t.id}`}>{t.label}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+
+          <h2 id="prepare">始める前に知っておくこと</h2>
+          <ul>
+            <li>
+              <strong>台帳は、このブラウザにだけ保存します。</strong>
+              事業者の情報と、台帳に追加した資材は、変更するたびに自動で保存します。次に同じパソコンの同じブラウザで開くと、続きから使えます。外部には送りません。「台帳に追加する」を押す前の入力欄の内容は保存しません。
+            </li>
+            <li>
+              <strong>控えはCSVで残します。</strong>
+              ブラウザのデータを消したり、別のパソコンやスマートフォンで開いたりすると、台帳は見られません。区切りのよいところで
+              <a href="#save">CSVを書き出して</a>
+              保管してください。
+            </li>
+            <li>
+              <strong>適合しているかどうかは判定しません。</strong>
+              仕入先から受け取った情報を記録し、まだ受け取っていない資材の依頼文を作るツールです。対象になる資材の目安は、ツールのページの
+              <a href={`${TOOL_PATH}#scope`}>対象になる資材の目安</a>
+              をご覧ください。
+            </li>
+          </ul>
+          <p>
+            手元に、仕入れている容器包装の一覧（納品書や発注書でもかまいません）と、仕入先から受け取った書類があると、入力が早く進みます。
+          </p>
+
+          <h2 id="example">この記事の入力例</h2>
+          <p>
+            架空の洋菓子店「洋菓子店ミックス」が、2つの仕入先から仕入れている4つの資材を台帳に入れる場合です。
+          </p>
+          <div class="art-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">品名</th>
+                  <th scope="col">仕入先</th>
+                  <th scope="col">材質</th>
+                  <th scope="col">食品に</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>OPP袋 100×150</td>
+                  <td>〇〇包材株式会社</td>
+                  <td>合成樹脂</td>
+                  <td>触れる</td>
+                </tr>
+                <tr>
+                  <td>紙カップ 7号</td>
+                  <td>△△紙器株式会社</td>
+                  <td>紙に樹脂の層がある</td>
+                  <td>触れる</td>
+                </tr>
+                <tr>
+                  <td>プリンカップ 90ml</td>
+                  <td>〇〇包材株式会社</td>
+                  <td>合成樹脂</td>
+                  <td>触れる</td>
+                </tr>
+                <tr>
+                  <td>ケーキ箱 4号</td>
+                  <td>△△紙器株式会社</td>
+                  <td>樹脂を使っていない</td>
+                  <td>触れない</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="add">資材を台帳に入れる</h2>
+
+          <h3>STEP 1　事業者の情報を入れる</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/business.webp`}
+              alt={shots.business.alt}
+              {...size(shots.business)}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            事業者名と、担当者・連絡先（任意）を入れます。ボタンはありません。入れた内容は台帳と依頼文に印刷されます。
+          </p>
+
+          <h3>STEP 2　資材を1つ入れる</h3>
+          <p>
+            「容器包装を台帳に入れる」の欄に、資材を1つずつ入れます。必ず入れるのは品名だけで、ほかは分かるところだけでかまいません。
+          </p>
+
+          <h4>1. どの資材ですか</h4>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/what.webp`}
+              alt={shots.what.alt}
+              {...size(shots.what)}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            品名は、仕入先との間で通じる名前（型番やサイズ）で入れます。仕入先を入れておくと、あとで仕入先ごとの依頼文を作れます。2件目からは、入れたことのある仕入先が入力の候補に出ます。
+          </p>
+          <p class="howto-point">
+            <strong>ポイント</strong>
+            依頼文は、仕入先の名前が同じ資材をまとめて作ります。「〇〇包材株式会社」と「〇〇包材」のように書き方が違うと、別の仕入先として扱われるので、候補から選んで書き方をそろえてください。
+          </p>
+
+          <h4>2. 食品に触れる部分の材質</h4>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/material.webp`}
+              alt={shots.material.alt}
+              {...size(shots.material)}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            材質と、食品に直接触れるかを選ぶと、下にポジティブリスト制度の対象についての説明が出ます。判定ではないので、最終的にはご自身で判断してください。材質が分からなければ「わからない」を選びます。依頼文で、材質もあわせて尋ねられます。
+          </p>
+
+          <h4>3. 仕入先からの情報</h4>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/status.webp`}
+              alt={shots.status.alt}
+              {...size(shots.status)}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            最初は「まだ依頼していない」が選ばれています。書類をすでに受け取っている資材は「受け取った」を選びます（入れ方は
+            <a href="#received">書類を受け取ったら</a>
+            ）。例のケーキ箱のように対象外と判断した資材は「対象外と判断した」を選び、理由をメモに残しておきます。
+          </p>
+
+          <h4>「台帳に追加する」を押す</h4>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/added.webp`}
+              alt={shots.added.alt}
+              {...size(shots.added)}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            押すと台帳に入り、入力欄は空に戻ります。入力しただけでは台帳に入らないので、1件ごとに押してください。同じように、残りの資材も入れていきます。
+          </p>
+
+          <h2 id="ledger">台帳を見る・直す</h2>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/ledger.webp`}
+              alt={shots.ledger.alt}
+              {...size(shots.ledger)}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            入れた資材は「容器包装の確認台帳」に並び、上に状況ごとの件数が出ます。「台帳を印刷する」を押すと、台帳の部分だけを印刷できます。
+          </p>
+
+          <h3>直す</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/editing.webp`}
+              alt={shots.editing.alt}
+              {...size(shots.editing)}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            台帳の行の右にある鉛筆のアイコンを押すと、その資材の内容が入力欄に戻り、見出しが「資材を編集する」に変わります。直したら「変更を保存する」を、直さずに戻るなら「編集をやめる」を押します。
+          </p>
+
+          <h3>消す</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/deleted.webp`}
+              alt={shots.deleted.alt}
+              {...size(shots.deleted)}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            ごみ箱のアイコンを押すと、確認なしですぐに消えます。間違えたときは、入力欄の下に出る「元に戻す」を押してください。ほかの資材を追加したり編集したりすると、「元に戻す」は消えます。
+          </p>
+
+          <h2 id="request">仕入先に依頼する</h2>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/request.webp`}
+              alt={shots.request.alt}
+              {...size(shots.request)}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <ol>
+            <li>
+              「仕入先への依頼文」で、仕入先を選びます。「まだ依頼していない」「依頼中」の資材が、仕入先ごとにまとまっています。
+            </li>
+            <li>
+              回答の期限を決めたいときは、「回答してほしい日」を入れます。依頼文に一文が加わります。
+            </li>
+            <li>
+              「依頼文を印刷する」を押すと、依頼文だけを印刷できます。メールで送るときは、印刷の画面で保存先を「PDFに保存」にします。
+            </li>
+            <li>
+              送ったら「送ったので「依頼中」にする」を押します。その仕入先の「まだ依頼していない」資材が「依頼中」になり、依頼した日に今日の日付が入ります。
+            </li>
+          </ol>
+          <p class="howto-point">
+            <strong>ポイント</strong>
+            返事を待つ資材は、鉛筆のアイコンで開いて「次に確認する日」を入れておくと、その日になったときに台帳でお知らせします。依頼した日と次に確認する日は、確認を進めている記録にもなります（ツールのページの
+            <a href={`${TOOL_PATH}#pending`}>
+              確認が終わっていない資材があるとき
+            </a>
+            ）。
+          </p>
+
+          <h2 id="received">書類を受け取ったら</h2>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/status-received.webp`}
+              alt={shots.statusReceived.alt}
+              {...size(shots.statusReceived)}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            台帳の鉛筆のアイコンでその資材を開き、「仕入先からの情報」を「受け取った」にします。書類の種類を選ぶ欄が出るので、受け取った書類に近いものを選びます（これだけは必須です）。受け取った日、書類の保管場所、書類に書かれた使用条件も入れておくと、あとで書類を探したり、使い方を確かめたりするときに役立ちます。最後に「変更を保存する」を押します。
+          </p>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/ledger-final.webp`}
+              alt={shots.ledgerFinal.alt}
+              {...size(shots.ledgerFinal)}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            「受け取った」「対象外と判断した」の資材は、依頼文には入りません。すべての資材がこのどちらかになれば、依頼が必要な資材はなくなります。
+          </p>
+
+          <h2 id="save">CSVで保存する・別のパソコンに移す</h2>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/save.webp`}
+              alt={shots.save.alt}
+              {...size(shots.save)}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <ul>
+            <li>
+              <strong>CSVを書き出す</strong>
+              ：「容器包装の確認台帳_日付.csv」がダウンロードされます。Excelでも開けます。事業者の情報はCSVに入らないので、別のパソコンでは入れ直してください。
+            </li>
+            <li>
+              <strong>CSVを読み込む</strong>
+              ：書き出したCSVを選ぶと、その内容で台帳を作り直します。今の台帳に追加するのではなく置き換えるので、台帳に資材があるときは確認が出ます。Excelで開いて上書き保存したCSVも読み込めます。
+            </li>
+            <li>
+              <strong>台帳をすべて消す</strong>
+              ：確認のあと、台帳と事業者の情報をこのブラウザから消します。消した直後なら「元に戻す」で戻せますが、ページを離れると戻せません。
+            </li>
+          </ul>
+
+          <h2 id="trouble">うまくいかないとき</h2>
+
+          <h3>次に開いたら、台帳が消えていた</h3>
+          <p>
+            別のブラウザ・別のパソコンで開いているか、ブラウザのデータ（閲覧履歴やCookieなど）が消えた可能性があります。書き出しておいたCSVを読み込めば元に戻ります。プライベートブラウズなど自動で保存できないときは、「台帳の保存」の欄にその旨が出るので、閉じる前にCSVを書き出してください。
+          </p>
+
+          <h3>依頼文に、資材が出てこない</h3>
+          <p>
+            依頼文に入るのは、仕入先が入っていて、状況が「まだ依頼していない」か「依頼中」の資材です。仕入先が空の資材があると、依頼文の欄にその件数が出るので、鉛筆のアイコンで仕入先を入れてください。
+          </p>
+
+          <h3>同じ仕入先なのに、依頼文が分かれる</h3>
+          <p>
+            仕入先の名前の書き方が違うと、別の仕入先として扱います。鉛筆のアイコンで開いて、書き方をそろえてください。
+          </p>
+
+          <h3>「送ったので「依頼中」にする」のボタンがない</h3>
+          <p>
+            選んでいる仕入先の資材が、すべて「依頼中」になっていると出ません。もう一度依頼するときは、依頼文を印刷して送るだけでかまいません。依頼文の備考に、最初に依頼した日が入ります。
+          </p>
+
+          <h3>状況を変えたら、入れた値が消えた</h3>
+          <p>
+            状況ごとに出る欄が違い、保存するときは、選んだ状況で出ている欄の値だけを残します。たとえば「依頼中」から「受け取った」に変えると、「次に確認する日」は消えます。
+          </p>
+
+          <h3>「入力が足りない項目があります」と出る</h3>
+          <p>
+            品名が空か、「受け取った」なのに書類の種類を選んでいないときに出ます。項目の文字を押すと、その欄に移動します。
+          </p>
+
+          <div class="howto-cta howto-cta-end">
+            <a
+              class="btn btn-primary"
+              href={TOOL_PATH}
+              data-track-event="mix_cta_click"
+              data-track-surface="tool_howto"
+              data-track-cta-position="end"
+              data-track-cta-id="howto_open_tool"
+              data-track-tool-id="packaging_pl_ledger"
+            >
+              ツールを開いて台帳を作る
+            </a>
+          </div>
+        </article>
+
+        <div class="art-back">
+          <a href="/tools/">← 無料ツール一覧へ</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Keep words together when the title wraps on phones (Chromium; other
+     browsers break as before). */
+  .art-title {
+    word-break: auto-phrase;
+  }
+
+  .howto-cta {
+    margin-top: 20px;
+  }
+
+  .howto-cta-end {
+    margin-top: 36px;
+    text-align: center;
+  }
+
+  /* .art-body a underlines links; buttons keep their own look. */
+  .art-body .howto-cta a.btn {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .howto-shot {
+    margin: 16px 0;
+  }
+
+  /* Shown at the width/height attributes (half the pixel size). */
+  .howto-shot img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+  }
+
+  .art-body h4 {
+    margin: 24px 0 10px;
+    font-size: 1.05rem;
+  }
+
+  .howto-point {
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: var(--color-bg-alt);
+  }
+
+  .howto-point strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--color-accent-text);
+  }
+</style>
