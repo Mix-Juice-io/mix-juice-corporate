@@ -205,6 +205,11 @@
   margin: 28px 0 12px;
 }
 
+.art-body h4 {
+  font-size: 1.05rem;
+  margin: 24px 0 10px;
+}
+
 .art-body p {
   margin: 14px 0;
 }
@@ -227,6 +232,24 @@
 .art-body img {
   border-radius: 16px;
   margin: 20px 0;
+}
+
+/* Screenshots in articles: framed so light UI does not blend into the page. */
+.art-body figure {
+  margin: 20px 0;
+}
+
+.art-body figure img {
+  display: block;
+  margin: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+.art-body figcaption {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
 }
 
 .art-body blockquote {
