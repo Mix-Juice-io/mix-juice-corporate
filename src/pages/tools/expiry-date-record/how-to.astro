@@ -1,0 +1,511 @@
+---
+import Layout from '../../../layouts/Layout.astro'
+import '../../../styles/articles.css'
+
+const TITLE =
+  '賞味期限・消費期限の記録票ツールの使い方｜入力例と画面つきで手順を解説'
+const DESCRIPTION =
+  '賞味期限・消費期限の設定根拠を記録票にまとめる無料ツールの使い方を、焼きプリンの入力例と画面つきで説明します。保存試験の結果と安全係数の入れ方から、記録票の印刷・PDF保存までの手順です。'
+
+const TOOL_PATH = '/tools/expiry-date-record/'
+const IMG = '/tools/expiry-date-record/how-to'
+
+// Screenshots are taken at 2x; width/height are the image's pixel size and
+// CSS shows it at half that.
+const shots = {
+  exemption: {
+    w: 1084,
+    h: 491,
+    alt: '期限の表示を省略できる品目に当たるかの質問で、「どれにも当たらない」を選んだ画面',
+  },
+  product: {
+    w: 1084,
+    h: 1328,
+    alt: '商品名「焼きプリン」、表示する期限は消費期限、保存方法「要冷蔵（10℃以下で保存）」を入れた画面',
+  },
+  basis: {
+    w: 1084,
+    h: 525,
+    alt: '期限の根拠にする試験の質問で、「この商品で試験した」を選んだ画面',
+  },
+  tests: {
+    w: 1084,
+    h: 2223,
+    alt: '期間の単位に「日」を選び、微生物試験（一般生菌数、6日）と官能検査（風味・食感、5日）の2つを入れ、下に「試験で確かめた期間：5日」と表示された画面',
+  },
+  margin: {
+    w: 1084,
+    h: 1118,
+    alt: '期限の決め方で「1未満の係数（安全係数）をかける」を選び、安全係数0.8と、その値にした理由を入れた画面',
+  },
+  record: {
+    w: 1084,
+    h: 506,
+    alt: '製造日に2026年11月2日、設定した人・部署に「製造担当 山田」を入れた画面',
+  },
+  'result-sheet': {
+    w: 1084,
+    h: 1767,
+    alt: '「消費期限の期間は4日です」の見出しと、商品名・試験・期限の決め方・設定した期間・期限の日の例などが並んだ記録票',
+  },
+  'error-summary': {
+    w: 1084,
+    h: 434,
+    alt: '「入力が足りない項目があります」と、足りない項目の一覧が赤い枠で表示された画面',
+  },
+} as const
+
+const toc = [
+  { id: 'prepare', label: '始める前に用意するもの' },
+  { id: 'example', label: 'この記事の入力例' },
+  { id: 'steps', label: '入力の手順' },
+  { id: 'result', label: '記録票を作って残す' },
+  { id: 'trouble', label: 'うまくいかないとき' },
+]
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'ホーム',
+      item: new URL('/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: '無料ツール',
+      item: new URL('/tools/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: '期限表示の設定根拠の記録票',
+      item: new URL(TOOL_PATH, Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 4,
+      name: '使い方',
+      item: new URL(Astro.url.pathname, Astro.site).href,
+    },
+  ],
+}
+---
+
+<Layout title={`${TITLE} | Mix-Juice`} description={DESCRIPTION}>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c')}
+    slot="head"
+  />
+  <div class="art-page">
+    <section class="art-hero">
+      <div class="art-hero-bg">
+        <div class="art-blob1"></div>
+        <div class="art-blob2"></div>
+      </div>
+      <div class="container">
+        <nav class="art-crumbs" aria-label="パンくずリスト">
+          <a href="/">ホーム</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href="/tools/">無料ツール</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href={TOOL_PATH}>期限表示の設定根拠の記録票</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <span class="art-crumbs-current">使い方</span>
+        </nav>
+        <p class="art-label">HOW TO</p>
+        <h1 class="art-title">賞味期限・消費期限の記録票ツールの使い方</h1>
+        <p class="art-desc">
+          焼きプリンを例に、試験の結果から期限を計算して、記録票を印刷するまでの手順を画面つきで説明します。試験の結果が手元にあれば、入力は5分ほどです。
+        </p>
+        <div class="howto-cta">
+          <a
+            class="btn btn-primary"
+            href={TOOL_PATH}
+            data-track-event="mix_cta_click"
+            data-track-surface="tool_howto"
+            data-track-cta-position="hero"
+            data-track-cta-id="howto_open_tool"
+            data-track-tool-id="expiry_date_record"
+          >
+            ツールを開く
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="art-content">
+      <div class="container">
+        <article class="art-body howto">
+          <nav class="art-toc" aria-labelledby="howto-toc-title">
+            <p id="howto-toc-title" class="art-toc-title">
+              目次
+            </p>
+            <ol class="art-toc-list">
+              {toc.map((t) => (
+                <li>
+                  <a href={`#${t.id}`}>{t.label}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+
+          <h2 id="prepare">始める前に用意するもの</h2>
+          <ul>
+            <li>
+              <strong>保存試験の結果</strong>
+              ：試験ごとに、試験の種類（微生物試験・理化学試験・官能検査）、指標、基準と、基準を満たした最後の日数（時間）。検査機関の成績書や、社内の記録です。
+            </li>
+            <li>
+              <strong>期限の決め方</strong>
+              ：安全係数をかけるか、日数を差し引くか、どちらも使わないか。使う場合は、その値と理由。ツールは値を示しません。
+            </li>
+            <li>
+              <strong>製造日</strong>
+              （任意）：入れると、期限が何日になるかの例を記録票に書きます。
+            </li>
+          </ul>
+          <p>
+            入力した内容は送信も保存もしません。ページを閉じたり再読み込みしたりすると消えるので、記録票は印刷するか、PDFで保存してください。
+          </p>
+
+          <h2 id="example">この記事の入力例</h2>
+          <p>
+            架空の洋菓子店「洋菓子店ミックス」が、冷蔵で売る焼きプリンの消費期限を決める場合です。2つの試験をしました。
+          </p>
+          <div class="art-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">試験</th>
+                  <th scope="col">指標</th>
+                  <th scope="col">基準</th>
+                  <th scope="col">基準を満たした期間</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>微生物試験</td>
+                  <td>一般生菌数</td>
+                  <td>1g当たり10万以下</td>
+                  <td>6日</td>
+                </tr>
+                <tr>
+                  <td>官能検査</td>
+                  <td>風味・食感</td>
+                  <td>製造当日と差がない</td>
+                  <td>5日</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            基準・期間・安全係数（0.8）は、説明のために決めた架空の値です。この値を使えばよいという目安ではありません。
+          </p>
+
+          <h2 id="steps">入力の手順</h2>
+          <p>
+            ツールの質問に、上から順に答えます。答えに合わせて次の質問が出てきます。番号はツールの画面と同じです。
+          </p>
+
+          <h3>1. 期限の表示を省略できる品目か</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/exemption.webp`}
+              alt={shots.exemption.alt}
+              width={shots.exemption.w}
+              height={shots.exemption.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            一覧の品目に当たらなければ「どれにも当たらない」を選びます。ほとんどの食品はこちらです。ここを選ぶと、2.以降の質問が出てきます。
+          </p>
+          <p>
+            一覧の品目に当たる場合は「次の品目に当たる」を選んで「記録票を作る」を押すと、期限の表示を省略できるという結果が出ます。この場合、記録票は作りません。
+          </p>
+
+          <h3>2. 商品と表示する期限</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/product.webp`}
+              alt={shots.product.alt}
+              width={shots.product.w}
+              height={shots.product.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <ul>
+            <li>
+              <strong>表示する期限</strong>
+              ：消費期限か賞味期限かは、日数ではなく食品の特性で選びます。違いはツールのページの
+              <a href={`${TOOL_PATH}#rules`}>表示のルール</a>
+              で説明しています。
+            </li>
+            <li>
+              <strong>保存方法</strong>
+              ：商品に表示する保存方法を入れます。
+            </li>
+            <li>
+              <strong>想定した温度・湿度</strong>
+              （任意）：常温で保存する食品は、期限を決めるときに想定した温度や湿度を、保存方法に書き添えることが望ましいとされています。入れると、記録票の保存方法の欄に並べて書きます。例のプリンは冷蔵なので空けています。
+            </li>
+          </ul>
+
+          <h3>3. 期限の根拠にする試験</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/basis.webp`}
+              alt={shots.basis.alt}
+              width={shots.basis.w}
+              height={shots.basis.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <ul>
+            <li>
+              <strong>この商品で試験した</strong>
+              ：例のプリンはこちらです。
+            </li>
+            <li>
+              <strong>特性が似ている食品の試験結果を参考にした</strong>
+              ：参考にした食品と、似ていると考えた理由を入れる欄が出ます。どちらも記録票に書きます。試験の結果は、参考にした食品のものを入れます。
+            </li>
+            <li>
+              <strong>まだ試験していない</strong>
+              ：4.以降の質問は出ません。「記録票を作る」を押すと、期限の根拠になる試験の結果が必要だという案内が出ます。
+            </li>
+          </ul>
+
+          <h3>4. 試験の結果</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/tests.webp`}
+              alt={shots.tests.alt}
+              width={shots.tests.w}
+              height={shots.tests.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <ol>
+            <li>
+              期間の単位を選びます。ふつうは「日」、弁当のように時間で確かめた場合は「時間」です。
+            </li>
+            <li>
+              試験ごとに、試験の種類・指標・基準・基準を満たした期間を入れます。試験の条件は任意です。2つ目からは「試験を追加」を押します。
+            </li>
+            <li>
+              欄の下に「試験で確かめた期間」が出ます。試験を複数入れると、いちばん短い期間を使います。例では微生物試験の6日より短い、官能検査の5日です。
+            </li>
+          </ol>
+          <p class="howto-point">
+            <strong>ポイント</strong>
+            期間には、基準を満たした最後の日数を入れます。例えば5日目までは基準を満たし、6日目に満たさなくなったなら「5」です。
+          </p>
+
+          <h3>5. 期限はどう決めますか</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/margin.webp`}
+              alt={shots.margin.alt}
+              width={shots.margin.w}
+              height={shots.margin.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <ul>
+            <li>
+              <strong>1未満の係数（安全係数）をかける</strong>
+              ：0より大きく1より小さい数を入れます。かけた結果に小数があれば、切り捨てます。
+            </li>
+            <li>
+              <strong>確かめた期間から、日数（時間）を差し引く</strong>
+              ：試験で確かめた期間より短い数を入れます。
+            </li>
+            <li>
+              <strong>安全係数は使わない</strong>
+              ：試験で確かめた期間を、そのまま期限にします。
+            </li>
+          </ul>
+          <p class="howto-point">
+            <strong>ポイント</strong>
+            「その値にした理由」は任意ですが、記録票に残るので書いておくと、あとで説明しやすくなります。安全係数「0.8以上」の目安は2025年3月になくなりました。考え方はツールのページの
+            <a href={`${TOOL_PATH}#how`}>期限の決め方</a>
+            で説明しています。
+          </p>
+
+          <h3>6. 記録票に書く情報</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/record.webp`}
+              alt={shots.record.alt}
+              width={shots.record.w}
+              height={shots.record.h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            どちらも任意です。製造日を入れると、記録票に期限の日の例を書きます。製造日を1日目として数えます。設定した人・部署は、記録票の担当者の欄に入ります。
+          </p>
+
+          <h2 id="result">記録票を作って残す</h2>
+          <p>
+            入力が終わったら「記録票を作る」を押します。同じ画面の下に、結果と記録票が出ます。
+          </p>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/result-sheet.webp`}
+              alt={shots['result-sheet'].alt}
+              width={shots['result-sheet'].w}
+              height={shots['result-sheet'].h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            例では、試験で確かめた5日に0.8をかけて4日です。計算の式も記録票に書きます。製造日を11月2日とすると、期限は11月5日です。
+          </p>
+          <ul>
+            <li>
+              <strong>印刷する</strong>
+              ：結果の下の「記録票を印刷する」を押すと、入力欄や説明を除いて、結果と記録票を印刷できます。
+            </li>
+            <li>
+              <strong>PDFで保存する</strong>
+              ：印刷の画面で、送信先（プリンター）を「PDFに保存」などに切り替えて保存します。
+            </li>
+          </ul>
+          <p>
+            期限を設定した根拠の資料は、整えて保管し、求められたときに説明できるよう努めることとされています。記録票の下の「あわせて確認すること」もあわせて読んでください。別の商品の記録票を作るときは、「最初から入力し直す」を押すと、入力がすべて消えて最初に戻ります。
+          </p>
+
+          <h2 id="trouble">うまくいかないとき</h2>
+
+          <h3>「入力が足りない項目があります」と出る</h3>
+          <figure class="howto-shot">
+            <img
+              src={`${IMG}/error-summary.webp`}
+              alt={shots['error-summary'].alt}
+              width={shots['error-summary'].w}
+              height={shots['error-summary'].h}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <p>
+            必須の欄が空いていると、フォームの上にまとめて出ます。項目の文字を押すと、その欄に移動します。
+          </p>
+
+          <h3>2.以降の質問が出てこない</h3>
+          <p>
+            1.で「どれにも当たらない」を選ぶと出てきます。4.〜6.は、3.で「この商品で試験した」か「特性が似ている食品の試験結果を参考にした」を選ぶと出てきます。
+          </p>
+
+          <h3>「記録票を印刷する」ボタンがない</h3>
+          <p>
+            記録票を作ったときだけ出ます。1.で「次の品目に当たる」を選んだ場合や、3.で「まだ試験していない」を選んだ場合は、記録票を作らないので出ません。
+          </p>
+
+          <h3>「係数をかけると期間が1未満になります」と出る</h3>
+          <p>
+            試験で確かめた期間が短いと、係数をかけて切り捨てたときに0になります。期間を時間で入れ直すか、決め方を見直してください。
+          </p>
+
+          <h3>期限の日の例が記録票に出ない</h3>
+          <p>
+            製造日を入れたときだけ出ます。期間の単位が「時間」の場合は、日付を計算しないので出ません。
+          </p>
+
+          <h3>入力を直したのに、記録票が変わらない</h3>
+          <p>
+            記録票は自動では更新されません。入力を直したら、もう一度「記録票を作る」を押してください。
+          </p>
+
+          <div class="howto-cta howto-cta-end">
+            <a
+              class="btn btn-primary"
+              href={TOOL_PATH}
+              data-track-event="mix_cta_click"
+              data-track-surface="tool_howto"
+              data-track-cta-position="end"
+              data-track-cta-id="howto_open_tool"
+              data-track-tool-id="expiry_date_record"
+            >
+              ツールを開いて記録票を作る
+            </a>
+          </div>
+        </article>
+
+        <div class="art-back">
+          <a href="/tools/">← 無料ツール一覧へ</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Keep words together when the title wraps on phones (Chromium; other
+     browsers break as before). */
+  .art-title {
+    word-break: auto-phrase;
+  }
+
+  .howto-cta {
+    margin-top: 20px;
+  }
+
+  .howto-cta-end {
+    margin-top: 36px;
+    text-align: center;
+  }
+
+  /* .art-body a underlines links; buttons keep their own look. */
+  .art-body .howto-cta a.btn {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  /* Screenshots are 2x; show them at their natural size, never stretched. */
+  .howto-shot {
+    margin: 16px 0;
+  }
+
+  .howto-shot img {
+    display: block;
+    width: 542px;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+  }
+
+  .howto-point {
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: var(--color-bg-alt);
+  }
+
+  .howto-point strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--color-accent-text);
+  }
+</style>

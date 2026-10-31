@@ -1,0 +1,380 @@
+---
+import Layout from '../../../layouts/Layout.astro'
+import PackagingLedger from '../../../components/tools/PackagingLedger.tsx'
+import { getPublishedArticles, formatDate } from '../../../lib/articles'
+import { CHECKED_ON, SOURCES } from '../../../lib/packaging-ledger/sources'
+import { FLABEL_APP_URL } from '../../../lib/urls'
+import '../../../styles/articles.css'
+
+const TITLE =
+  '容器包装のポジティブリスト確認台帳｜仕入先の適合証明書を記録し、依頼文を作成'
+const DESCRIPTION =
+  '食品用容器包装のポジティブリスト制度（2025年6月完全施行）に向けて、仕入先から受け取った適合証明書などの書類を資材ごとに記録し、まだ受け取っていない資材の依頼文を作る無料ツールです。適合しているかどうかの判定はしません。'
+
+const checkedOn = formatDate(new Date(`${CHECKED_ON}T00:00:00Z`))
+
+// Articles that explain the same rules in more depth.
+const RELATED_IDS = [
+  'shopify-food-sales-complete-guide',
+  'food-labeling-complete-guide',
+]
+const articles = await getPublishedArticles()
+const related = RELATED_IDS.map((id) =>
+  articles.find((a) => a.id === id),
+).filter((a) => a !== undefined)
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'ホーム',
+      item: new URL('/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: '無料ツール',
+      item: new URL('/tools/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: '容器包装のポジティブリスト確認台帳',
+      item: new URL(Astro.url.pathname, Astro.site).href,
+    },
+  ],
+}
+---
+
+<Layout title={`${TITLE} | Mix-Juice`} description={DESCRIPTION}>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c')}
+    slot="head"
+  />
+  <div class="art-page">
+    <section class="art-hero">
+      <div class="art-hero-bg">
+        <div class="art-blob1"></div>
+        <div class="art-blob2"></div>
+      </div>
+      <div class="container">
+        <nav class="art-crumbs" aria-label="パンくずリスト">
+          <a href="/">ホーム</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href="/tools/">無料ツール</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <span class="art-crumbs-current">
+            容器包装のポジティブリスト確認台帳
+          </span>
+        </nav>
+        <p class="art-label">FREE TOOL</p>
+        <h1 class="art-title">
+          容器包装のポジティブリスト、書類はそろっている？
+        </h1>
+        <p class="art-desc">
+          仕入れている容器包装ごとに、仕入先から受け取った適合証明書などの書類を記録します。まだ受け取っていない資材は、仕入先ごとに依頼文にまとめて印刷できます。
+        </p>
+        <p class="tool-meta">
+          食品衛生法、消費者庁「器具及び容器包装のポジティブリスト制度に関するＱ＆Ａ」（令和8年6月）などにもとづく
+          ／ 最終確認日：{checkedOn}
+        </p>
+        <p class="tool-howto">
+          <a
+            href="/tools/packaging-positive-list-ledger/how-to/"
+            data-track-event="mix_cta_click"
+            data-track-surface="tool_hero"
+            data-track-cta-position="hero"
+            data-track-cta-id="tool_howto"
+            data-track-tool-id="packaging_pl_ledger"
+          >
+            使い方を見る（入力例と画面つき）→
+          </a>
+        </p>
+      </div>
+    </section>
+
+    <section class="art-content">
+      <div class="container">
+        <noscript>
+          <p class="tool-noscript">
+            この台帳は、JavaScriptを使って作ります。ブラウザでJavaScriptを有効にするか、下の「制度のしくみ」をご覧ください。
+          </p>
+        </noscript>
+
+        <PackagingLedger client:load />
+
+        <article class="art-body tool-guide" data-print="hide">
+          <h2 id="about">このツールについて</h2>
+          <ul>
+            <li>
+              食品衛生法・食品衛生法施行規則と、消費者庁のＱ＆A・通知にもとづいています。
+            </li>
+            <li>
+              容器包装が適合しているかどうかは判定しません。適合していることを説明するのは、容器包装を販売する事業者です。判断に迷う資材は、仕入先や、営業許可を受けた保健所に相談してください。
+            </li>
+            <li>
+              入力した内容は、お使いのブラウザにだけ保存し、外部には送りません。ページの閲覧やツールの利用回数は、Googleアナリティクスで計測しています。
+            </li>
+          </ul>
+
+          <h2 id="system">制度のしくみ</h2>
+          <h3>リストに載った物質しか使えません</h3>
+          <p>
+            食品用の器具・容器包装に使う合成樹脂は、国が定めたリスト（ポジティブリスト）に載っている物質しか使えません。2020年6月に始まった制度で、5年間の経過措置が2025年5月31日に終わりました。
+          </p>
+          <p>
+            例外として、食品に触れない層の物質で、人の健康を損なうおそれのない量を超えて食品に溶け出さないよう加工されている場合は、リストに載っていなくても使えます。
+          </p>
+
+          <h3>誰が何をするのか</h3>
+          <ul>
+            <li>
+              <strong>容器包装を販売・製造・輸入する事業者（義務）</strong>
+              ：販売先に、リストに適合していることを説明しなければなりません。説明する容器包装を特定して、確認できる情報を伝え、内容が変わったときは速やかに伝えます。
+            </li>
+            <li>
+              <strong>容器包装の原材料のメーカー（努力義務）</strong>
+              ：容器包装のメーカーから確認を求められたら、必要な説明をするよう努めます。
+            </li>
+            <li>
+              <strong>食品事業者（禁止）</strong>
+              ：規格に合わない容器包装を、営業で使ってはいけません。事業の規模による免除は見当たりません。仕入先から受け取った情報は、記録や保存によって、後から確認できるようにしておく必要があるとされています。
+            </li>
+          </ul>
+
+          <h3>書類の様式は決まっていません</h3>
+          <p>
+            伝える方法は定められていません。伝えるのは適合を確認できる情報で、個別の物質名の開示までは必ずしも必要ないとされています。契約時の仕様書、入荷時の品質保証書、業界団体の確認証明書なども使えると考えられています。
+          </p>
+
+          <h2 id="scope">対象になる資材の目安</h2>
+          <ul>
+            <li>
+              <strong>対象</strong>
+              ：合成樹脂（プラスチックと熱可塑性エラストマー）。カップ、フタ、フィルム、袋、トレー、ラップ、バランなど。
+            </li>
+            <li>
+              <strong>層が重なる資材</strong>
+              ：食品に触れる層が合成樹脂なら、その層は対象です（紙コップの内側の樹脂層、缶の内面塗装など）。食品に触れる層が紙などで、その外側に樹脂の層がある場合は、その樹脂の層は対象外です。
+            </li>
+            <li>
+              <strong>対象外</strong>
+              ：紙、木、ガラス、陶磁器、金属、ゴムなど合成樹脂ではない材質。着色の目的だけに使う着色料。通常の使い方で食品に触れない部分（食品が直接触れないように使うトレーなど）。
+            </li>
+          </ul>
+          <p>
+            対象外の資材も、器具・容器包装の一般の規格は守る必要があり、事業者が自らの責任で安全性を確保します。
+          </p>
+
+          <h2 id="pending">確認が終わっていない資材があるとき</h2>
+          <p>
+            2020年6月より前から使われていた容器包装と同様のものについて、2025年6月1日までに確認が間に合わない場合の考え方が、消費者庁のＱ＆Aで示されています。確認に向けた具体的な計画を立てて速やかに進め、適合しないと分かったら、適合するものに速やかに切り替えます。
+          </p>
+          <p>
+            台帳の「依頼した日」と「次に確認する日」を、その計画の記録に使えます。次に確認する日を過ぎた資材は、台帳でお知らせします。
+          </p>
+
+          <h2 id="faq">よくある疑問</h2>
+          <h3>小さなお店でも必要ですか</h3>
+          <p>
+            規格に合わない容器包装を営業で使えないのは、事業の規模にかかわりません。小規模な事業者を免除する定めは見当たりませんでした。
+          </p>
+          <h3>書類はどのくらい保存しますか</h3>
+          <p>
+            食品事業者が受け取った情報の保存期間の定めは見当たりませんでした。後から確認できるようにしておく必要があるため、その資材を使っている間は、すぐに取り出せる場所に保管しておきましょう。
+          </p>
+          <h3>2020年より前から同じ容器を使っています</h3>
+          <p>
+            2020年6月1日より前に製造・販売などされた容器包装は、制度が始まる前の規制のままです。経過措置の期間に製造などされた「同様のもの」は、リストに適合しているとみなされます。ただし、2025年6月1日以降に製造・輸入する容器包装には、リストに載った物質を使う必要があります。今仕入れている容器がいつ作られたものかは、仕入先に確認しましょう。
+          </p>
+          <h3>仕入先から返事がありません</h3>
+          <p>
+            容器包装を販売する事業者には、販売先に説明する義務があります。依頼した日を記録して改めて依頼し、それでも情報が得られない場合は、保健所に相談するか、ほかの資材への切り替えを検討しましょう。
+          </p>
+          <h3>食品表示も確認したい</h3>
+          <p>
+            栄養成分表示が必要かどうかは
+            <a href="/tools/nutrition-labeling-check/">
+              栄養成分表示の要否チェック
+            </a>
+            で、原料原産地は
+            <a href="/tools/origin-labeling-check/">原料原産地表示のチェック</a>
+            で、期限の決め方は
+            <a href="/tools/expiry-date-record/">期限表示の設定根拠の記録票</a>
+            で確認できます。
+          </p>
+
+          <h2 id="sources">参考情報</h2>
+          <ul>
+            {Object.entries(SOURCES).map(([, source]) => (
+              <li>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-describedby="new-tab-note"
+                >
+                  {source.title}
+                </a>
+                （{source.publisher}）：{source.sections}
+              </li>
+            ))}
+          </ul>
+          <p>最終確認日：{checkedOn}</p>
+        </article>
+
+        <aside
+          class="art-flabel"
+          aria-labelledby="tool-flabel-title"
+          data-print="hide"
+        >
+          <img
+            class="art-flabel-icon"
+            src="/f-label.webp"
+            alt="Fラベル"
+            width="1200"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="art-flabel-body">
+            <p class="art-flabel-badge">Shopify App</p>
+            <h2 id="tool-flabel-title" class="art-flabel-title">
+              ネットショップの食品表示は「Fラベル」で
+            </h2>
+            <p class="art-flabel-desc">
+              原材料・添加物・アレルゲン・栄養成分をまとめて管理し、Shopifyの商品ページに食品表示を掲載できるアプリです。原材料マスターの再利用とCSVインポートで、登録・更新の手間を減らせます。
+            </p>
+            <div class="art-flabel-cta">
+              <a
+                class="btn btn-primary"
+                href={FLABEL_APP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-describedby="new-tab-note"
+                data-track-event="mix_outbound_shopify_app,mix_cta_click"
+                data-track-surface="tool_flabel_box"
+                data-track-cta-position="tool_end"
+                data-track-cta-id="tool_flabel_install"
+                data-track-tool-id="packaging_pl_ledger"
+              >
+                Shopifyアプリストアで見る
+              </a>
+              <a
+                class="btn btn-outline"
+                href="/service/f-label/"
+                data-track-event="mix_cta_click"
+                data-track-surface="tool_flabel_box"
+                data-track-cta-position="tool_end"
+                data-track-cta-id="tool_flabel_detail"
+                data-track-tool-id="packaging_pl_ledger"
+              >
+                Fラベルの詳細を見る
+              </a>
+            </div>
+          </div>
+        </aside>
+
+        {related.length > 0 && (
+          <section class="art-related" data-print="hide">
+            <h2 class="art-related-title">関連記事</h2>
+            <div class="art-related-grid">
+              {related.map((r) => (
+                <a class="art-related-card reveal" href={`/articles/${r.id}/`}>
+                  <div class="art-card-meta">
+                    {r.data.category && (
+                      <span class="art-card-cat">{r.data.category}</span>
+                    )}
+                    <time datetime={r.data.publishDate.toISOString()}>
+                      {formatDate(r.data.publishDate)}
+                    </time>
+                  </div>
+                  <h3 class="art-related-card-title">{r.data.title}</h3>
+                  <span class="art-card-more">記事を読む →</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <div class="art-back" data-print="hide">
+          <a href="/tools/">← 無料ツール一覧へ</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Keep words together when the title wraps on phones (Chromium; other
+     browsers break as before). */
+  .art-title {
+    word-break: auto-phrase;
+  }
+
+  .tool-meta {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .tool-howto {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .tool-howto a {
+    color: var(--color-accent-text);
+  }
+
+  .tool-noscript {
+    max-width: 760px;
+    margin: 0 auto 20px;
+    padding: 14px 18px;
+    border: 1px solid var(--color-primary);
+    border-radius: 12px;
+    background: #fff6f1;
+    color: var(--color-text);
+  }
+
+  .tool-guide {
+    margin-top: 32px;
+  }
+
+  /* Articles open with a table of contents; here the first block is a
+     heading, so drop its top margin to match the card padding. */
+  .tool-guide > h2:first-child {
+    margin-top: 0;
+  }
+</style>
+
+<style is:global>
+  /* Print only the ledger or the request letter: the site chrome, form, and
+     explanations are marked data-print="hide" or are the shared header and
+     footer. */
+  @media print {
+    body > header,
+    body > footer,
+    .art-hero,
+    [data-print='hide'] {
+      display: none !important;
+    }
+
+    body {
+      background: #fff;
+    }
+
+    .art-page {
+      padding-top: 0;
+    }
+  }
+</style>

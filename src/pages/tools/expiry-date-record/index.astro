@@ -1,0 +1,359 @@
+---
+import Layout from '../../../layouts/Layout.astro'
+import ExpiryRecord from '../../../components/tools/ExpiryRecord.tsx'
+import { getPublishedArticles, formatDate } from '../../../lib/articles'
+import { EXEMPT_ITEMS } from '../../../lib/expiry-record/rules'
+import { CHECKED_ON, SOURCES } from '../../../lib/expiry-record/sources'
+import { FLABEL_APP_URL } from '../../../lib/urls'
+import '../../../styles/articles.css'
+
+const TITLE = '賞味期限・消費期限の決め方｜試験結果から計算して根拠を記録'
+const DESCRIPTION =
+  '食品の賞味期限・消費期限を、保存試験の結果と自社で決めた安全係数から計算し、設定の根拠を記録票にまとめる無料ツールです。2025年3月の消費者庁ガイドライン（安全係数「0.8以上」の目安の削除）にもとづいています。'
+
+const checkedOn = formatDate(new Date(`${CHECKED_ON}T00:00:00Z`))
+
+// Articles that explain the same rules in more depth.
+const RELATED_IDS = [
+  'food-labeling-complete-guide',
+  'shopify-food-sales-complete-guide',
+  'food-labeling-copy-paste-risks',
+]
+const articles = await getPublishedArticles()
+const related = RELATED_IDS.map((id) =>
+  articles.find((a) => a.id === id),
+).filter((a) => a !== undefined)
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'ホーム',
+      item: new URL('/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: '無料ツール',
+      item: new URL('/tools/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: '期限表示の設定根拠の記録票',
+      item: new URL(Astro.url.pathname, Astro.site).href,
+    },
+  ],
+}
+---
+
+<Layout title={`${TITLE} | Mix-Juice`} description={DESCRIPTION}>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c')}
+    slot="head"
+  />
+  <div class="art-page">
+    <section class="art-hero">
+      <div class="art-hero-bg">
+        <div class="art-blob1"></div>
+        <div class="art-blob2"></div>
+      </div>
+      <div class="container">
+        <nav class="art-crumbs" aria-label="パンくずリスト">
+          <a href="/">ホーム</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href="/tools/">無料ツール</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <span class="art-crumbs-current">期限表示の設定根拠の記録票</span>
+        </nav>
+        <p class="art-label">FREE TOOL</p>
+        <h1 class="art-title">賞味期限・消費期限、どう決める？</h1>
+        <p class="art-desc">
+          保存試験の結果と、自社で決めた安全係数から期限を計算し、設定の根拠を記録票にまとめます。保健所や取引先に期限の根拠を説明するときの資料に使えます。
+        </p>
+        <p class="tool-meta">
+          消費者庁「食品期限表示の設定のためのガイドライン」（令和7年3月）などにもとづく
+          ／ 最終確認日：{checkedOn}
+        </p>
+        <p class="tool-howto">
+          <a
+            href="/tools/expiry-date-record/how-to/"
+            data-track-event="mix_cta_click"
+            data-track-surface="tool_hero"
+            data-track-cta-position="hero"
+            data-track-cta-id="tool_howto"
+            data-track-tool-id="expiry_date_record"
+          >
+            使い方を見る（入力例と画面つき）→
+          </a>
+        </p>
+      </div>
+    </section>
+
+    <section class="art-content">
+      <div class="container">
+        <noscript>
+          <p class="tool-noscript">
+            この記録票は、JavaScriptを使って作ります。ブラウザでJavaScriptを有効にするか、下の「期限の決め方」をご覧ください。
+          </p>
+        </noscript>
+
+        <ExpiryRecord client:load />
+
+        <article class="art-body tool-guide" data-print="hide">
+          <h2 id="about">このツールについて</h2>
+          <ul>
+            <li>
+              消費者庁の「食品期限表示の設定のためのガイドライン」（令和7年3月）と食品表示基準にもとづいています。
+            </li>
+            <li>
+              期限が適切かどうかは判断しません。安全係数の値も示しません。期限の設定と表示の責任は、表示する事業者にあります。
+            </li>
+            <li>
+              入力した内容は送信も保存もしません。ページの閲覧やツールの利用回数は、Googleアナリティクスで計測しています。
+            </li>
+          </ul>
+
+          <h2 id="how">期限の決め方</h2>
+          <h3>指標と基準を決めて、試験で確かめます</h3>
+          <p>
+            微生物試験・理化学試験・官能検査などから、食品の特性に応じた指標（一般生菌数、pH、風味など）と基準を決め、保存試験で基準を満たす期間を確かめます。全ての試験が必要なわけではなく、業界団体のガイドラインなどを参考に指標を絞り込めます。
+          </p>
+
+          <h3>安全係数「0.8以上」の目安はなくなりました</h3>
+          <p>
+            2025年3月に、以前のQ&Aにあった「0.8以上を目安」という記述が削除されました。新しいガイドラインでは、試験で確かめた期間に1未満の係数をかけるか、期間から時間や日数を差し引いて期限を決め、「安全係数は１に近づけること、また、差し引く時間や日数は０に近づけることが望ましい」とされています。
+          </p>
+          <ul>
+            <li>
+              レトルト食品や缶詰のように、変動が少なく安全性が十分に確かめられた食品は、安全係数を考える必要はないとされています。
+            </li>
+            <li>
+              微生物が増える可能性や品質のばらつきが大きい食品は、その特性に応じて安全係数を設定する必要があります。
+            </li>
+          </ul>
+
+          <h3>似ている食品の結果を参考にすることもできます</h3>
+          <p>
+            商品の数が多い、入れ替わりが早いなどで個別の試験が難しい場合は、特性が似ている食品の試験結果を参考に期限を設定できます。期限を延ばす場合は、科学的・合理的な根拠が必要です。
+          </p>
+
+          <h3>根拠の資料を整えて保管します</h3>
+          <p>
+            期限を設定した根拠の資料は、整えて保管し、消費者などから求められたときに説明できるよう努めることとされています（努力義務）。常温で保存する食品は、期限を決めるときに想定した温度や湿度を、保存方法に書き添えることが望ましいとされています。
+          </p>
+
+          <h2 id="rules">表示のルール</h2>
+          <ul>
+            <li>
+              消費期限は、腐敗などで安全性を欠くおそれがないと認められる期限です。賞味期限は、期待される品質が十分に保たれると認められる期限で、過ぎても品質が保たれていることがあります。「5日以内なら消費期限」という分け方は、消費者庁として推奨していません。
+            </li>
+            <li>
+              製造日から3か月を超える賞味期限は、年月で表示できます。その場合は、期限の日が属する月の前月を書きます（期限が月末の日なら、その月）。
+            </li>
+            <li>
+              消費期限の表示は年月日までが義務です。弁当のように劣化が特に早い食品は、必要に応じて時間まで表示することが望ましいとされています。
+            </li>
+            <li>
+              {EXEMPT_ITEMS}
+              は、期限の表示を省略できます。作った店で売る場合や、包装が小さい場合でも、それ以外の食品は省略できません。
+            </li>
+          </ul>
+
+          <h2 id="faq">よくある疑問</h2>
+          <h3>これまでどおり0.8を使ってもよいですか</h3>
+          <p>
+            ガイドラインは係数の数値を示しておらず、食品の特性に応じて事業者が決めます。1に近づけることが望ましいとされているので、0.8を使う場合も、その食品に合う理由を記録票に書いておくとよいでしょう。
+          </p>
+          <h3>自社では試験ができません</h3>
+          <p>
+            食品の検査機関に保存試験を依頼する方法があります。特性が似ている自社の食品の結果を参考にすることもできますが、似ていると考えた理由を記録しておきます。
+          </p>
+          <h3>期限は誰が決めるのですか</h3>
+          <p>
+            その食品の表示に責任を持つ事業者（製造業者・加工業者・販売業者、輸入品は輸入業者）が決めます。
+          </p>
+          <h3>原材料名やアレルゲンなど、ほかの表示も確認したい</h3>
+          <p>
+            原料原産地は
+            <a href="/tools/origin-labeling-check/">原料原産地表示のチェック</a>
+            で、栄養成分表示が必要かどうかは
+            <a href="/tools/nutrition-labeling-check/">
+              栄養成分表示の要否チェック
+            </a>
+            で確認できます。
+          </p>
+
+          <h2 id="sources">参考情報</h2>
+          <ul>
+            {Object.entries(SOURCES).map(([, source]) => (
+              <li>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-describedby="new-tab-note"
+                >
+                  {source.title}
+                </a>
+                （{source.publisher}）：{source.sections}
+              </li>
+            ))}
+          </ul>
+          <p>最終確認日：{checkedOn}</p>
+        </article>
+
+        <aside
+          class="art-flabel"
+          aria-labelledby="tool-flabel-title"
+          data-print="hide"
+        >
+          <img
+            class="art-flabel-icon"
+            src="/f-label.webp"
+            alt="Fラベル"
+            width="1200"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="art-flabel-body">
+            <p class="art-flabel-badge">Shopify App</p>
+            <h2 id="tool-flabel-title" class="art-flabel-title">
+              ネットショップの食品表示は「Fラベル」で
+            </h2>
+            <p class="art-flabel-desc">
+              原材料・添加物・アレルゲン・栄養成分をまとめて管理し、Shopifyの商品ページに食品表示を掲載できるアプリです。原材料マスターの再利用とCSVインポートで、登録・更新の手間を減らせます。
+            </p>
+            <div class="art-flabel-cta">
+              <a
+                class="btn btn-primary"
+                href={FLABEL_APP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-describedby="new-tab-note"
+                data-track-event="mix_outbound_shopify_app,mix_cta_click"
+                data-track-surface="tool_flabel_box"
+                data-track-cta-position="tool_end"
+                data-track-cta-id="tool_flabel_install"
+                data-track-tool-id="expiry_date_record"
+              >
+                Shopifyアプリストアで見る
+              </a>
+              <a
+                class="btn btn-outline"
+                href="/service/f-label/"
+                data-track-event="mix_cta_click"
+                data-track-surface="tool_flabel_box"
+                data-track-cta-position="tool_end"
+                data-track-cta-id="tool_flabel_detail"
+                data-track-tool-id="expiry_date_record"
+              >
+                Fラベルの詳細を見る
+              </a>
+            </div>
+          </div>
+        </aside>
+
+        {related.length > 0 && (
+          <section class="art-related" data-print="hide">
+            <h2 class="art-related-title">関連記事</h2>
+            <div class="art-related-grid">
+              {related.map((r) => (
+                <a class="art-related-card reveal" href={`/articles/${r.id}/`}>
+                  <div class="art-card-meta">
+                    {r.data.category && (
+                      <span class="art-card-cat">{r.data.category}</span>
+                    )}
+                    <time datetime={r.data.publishDate.toISOString()}>
+                      {formatDate(r.data.publishDate)}
+                    </time>
+                  </div>
+                  <h3 class="art-related-card-title">{r.data.title}</h3>
+                  <span class="art-card-more">記事を読む →</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <div class="art-back" data-print="hide">
+          <a href="/tools/">← 無料ツール一覧へ</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Keep words together when the title wraps on phones (Chromium; other
+     browsers break as before). */
+  .art-title {
+    word-break: auto-phrase;
+  }
+
+  .tool-meta {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .tool-howto {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .tool-howto a {
+    color: var(--color-accent-text);
+  }
+
+  .tool-noscript {
+    max-width: 760px;
+    margin: 0 auto 20px;
+    padding: 14px 18px;
+    border: 1px solid var(--color-primary);
+    border-radius: 12px;
+    background: #fff6f1;
+    color: var(--color-text);
+  }
+
+  .tool-guide {
+    margin-top: 32px;
+  }
+
+  /* Articles open with a table of contents; here the first block is a
+     heading, so drop its top margin to match the card padding. */
+  .tool-guide > h2:first-child {
+    margin-top: 0;
+  }
+</style>
+
+<style is:global>
+  /* Print only the record: the site chrome, form, and explanations are
+     marked data-print="hide" or are the shared header and footer. */
+  @media print {
+    body > header,
+    body > footer,
+    .art-hero,
+    [data-print='hide'] {
+      display: none !important;
+    }
+
+    body {
+      background: #fff;
+    }
+
+    .art-page {
+      padding-top: 0;
+    }
+  }
+</style>

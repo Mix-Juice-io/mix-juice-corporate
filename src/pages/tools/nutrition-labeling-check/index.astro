@@ -1,0 +1,404 @@
+---
+import Layout from '../../../layouts/Layout.astro'
+import NutritionCheck from '../../../components/tools/NutritionCheck.tsx'
+import { getPublishedArticles, formatDate } from '../../../lib/articles'
+import { CHECKED_ON, SOURCES } from '../../../lib/nutrition-check/sources'
+import { FLABEL_APP_URL } from '../../../lib/urls'
+import '../../../styles/articles.css'
+
+const TITLE = '栄養成分表示は必要？小規模な食品事業者の表示義務チェック'
+const DESCRIPTION =
+  '洋菓子店・和菓子店・小さな食品メーカー向けに、栄養成分表示が必要か、省略できるかを売り方ごとに判定する無料ツールです。消費者庁のガイドラインとQ&Aにもとづき、容器包装リサイクル法の対象かどうかもあわせて確認できます。'
+
+const checkedOn = formatDate(new Date(`${CHECKED_ON}T00:00:00Z`))
+
+// Articles that explain the same rules in more depth.
+const RELATED_IDS = [
+  'nutrition-labeling-ec-guide',
+  'food-labeling-complete-guide',
+  'allergen-labeling-guide',
+]
+const articles = await getPublishedArticles()
+const related = RELATED_IDS.map((id) =>
+  articles.find((a) => a.id === id),
+).filter((a) => a !== undefined)
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'ホーム',
+      item: new URL('/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: '無料ツール',
+      item: new URL('/tools/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: '栄養成分表示の要否チェック',
+      item: new URL(Astro.url.pathname, Astro.site).href,
+    },
+  ],
+}
+---
+
+<Layout title={`${TITLE} | Mix-Juice`} description={DESCRIPTION}>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c')}
+    slot="head"
+  />
+  <div class="art-page">
+    <section class="art-hero">
+      <div class="art-hero-bg">
+        <div class="art-blob1"></div>
+        <div class="art-blob2"></div>
+      </div>
+      <div class="container">
+        <nav class="art-crumbs" aria-label="パンくずリスト">
+          <a href="/">ホーム</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href="/tools/">無料ツール</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <span class="art-crumbs-current">栄養成分表示の要否チェック</span>
+        </nav>
+        <p class="art-label">FREE TOOL</p>
+        <h1 class="art-title">栄養成分表示、うちは必要？</h1>
+        <p class="art-desc">
+          小さな洋菓子店・和菓子店・食品メーカー向けに、栄養成分表示が必要か、省略できるかを売り方ごとに判定します。容器包装リサイクル法の対象かどうかも、あわせて確認できます。
+        </p>
+        <p class="tool-meta">
+          消費者庁のガイドライン第6版・食品表示基準Q&Aなどにもとづく ／
+          最終確認日：{checkedOn}
+        </p>
+        <p class="tool-howto">
+          <a
+            href="/tools/nutrition-labeling-check/how-to/"
+            data-track-event="mix_cta_click"
+            data-track-surface="tool_hero"
+            data-track-cta-position="hero"
+            data-track-cta-id="tool_howto"
+            data-track-tool-id="nutrition_labeling_check"
+          >
+            使い方を見る（回答例と画面つき）→
+          </a>
+        </p>
+      </div>
+    </section>
+
+    <section class="art-content">
+      <div class="container">
+        <noscript>
+          <p class="tool-noscript">
+            このチェックは、JavaScriptを使って判定します。ブラウザでJavaScriptを有効にするか、下の「判定の考え方」をご覧ください。
+          </p>
+        </noscript>
+
+        <NutritionCheck client:load />
+
+        <article class="art-body tool-guide" data-print="hide">
+          <h2 id="about">このチェックについて</h2>
+          <ul>
+            <li>
+              消費者庁の「栄養成分表示のためのガイドライン」第6版（令和8年10月）や食品表示基準Q&Aなどにもとづいて判定します。
+            </li>
+            <li>
+              結果は目安です。最終的な判断は、管轄の保健所や消費者庁、税務署などにご確認ください。
+            </li>
+            <li>
+              回答の内容は送信も保存もしません。ページの閲覧やチェックの利用回数は、Googleアナリティクスで計測しています。
+            </li>
+          </ul>
+
+          <h2 id="how">判定の考え方</h2>
+          <h3>栄養成分表示は「だれが消費者に売るか」で決まります</h3>
+          <p>
+            食品表示基準では、食品の所有権がだれからだれに移るかで「販売」を考えます。同じ商品でも、売り方によって結果が変わります。
+          </p>
+          <div class="art-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">売り方</th>
+                  <th scope="col">栄養成分表示</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>作った店（同じ建物・敷地内）で、お客さんに直接売る</td>
+                  <td>要りません</td>
+                </tr>
+                <tr>
+                  <td>自社で、ほかの場所やネットで売る</td>
+                  <td>自社が小規模の事業者なら、省略できます</td>
+                </tr>
+                <tr>
+                  <td>
+                    小規模でない事業者（スーパーなど）に卸して、その事業者が売る
+                  </td>
+                  <td>
+                    省略できません（表示は自社と卸先のどちらがしても構いません）
+                  </td>
+                </tr>
+                <tr>
+                  <td>小規模の事業者に卸して、その事業者が売る</td>
+                  <td>卸先が小規模の事業者なら、省略できます</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            どの売り方でも、容器包装に栄養成分や熱量に関する表現（「たんぱく質」「ビタミン」「うす塩」など）があると、省略できません。
+          </p>
+
+          <h3>小規模の事業者とは</h3>
+          <p>次のどちらかに当たる事業者です。</p>
+          <ul>
+            <li>
+              消費税の免税事業者（原則として、前々事業年度の課税売上高で判断します）
+            </li>
+            <li>
+              小規模企業者：常時使用する従業員が20人以下（主な事業が商業・サービス業なら5人以下）。前事業年度で最も多かった時点の人数で判断します。「当分の間」の措置です
+            </li>
+          </ul>
+
+          <h3>商品の性質で省略できる場合</h3>
+          <ul>
+            <li>容器包装の表示できる面積が、おおむね30cm²以下</li>
+            <li>酒類</li>
+            <li>
+              栄養の供給源としての寄与が小さいもの（茶葉・コーヒー豆・スパイスなど）
+            </li>
+            <li>3日以内にレシピが変わるもの（日替わり弁当など）</li>
+          </ul>
+
+          <h3>容器包装リサイクル法の小規模事業者</h3>
+          <div class="art-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">主な事業</th>
+                  <th scope="col">従業員</th>
+                  <th scope="col">年間売上高</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>製造業など</td>
+                  <td>20人以下</td>
+                  <td>2億4,000万円以下</td>
+                </tr>
+                <tr>
+                  <td>商業・サービス業</td>
+                  <td>5人以下</td>
+                  <td>7,000万円以下</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            従業員と売上高の両方が基準以内なら、義務の対象外です。どちらも事業体全体で数えます。
+          </p>
+
+          <h2 id="faq">よくある疑問</h2>
+          <h3>店で作った焼き菓子を、ネットショップでも売っています</h3>
+          <p>
+            店頭で売る分は、栄養成分表示が要りません。ネットショップで売る分は、自社が小規模の事業者なら省略でき、そうでなければ必要です。同じ包装を使うなら、ネットで売る分に合わせて表示しておくと、売り方ごとに包装を分けずに済みます。
+          </p>
+          <h3>道の駅や直売所に置いてもらっています</h3>
+          <p>
+            売れるまで商品が自社のもので、相手は会計だけを行う形（売れ残りが戻ってくる委託販売など）なら、自社が売る扱いです。相手が商品を買い取って売る場合は「卸す」に当たり、相手が小規模の事業者でなければ省略できません。どちらに当たるかは、契約で所有権がいつ移るかを確認してください。
+          </p>
+          <h3>インボイスの登録をしました。もう省略できませんか</h3>
+          <p>
+            インボイスの発行事業者として登録すると課税事業者になるため、免税事業者としての省略は使えません。ただし、従業員の数で小規模企業者に当たれば、省略できます。
+          </p>
+          <h3>スーパーに卸す商品の表示は、だれがするのですか</h3>
+          <p>
+            自社（製造者）と卸先（販売者）のどちらが表示しても構いません。卸先が追記した場合、その表示の責任は卸先が負います。
+          </p>
+          <h3>省略できる場合でも、表示してよいですか</h3>
+          <p>
+            はい。表示できるものは、できるだけ表示することが望ましいとされています。表示するときは、熱量・たんぱく質・脂質・炭水化物・食塩相当量の5項目を決められた様式で示し、計算で求めた値なら「推定値」または「この表示値は、目安です。」と書きます。くわしくは
+            <a href="/articles/nutrition-labeling-ec-guide/">
+              栄養成分表示の解説記事
+            </a>
+            をご覧ください。
+          </p>
+
+          <h2 id="sources">参考情報</h2>
+          <ul>
+            {Object.entries(SOURCES).map(([, source]) => (
+              <li>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-describedby="new-tab-note"
+                >
+                  {source.title}
+                </a>
+                （{source.publisher}）：{source.sections}
+              </li>
+            ))}
+          </ul>
+          <p>最終確認日：{checkedOn}</p>
+        </article>
+
+        <aside
+          class="art-flabel"
+          aria-labelledby="tool-flabel-title"
+          data-print="hide"
+        >
+          <img
+            class="art-flabel-icon"
+            src="/f-label.webp"
+            alt="Fラベル"
+            width="1200"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="art-flabel-body">
+            <p class="art-flabel-badge">Shopify App</p>
+            <h2 id="tool-flabel-title" class="art-flabel-title">
+              ネットショップの食品表示は「Fラベル」で
+            </h2>
+            <p class="art-flabel-desc">
+              原材料・添加物・アレルゲン・栄養成分をまとめて管理し、Shopifyの商品ページに食品表示を掲載できるアプリです。原材料マスターの再利用とCSVインポートで、登録・更新の手間を減らせます。
+            </p>
+            <div class="art-flabel-cta">
+              <a
+                class="btn btn-primary"
+                href={FLABEL_APP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-describedby="new-tab-note"
+                data-track-event="mix_outbound_shopify_app,mix_cta_click"
+                data-track-surface="tool_flabel_box"
+                data-track-cta-position="tool_end"
+                data-track-cta-id="tool_flabel_install"
+                data-track-tool-id="nutrition_labeling_check"
+              >
+                Shopifyアプリストアで見る
+              </a>
+              <a
+                class="btn btn-outline"
+                href="/service/f-label/"
+                data-track-event="mix_cta_click"
+                data-track-surface="tool_flabel_box"
+                data-track-cta-position="tool_end"
+                data-track-cta-id="tool_flabel_detail"
+                data-track-tool-id="nutrition_labeling_check"
+              >
+                Fラベルの詳細を見る
+              </a>
+            </div>
+          </div>
+        </aside>
+
+        {related.length > 0 && (
+          <section class="art-related" data-print="hide">
+            <h2 class="art-related-title">関連記事</h2>
+            <div class="art-related-grid">
+              {related.map((r) => (
+                <a class="art-related-card reveal" href={`/articles/${r.id}/`}>
+                  <div class="art-card-meta">
+                    {r.data.category && (
+                      <span class="art-card-cat">{r.data.category}</span>
+                    )}
+                    <time datetime={r.data.publishDate.toISOString()}>
+                      {formatDate(r.data.publishDate)}
+                    </time>
+                  </div>
+                  <h3 class="art-related-card-title">{r.data.title}</h3>
+                  <span class="art-card-more">記事を読む →</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <div class="art-back" data-print="hide">
+          <a href="/tools/">← 無料ツール一覧へ</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Keep words like 必要 together when the title wraps on phones (Chromium;
+     other browsers break as before). */
+  .art-title {
+    word-break: auto-phrase;
+  }
+
+  .tool-meta {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .tool-howto {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .tool-howto a {
+    color: var(--color-accent-text);
+  }
+
+  .tool-noscript {
+    max-width: 760px;
+    margin: 0 auto 20px;
+    padding: 14px 18px;
+    border: 1px solid var(--color-primary);
+    border-radius: 12px;
+    background: #fff6f1;
+    color: var(--color-text);
+  }
+
+  .tool-guide {
+    margin-top: 32px;
+  }
+
+  /* Articles open with a table of contents; here the first block is a
+     heading, so drop its top margin to match the card padding. */
+  .tool-guide > h2:first-child {
+    margin-top: 0;
+  }
+</style>
+
+<style is:global>
+  /* Print only the result: the site chrome, form, and explanations are
+     marked data-print="hide" or are the shared header and footer. */
+  @media print {
+    body > header,
+    body > footer,
+    .art-hero,
+    [data-print='hide'] {
+      display: none !important;
+    }
+
+    body {
+      background: #fff;
+    }
+
+    .art-page {
+      padding-top: 0;
+    }
+  }
+</style>

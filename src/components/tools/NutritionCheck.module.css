@@ -1,0 +1,452 @@
+/* Nutrition labeling check. Follows the contact form (field borders, focus
+   ring) and the article cards (translucent white, 24px radius) so the tool
+   reads as part of the site. */
+
+.tool {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.card {
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.64);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 18px 40px rgba(24, 33, 51, 0.06);
+  border-radius: 24px;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.eyebrow {
+  font-family: var(--font-en);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--color-accent-text);
+  margin-bottom: 12px;
+}
+
+.formTitle {
+  font-size: 1.5rem;
+  line-height: 1.55;
+  color: var(--color-text);
+  margin-bottom: 10px;
+}
+
+/* Focus is moved to the result heading programmatically; the heading itself
+   is not interactive, so it needs no focus ring. */
+.formTitle:focus {
+  outline: none;
+}
+
+.lead {
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: var(--color-text-light);
+}
+
+/* ---- Questions ---- */
+
+.question {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.question[data-error] {
+  padding-left: 14px;
+  border-left: 4px solid #b42318;
+}
+
+.legend {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0;
+  margin-bottom: 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--color-text);
+  /* Break Japanese between phrases, not inside words (Chromium; others
+     fall back to normal breaking). */
+  word-break: auto-phrase;
+}
+
+.number {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  color: var(--color-accent-text);
+  font-family: var(--font-en);
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.optional {
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.hint {
+  margin: 0 0 12px 38px;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--color-text-light);
+}
+
+.errorText {
+  margin: 0 0 10px 38px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #b42318;
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 10px;
+}
+
+.choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 48px;
+  padding: 12px 16px;
+  /* 3:1 against white so the option boundary is visible (WCAG 1.4.11). */
+  border: 1px solid #8a8f98;
+  border-radius: 12px;
+  background: var(--color-white);
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.choice:hover {
+  border-color: var(--color-accent-text);
+}
+
+.choice:has(input:checked) {
+  border-color: var(--color-accent-text);
+  background: #fff6f1;
+  box-shadow: inset 0 0 0 1px var(--color-accent-text);
+}
+
+.choice:has(input:focus-visible) {
+  border-color: var(--color-accent-text);
+  box-shadow: 0 0 0 3px rgba(173, 62, 11, 0.35);
+}
+
+.choice input {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  accent-color: var(--color-accent-text);
+  cursor: pointer;
+}
+
+.choiceText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.choiceLabel {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+.choiceDesc {
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--color-text-light);
+}
+
+.errorSummary {
+  padding: 16px 20px;
+  border: 2px solid #b42318;
+  border-radius: 12px;
+  background: var(--color-white);
+}
+
+.errorSummary:focus {
+  outline: 3px solid rgba(180, 35, 24, 0.35);
+  outline-offset: 2px;
+}
+
+.errorSummaryTitle {
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: #b42318;
+}
+
+.errorSummary ul {
+  padding-left: 1.2em;
+  line-height: 1.8;
+}
+
+.errorSummary a {
+  color: #b42318;
+  text-decoration: underline;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.staleNote {
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.7;
+  color: var(--color-accent-text);
+}
+
+/* ---- Result ---- */
+
+.staleBanner {
+  margin: 4px 0 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--color-primary);
+  border-radius: 12px;
+  background: #fff6f1;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-accent-text);
+}
+
+.block {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(109, 103, 95, 0.16);
+}
+
+.blockTitle {
+  margin-bottom: 12px;
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.findingHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  margin-bottom: 8px;
+}
+
+.findingHead .blockTitle {
+  margin-bottom: 0;
+}
+
+.smallLine {
+  margin-bottom: 4px;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--color-text-light);
+}
+
+.smallLine strong {
+  color: var(--color-text);
+}
+
+.finding {
+  margin-top: 12px;
+  padding: 18px 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-white);
+}
+
+.findingTitle {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.badge[data-tone='positive'] {
+  background: #e3f4ea;
+  color: #17603d;
+}
+
+.badge[data-tone='attention'] {
+  background: #fdeee6;
+  color: #8a2f06;
+}
+
+.badge[data-tone='neutral'] {
+  background: #eceef1;
+  color: #374151;
+}
+
+.reason {
+  margin: 6px 0;
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: var(--color-text);
+}
+
+.notes {
+  margin: 8px 0 0;
+  padding-left: 1.2em;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--color-text-light);
+}
+
+.notes li {
+  margin: 4px 0;
+}
+
+.sources {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+
+.sources a {
+  color: var(--color-accent-text);
+  text-decoration: underline;
+}
+
+.tip {
+  margin-top: 12px;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: var(--color-bg-alt);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--color-text);
+}
+
+.tipTitle {
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+/* --color-text-muted is 4.3:1 on this grey; the lighter text token passes. */
+.tip .sources {
+  color: var(--color-text-light);
+}
+
+.answers {
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.answers dt {
+  margin-top: 10px;
+  color: var(--color-text-light);
+}
+
+.answers dd {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.resultActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.resultActions :global(.btn) {
+  padding: 12px 24px;
+  font-size: 0.92rem;
+}
+
+.printOnly {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 26px 20px 24px;
+  }
+
+  .formTitle {
+    font-size: 1.3rem;
+  }
+
+  .hint,
+  .errorText {
+    margin-left: 0;
+  }
+
+  .finding {
+    padding: 16px;
+  }
+}
+
+@media print {
+  .printOnly {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 0.8rem;
+  }
+
+  .card {
+    padding: 0;
+    border: none;
+    background: none;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .finding,
+  .tip {
+    break-inside: avoid;
+  }
+
+  .sources a::after {
+    content: '（' attr(href) '）';
+    word-break: break-all;
+  }
+}

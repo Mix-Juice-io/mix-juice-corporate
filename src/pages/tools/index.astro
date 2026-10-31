@@ -1,0 +1,98 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import '../../styles/articles.css'
+
+// Free tools for small food businesses (#102). Add a card here when a new
+// tool page ships.
+const tools = [
+  {
+    href: '/tools/food-label-maker/',
+    category: '食品表示',
+    title: '食品表示ラベル、どう作る？',
+    description:
+      '配合と表示事項から、容器包装の一括表示と、ネットショップの商品ページに貼れるテキスト・HTMLを作ります。',
+  },
+  {
+    href: '/tools/nutrition-labeling-check/',
+    category: '食品表示',
+    title: '栄養成分表示、うちは必要？',
+    description:
+      '栄養成分表示が必要か、省略できるかを売り方ごとに判定します。容器包装リサイクル法の対象かどうかも、あわせて確認できます。',
+  },
+  {
+    href: '/tools/origin-labeling-check/',
+    category: '食品表示',
+    title: '原料原産地表示、どう書けばいい？',
+    description:
+      '配合から、原料原産地を表示する原材料と書き方の例を示します。又は表示・大括り表示の条件と、保管する根拠書類も確認できます。',
+  },
+  {
+    href: '/tools/expiry-date-record/',
+    category: '食品表示',
+    title: '賞味期限・消費期限、どう決める？',
+    description:
+      '保存試験の結果と自社で決めた安全係数から期限を計算し、設定の根拠を記録票にまとめます。',
+  },
+  {
+    href: '/tools/packaging-positive-list-ledger/',
+    category: '容器包装',
+    title: '容器包装のポジティブリスト、書類はそろっている？',
+    description:
+      '仕入先から受け取った適合証明書などを資材ごとに記録し、まだ受け取っていない資材の依頼文を仕入先ごとに作ります。',
+  },
+]
+---
+
+<Layout
+  title="食品事業者向けの無料ツール | Mix-Juice"
+  description="小さな洋菓子店・和菓子店・食品メーカー向けに、食品表示などの法令対応を手伝う無料ツールを公開しています。"
+>
+  <div class="art-page">
+    <section class="art-hero">
+      <div class="art-hero-bg">
+        <div class="art-blob1"></div>
+        <div class="art-blob2"></div>
+      </div>
+      <div class="container">
+        <nav class="art-crumbs" aria-label="パンくずリスト">
+          <a href="/">ホーム</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <span class="art-crumbs-current">無料ツール</span>
+        </nav>
+        <p class="art-label">FREE TOOLS</p>
+        <h1 class="art-title">食品事業者向けの無料ツール</h1>
+        <p class="art-desc">
+          小さな洋菓子店・和菓子店・食品メーカー向けに、食品表示などの法令対応を手伝うツールです。登録不要で、回答の内容は送信も保存もしません。
+        </p>
+      </div>
+    </section>
+
+    <section class="art-content">
+      <div class="container">
+        <div class="art-grid">
+          {tools.map((tool) => (
+            <a class="art-card reveal" href={tool.href}>
+              <div class="art-card-meta">
+                <span class="art-card-cat">{tool.category}</span>
+              </div>
+              <h2 class="art-card-title">{tool.title}</h2>
+              <p class="art-card-desc">{tool.description}</p>
+              <span class="art-card-more">ツールを使う →</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Keep words together when titles wrap on phones (Chromium; other
+     browsers break as before). */
+  .art-title,
+  .art-card-title {
+    word-break: auto-phrase;
+  }
+</style>

@@ -1,0 +1,396 @@
+---
+import Layout from '../../../layouts/Layout.astro'
+import OriginCheck from '../../../components/tools/OriginCheck.tsx'
+import { getPublishedArticles, formatDate } from '../../../lib/articles'
+import { GROUP22_ITEMS } from '../../../lib/origin-check/rules'
+import { CHECKED_ON, SOURCES } from '../../../lib/origin-check/sources'
+import { FLABEL_APP_URL } from '../../../lib/urls'
+import '../../../styles/articles.css'
+
+const TITLE = '原料原産地表示はどう書く？配合から対象原材料と表示例を確認'
+const DESCRIPTION =
+  '国内で製造した加工食品の原料原産地表示を、配合（原材料と重量）から判定する無料ツールです。表示の対象になる重量1位の原材料と、国別重量順表示・又は表示・大括り表示・製造地表示の書き方の例、注意書きと保管する根拠書類を確認できます。'
+
+const checkedOn = formatDate(new Date(`${CHECKED_ON}T00:00:00Z`))
+
+// Articles that explain the same rules in more depth.
+const RELATED_IDS = [
+  'food-labeling-complete-guide',
+  'food-labeling-copy-paste-risks',
+  'allergen-labeling-guide',
+]
+const articles = await getPublishedArticles()
+const related = RELATED_IDS.map((id) =>
+  articles.find((a) => a.id === id),
+).filter((a) => a !== undefined)
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'ホーム',
+      item: new URL('/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: '無料ツール',
+      item: new URL('/tools/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: '原料原産地表示のチェック',
+      item: new URL(Astro.url.pathname, Astro.site).href,
+    },
+  ],
+}
+---
+
+<Layout title={`${TITLE} | Mix-Juice`} description={DESCRIPTION}>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c')}
+    slot="head"
+  />
+  <div class="art-page">
+    <section class="art-hero">
+      <div class="art-hero-bg">
+        <div class="art-blob1"></div>
+        <div class="art-blob2"></div>
+      </div>
+      <div class="container">
+        <nav class="art-crumbs" aria-label="パンくずリスト">
+          <a href="/">ホーム</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href="/tools/">無料ツール</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <span class="art-crumbs-current">原料原産地表示のチェック</span>
+        </nav>
+        <p class="art-label">FREE TOOL</p>
+        <h1 class="art-title">原料原産地表示、どう書けばいい？</h1>
+        <p class="art-desc">
+          配合（原材料と重量）を入れると、原料原産地を表示する原材料と、使える書き方の例を示します。又は表示・大括り表示を使える条件と、保管する根拠書類も確認できます。
+        </p>
+        <p class="tool-meta">
+          消費者庁の食品表示基準Q&A・農林水産省のマニュアルなどにもとづく ／
+          最終確認日：{checkedOn}
+        </p>
+        <p class="tool-howto">
+          <a
+            href="/tools/origin-labeling-check/how-to/"
+            data-track-event="mix_cta_click"
+            data-track-surface="tool_hero"
+            data-track-cta-position="hero"
+            data-track-cta-id="tool_howto"
+            data-track-tool-id="origin_labeling_check"
+          >
+            使い方を見る（入力例と画面つき）→
+          </a>
+        </p>
+      </div>
+    </section>
+
+    <section class="art-content">
+      <div class="container">
+        <noscript>
+          <p class="tool-noscript">
+            このチェックは、JavaScriptを使って判定します。ブラウザでJavaScriptを有効にするか、下の「判定の考え方」をご覧ください。
+          </p>
+        </noscript>
+
+        <OriginCheck client:load />
+
+        <article class="art-body tool-guide" data-print="hide">
+          <h2 id="about">このチェックについて</h2>
+          <ul>
+            <li>
+              食品表示基準と消費者庁の食品表示基準Q&A、農林水産省の「原料原産地表示
+              事業者向け活用マニュアル」などにもとづいて判定します。
+            </li>
+            <li>
+              国内で製造した加工食品が対象です。生鮮食品の原産地表示や、輸入品の原産国名の書き方は扱いません。
+            </li>
+            <li>
+              結果は目安です。表示の最終的な判断は、管轄の保健所や消費者庁などにご確認ください。
+            </li>
+            <li>
+              入力した内容は送信も保存もしません。ページの閲覧やチェックの利用回数は、Googleアナリティクスで計測しています。
+            </li>
+          </ul>
+
+          <h2 id="how">判定の考え方</h2>
+          <h3>事業の規模にかかわらず必要です</h3>
+          <p>
+            国内で製造し、容器包装に入れて消費者向けに売る加工食品は、すべて原料原産地表示の対象です。栄養成分表示と違い、小規模な事業者でも省略できません。表示が要らないのは、作った店（同じ建物・敷地内）で売る場合や、容器包装に入れずに売る場合などです。表示できる面積がおおむね30cm²以下なら、省略できます。
+          </p>
+
+          <h3>表示するのは、重量1位の原材料の産地です</h3>
+          <p>
+            製造するときの配合で、いちばん重い原材料（水と添加物を除く）の産地を書きます。同じ重さの1位が複数あれば、すべてに書きます。1位が豚肉のような生鮮食品なら産地（国名など）を、小麦粉や砂糖のような加工品なら製造地（「国内製造」「タイ製造」など）を書きます。加工品は、原料の生鮮食品の産地までさかのぼって書くこともできます。
+          </p>
+
+          <h3>書き方は5通りあります</h3>
+          <div class="art-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">書き方</th>
+                  <th scope="col">例</th>
+                  <th scope="col">使える場合</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>国別重量順表示</td>
+                  <td>豚肉（アメリカ、カナダ）</td>
+                  <td>原則の書き方。重量の割合が高い産地から順に書きます</td>
+                </tr>
+                <tr>
+                  <td>製造地表示</td>
+                  <td>砂糖（タイ製造）</td>
+                  <td>重量1位が加工品の場合</td>
+                </tr>
+                <tr>
+                  <td>又は表示</td>
+                  <td>
+                    豚肉（アメリカ又はカナダ）
+                    <br />
+                    ※豚肉の産地は、令和○年の使用実績順
+                  </td>
+                  <td>
+                    産地が切り替わるたびに表示を替えるのが難しい場合。注意書きと根拠書類が必要です
+                  </td>
+                </tr>
+                <tr>
+                  <td>大括り表示</td>
+                  <td>豚肉（輸入）</td>
+                  <td>
+                    外国の産地が3か国以上で、表示を替えるのが難しい場合。根拠書類が必要です
+                  </td>
+                </tr>
+                <tr>
+                  <td>大括り表示＋又は表示</td>
+                  <td>豚肉（輸入又は国産）</td>
+                  <td>
+                    国産と外国3か国以上を使い、輸入の合計と国産の多い・少ないが入れ替わる場合。注意書きと根拠書類が必要です
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            又は表示や大括り表示は、過去の使用実績（製造日を含む1年間から遡って3年以内のうち、1年以上）か、今後の使用計画（製造を始める日から1年以内）にもとづいて書きます。根拠にした資料は、賞味（消費）期限に1年を加えた期間（期限の表示を省略する製品は、製造してから5年間）保管します。
+          </p>
+
+          <h3>個別のルールがある品目</h3>
+          <p>
+            次の22食品群で、1つの生鮮原材料が原材料と添加物の重量の50%以上を占める場合は、その原材料の産地を国別重量順で書きます。又は表示・大括り表示・製造地表示は使えません。
+          </p>
+          <ol>
+            {GROUP22_ITEMS.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ol>
+          <p>
+            このほか、農産物漬物・野菜冷凍食品・うなぎ加工品・かつお削りぶしは表示する原材料が個別に決まっていて、おにぎりは重量1位の原材料に加えて、のりの産地も書きます。
+          </p>
+
+          <h2 id="faq">よくある疑問</h2>
+          <h3>小さなお店でも、原料原産地の表示は必要ですか</h3>
+          <p>
+            必要です。栄養成分表示のような、事業の規模による省略はありません。ただし、作った店で売る分は表示が要りません。栄養成分表示が必要かどうかは、
+            <a href="/tools/nutrition-labeling-check/">
+              栄養成分表示の要否チェック
+            </a>
+            で確認できます。
+          </p>
+          <h3>店で作った焼き菓子を、ネットショップでも売っています</h3>
+          <p>
+            店頭で売る分は表示が要りませんが、ネットショップで売る分は、作った場所での販売に当たらないため表示が必要です。同じ包装を使うなら、表示しておくと包装を分けずに済みます。
+          </p>
+          <h3>小麦粉が重量1位です。「国内製造」と書けばよいですか</h3>
+          <p>
+            小麦粉のような加工品が1位なら、「小麦粉（国内製造）」のように製造地を書きます。「国内製造」は、小麦が国産という意味ではありません。小麦の産地が分かり、客観的に確認できる場合は、「小麦粉（小麦（アメリカ、国産））」のように小麦までさかのぼって書くこともできます。
+          </p>
+          <h3>仕入先によって、産地がよく変わります</h3>
+          <p>
+            原則は国別重量順表示で、産地が変わったら表示を替えます。産地ごとにラベルを用意するなどして替えられるなら、それで対応します。替えるのが難しい場合に限り、使用実績や使用計画にもとづく又は表示・大括り表示が使えます。どちらも、根拠になる資料の保管が必要です。
+          </p>
+          <h3>酒類も対象ですか</h3>
+          <p>
+            対象です。原材料名の表示が要らない酒類も、重量1位の原材料の産地を表示します。ただし、清酒・米焼酎・みりん・果実酒などで、米トレーサビリティ法や酒類の表示基準にもとづいて重量1位の原材料の産地を表示している場合は、食品表示基準の原料原産地表示の規定は適用されません。
+          </p>
+
+          <h2 id="sources">参考情報</h2>
+          <ul>
+            {Object.entries(SOURCES).map(([, source]) => (
+              <li>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-describedby="new-tab-note"
+                >
+                  {source.title}
+                </a>
+                （{source.publisher}）：{source.sections}
+              </li>
+            ))}
+          </ul>
+          <p>最終確認日：{checkedOn}</p>
+        </article>
+
+        <aside
+          class="art-flabel"
+          aria-labelledby="tool-flabel-title"
+          data-print="hide"
+        >
+          <img
+            class="art-flabel-icon"
+            src="/f-label.webp"
+            alt="Fラベル"
+            width="1200"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="art-flabel-body">
+            <p class="art-flabel-badge">Shopify App</p>
+            <h2 id="tool-flabel-title" class="art-flabel-title">
+              ネットショップの食品表示は「Fラベル」で
+            </h2>
+            <p class="art-flabel-desc">
+              原材料・添加物・アレルゲン・栄養成分をまとめて管理し、Shopifyの商品ページに食品表示を掲載できるアプリです。原材料マスターの再利用とCSVインポートで、登録・更新の手間を減らせます。
+            </p>
+            <div class="art-flabel-cta">
+              <a
+                class="btn btn-primary"
+                href={FLABEL_APP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-describedby="new-tab-note"
+                data-track-event="mix_outbound_shopify_app,mix_cta_click"
+                data-track-surface="tool_flabel_box"
+                data-track-cta-position="tool_end"
+                data-track-cta-id="tool_flabel_install"
+                data-track-tool-id="origin_labeling_check"
+              >
+                Shopifyアプリストアで見る
+              </a>
+              <a
+                class="btn btn-outline"
+                href="/service/f-label/"
+                data-track-event="mix_cta_click"
+                data-track-surface="tool_flabel_box"
+                data-track-cta-position="tool_end"
+                data-track-cta-id="tool_flabel_detail"
+                data-track-tool-id="origin_labeling_check"
+              >
+                Fラベルの詳細を見る
+              </a>
+            </div>
+          </div>
+        </aside>
+
+        {related.length > 0 && (
+          <section class="art-related" data-print="hide">
+            <h2 class="art-related-title">関連記事</h2>
+            <div class="art-related-grid">
+              {related.map((r) => (
+                <a class="art-related-card reveal" href={`/articles/${r.id}/`}>
+                  <div class="art-card-meta">
+                    {r.data.category && (
+                      <span class="art-card-cat">{r.data.category}</span>
+                    )}
+                    <time datetime={r.data.publishDate.toISOString()}>
+                      {formatDate(r.data.publishDate)}
+                    </time>
+                  </div>
+                  <h3 class="art-related-card-title">{r.data.title}</h3>
+                  <span class="art-card-more">記事を読む →</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <div class="art-back" data-print="hide">
+          <a href="/tools/">← 無料ツール一覧へ</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Keep words like 書けば together when the title wraps on phones
+     (Chromium; other browsers break as before). */
+  .art-title {
+    word-break: auto-phrase;
+  }
+
+  .tool-meta {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .tool-howto {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .tool-howto a {
+    color: var(--color-accent-text);
+  }
+
+  .tool-noscript {
+    max-width: 760px;
+    margin: 0 auto 20px;
+    padding: 14px 18px;
+    border: 1px solid var(--color-primary);
+    border-radius: 12px;
+    background: #fff6f1;
+    color: var(--color-text);
+  }
+
+  .tool-guide {
+    margin-top: 32px;
+  }
+
+  /* Articles open with a table of contents; here the first block is a
+     heading, so drop its top margin to match the card padding. */
+  .tool-guide > h2:first-child {
+    margin-top: 0;
+  }
+</style>
+
+<style is:global>
+  /* Print only the result: the site chrome, form, and explanations are
+     marked data-print="hide" or are the shared header and footer. */
+  @media print {
+    body > header,
+    body > footer,
+    .art-hero,
+    [data-print='hide'] {
+      display: none !important;
+    }
+
+    body {
+      background: #fff;
+    }
+
+    .art-page {
+      padding-top: 0;
+    }
+  }
+</style>
