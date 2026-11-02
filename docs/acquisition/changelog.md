@@ -46,3 +46,5 @@
 | 2026-11-03 | — | Search Console で `/tools/food-label-maker/`・使い方ページ・`/tools/` の再クロールをリクエスト | 3ページの再クロール |
 | 2026-11-03 04:22 | #158 | 無料ツール「食塩相当量の計算」（`/tools/salt-equivalent/`）を公開。ナトリウム（mg）と食塩相当量（g）を相互に換算し、表示する値（小数第1位）、「0g」と書けるか、ナトリウムを併記できる条件を示す。`/tools/` 一覧のカードと、栄養成分表示の記事の「成分表を使った計算の手順」から導線（#150） | ツールのページの検索表示・クリック（「食塩相当量 計算」「ナトリウム 食塩相当量 計算」など）、`mix_tool_start`・`mix_tool_result`（`tool_id` が `salt_equivalent`）、`mix_cta_click`（surface `article_body`・`tool_flabel_box`） |
 | 2026-11-03 | — | Search Console で `/tools/salt-equivalent/` のインデックス登録、`/tools/` と栄養成分表示の記事の再クロールをリクエスト | ツールのページのインデックス登録、2ページの再クロール |
+| 2026-11-03 06:00 | #160 | 食品表示ラベルの作成に、品目別の表示例ページを3つ追加（`/tools/food-label-maker/examples/cheesecake/`・`baked-sweets/`・`fruit-sandwich/`）。配合・一括表示・間違えやすい点。「この配合をツールで開く」で、ツールが `?example=<id>` の配合を読み込む。ツールのページの「表示例」の下から導線（#149） | 品目名の語（「チーズケーキ 食品表示」「焼き菓子 原材料表示」「フルーツサンド 食品表示」など）の表示回数・順位、`mix_cta_click`（surface `label_example`・cta_id `example_open_tool`、`example_id`）、`mix_tool_start`・`mix_tool_result`（`food_label_maker`） |
+| 2026-11-03 | — | Search Console で表示例の3ページのインデックス登録と、`/tools/food-label-maker/` の再クロールをリクエスト | 3ページのインデックス登録 |
