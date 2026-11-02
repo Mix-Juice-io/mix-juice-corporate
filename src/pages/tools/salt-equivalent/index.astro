@@ -1,0 +1,313 @@
+---
+import Layout from '../../../layouts/Layout.astro'
+import SaltConverter from '../../../components/tools/SaltConverter.tsx'
+import { getPublishedArticles, formatDate } from '../../../lib/articles'
+import { CHECKED_ON, SOURCES } from '../../../lib/salt-equivalent/sources'
+import { FLABEL_APP_URL } from '../../../lib/urls'
+import '../../../styles/articles.css'
+
+const TITLE =
+  '食塩相当量の計算｜ナトリウム（mg）から換算する式と、表示する値（無料ツール）'
+const DESCRIPTION =
+  'ナトリウム（mg）と食塩相当量（g）を相互に換算する無料ツールです。計算式（ナトリウム×2.54÷1,000）と、栄養成分表示に書く値の丸め方、「0g」と書ける場合、ナトリウムを併記できる条件を、食品表示基準にもとづいて示します。'
+
+const checkedOn = formatDate(new Date(`${CHECKED_ON}T00:00:00Z`))
+
+const RELATED_IDS = [
+  'nutrition-labeling-ec-guide',
+  'food-labeling-complete-guide',
+]
+const articles = await getPublishedArticles()
+const related = RELATED_IDS.map((id) =>
+  articles.find((a) => a.id === id),
+).filter((a) => a !== undefined)
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'ホーム',
+      item: new URL('/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: '無料ツール',
+      item: new URL('/tools/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: '食塩相当量の計算',
+      item: new URL(Astro.url.pathname, Astro.site).href,
+    },
+  ],
+}
+---
+
+<Layout title={`${TITLE} | Mix-Juice`} description={DESCRIPTION}>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c')}
+    slot="head"
+  />
+  <div class="art-page">
+    <section class="art-hero">
+      <div class="art-hero-bg">
+        <div class="art-blob1"></div>
+        <div class="art-blob2"></div>
+      </div>
+      <div class="container">
+        <nav class="art-crumbs" aria-label="パンくずリスト">
+          <a href="/">ホーム</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href="/tools/">無料ツール</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <span class="art-crumbs-current">食塩相当量の計算</span>
+        </nav>
+        <p class="art-label">FREE TOOL</p>
+        <h1 class="art-title">食塩相当量、どう計算する？</h1>
+        <p class="art-desc">
+          ナトリウム（mg）と食塩相当量（g）を相互に換算し、栄養成分表示に書く値を示します。「0g」と書けるかどうかも、100g当たりの量から判定します。
+        </p>
+        <p class="tool-meta">
+          食品表示基準と消費者庁の栄養成分表示のガイドラインにもとづく ／
+          最終確認日：{checkedOn}
+        </p>
+      </div>
+    </section>
+
+    <section class="art-content">
+      <div class="container">
+        <noscript>
+          <p class="tool-noscript">
+            このツールは、JavaScriptを使って計算します。ブラウザでJavaScriptを有効にするか、下の「計算式」をご覧ください。
+          </p>
+        </noscript>
+
+        <SaltConverter client:load />
+
+        <article class="art-body tool-guide">
+          <h2 id="about">このツールについて</h2>
+          <ul>
+            <li>
+              加工食品の栄養成分表示で使う、ナトリウムと食塩相当量の換算をします。
+            </li>
+            <li>
+              入れた値が正しいかどうか（分析値・計算値の求め方）は判断しません。表示の責任は、表示する事業者にあります。
+            </li>
+            <li>
+              結果は目安です。表示の最終的な判断は、管轄の保健所や消費者庁などにご確認ください。
+            </li>
+            <li>
+              入力した内容は送信も保存もしません。ページの閲覧やツールの利用回数は、Googleアナリティクスで計測しています。
+            </li>
+          </ul>
+
+          <h2 id="formula">計算式</h2>
+          <p>
+            食品表示基準は、食塩相当量を「ナトリウムの量に2.54を乗じたもの」と定めています。ナトリウムはmg、食塩相当量はgで扱うことが多いので、次の式になります。
+          </p>
+          <div class="art-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">求めるもの</th>
+                  <th scope="col">計算式</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>食塩相当量（g）</td>
+                  <td>ナトリウム（mg）× 2.54 ÷ 1,000</td>
+                </tr>
+                <tr>
+                  <td>ナトリウム（mg）</td>
+                  <td>食塩相当量（g）× 1,000 ÷ 2.54</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            たとえば、ナトリウムが236mgなら、236 × 2.54 ÷ 1,000 ＝
+            0.59944gで、表示は「食塩相当量
+            0.6g」です。2.54は、食塩（塩化ナトリウム）の重さがナトリウムの重さの約2.54倍であることから来ています。
+          </p>
+
+          <h2 id="rounding">表示する値の書き方</h2>
+          <ul>
+            <li>
+              食塩相当量は、小数第1位まで書きます。それより下の位まで書くこともでき、その場合は1つ下の位を四捨五入します（例：0.59944gは「0.6g」または「0.60g」）。
+            </li>
+            <li>
+              100g（飲料は100ml）当たりのナトリウムが5mg未満なら、「0g」と書けます。原材料のばらつきなどで5mg以上になることがあるなら、「0」とは書けません。
+            </li>
+            <li>
+              1個当たりなど小さな単位で表示して、小数第1位に丸めると0.0gになっても、100g当たりのナトリウムが5mg以上あるなら「0g」とは書けません。「0.04g」のように、有効数字1桁以上で書きます。
+            </li>
+          </ul>
+          <p>
+            ほかの栄養成分の書き方や、計算で求めた値に「推定値」と書く条件は、
+            <a href="/articles/nutrition-labeling-ec-guide/">
+              栄養成分表示の記事
+            </a>
+            にまとめています。
+          </p>
+
+          <h2 id="sodium">ナトリウムの量も書ける場合</h2>
+          <p>
+            栄養成分表示で必ず書くのは食塩相当量です。ナトリウム塩を添加していない食品に限り、食塩相当量に加えて、「ナトリウム」の文字を付けてナトリウムの量も表示できます。ナトリウムの量だけを書いて、食塩相当量を省くことはできません。
+          </p>
+          <p>
+            食塩のほか、重曹（炭酸水素ナトリウム）やグルタミン酸ナトリウムなどもナトリウム塩です。ベーキングパウダーなど、これらを含む原材料を使っている場合も、配合を確認してください。
+          </p>
+
+          <h2 id="faq">よくある疑問</h2>
+          <h3>加えた食塩の量と、食塩相当量が合いません</h3>
+          <p>
+            食塩相当量は、食品に含まれるナトリウムの全量を食塩に置き換えた値です。レシピで加えた食塩のほか、原材料にもともと含まれるナトリウムや、食塩以外のナトリウム塩のナトリウムも含まれるので、加えた食塩の量とは一致しません。
+          </p>
+          <h3>栄養成分表示そのものが必要かわかりません</h3>
+          <p>
+            消費税の免税事業者や小規模企業者が販売する食品などは、栄養成分表示を省略できます。
+            <a href="/tools/nutrition-labeling-check/">
+              栄養成分表示の要否チェック
+            </a>
+            で確認できます。表示の表は
+            <a href="/tools/food-label-maker/">食品表示ラベルの作成</a>
+            で、一括表示とあわせて作れます。
+          </p>
+
+          <h2 id="sources">参考情報</h2>
+          <ul>
+            {Object.entries(SOURCES).map(([, source]) => (
+              <li>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-describedby="new-tab-note"
+                >
+                  {source.title}
+                </a>
+                （{source.publisher}）：{source.sections}
+              </li>
+            ))}
+          </ul>
+          <p>最終確認日：{checkedOn}</p>
+        </article>
+
+        <aside class="art-flabel" aria-labelledby="tool-flabel-title">
+          <img
+            class="art-flabel-icon"
+            src="/f-label.webp"
+            alt="Fラベル"
+            width="1200"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="art-flabel-body">
+            <p class="art-flabel-badge">Shopify App</p>
+            <h2 id="tool-flabel-title" class="art-flabel-title">
+              ネットショップの食品表示は「Fラベル」で
+            </h2>
+            <p class="art-flabel-desc">
+              原材料・添加物・アレルゲン・栄養成分をまとめて管理し、Shopifyの商品ページに食品表示を掲載できるアプリです。原材料マスターの再利用とCSVインポートで、登録・更新の手間を減らせます。
+            </p>
+            <div class="art-flabel-cta">
+              <a
+                class="btn btn-primary"
+                href={FLABEL_APP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-describedby="new-tab-note"
+                data-track-event="mix_outbound_shopify_app,mix_cta_click"
+                data-track-surface="tool_flabel_box"
+                data-track-cta-position="tool_end"
+                data-track-cta-id="tool_flabel_install"
+                data-track-tool-id="salt_equivalent"
+              >
+                Shopifyアプリストアで見る
+              </a>
+              <a
+                class="btn btn-outline"
+                href="/service/f-label/"
+                data-track-event="mix_cta_click"
+                data-track-surface="tool_flabel_box"
+                data-track-cta-position="tool_end"
+                data-track-cta-id="tool_flabel_detail"
+                data-track-tool-id="salt_equivalent"
+              >
+                Fラベルの詳細を見る
+              </a>
+            </div>
+          </div>
+        </aside>
+
+        {related.length > 0 && (
+          <section class="art-related">
+            <h2 class="art-related-title">関連記事</h2>
+            <div class="art-related-grid">
+              {related.map((r) => (
+                <a class="art-related-card reveal" href={`/articles/${r.id}/`}>
+                  <div class="art-card-meta">
+                    {r.data.category && (
+                      <span class="art-card-cat">{r.data.category}</span>
+                    )}
+                    <time datetime={r.data.publishDate.toISOString()}>
+                      {formatDate(r.data.publishDate)}
+                    </time>
+                  </div>
+                  <h3 class="art-related-card-title">{r.data.title}</h3>
+                  <span class="art-card-more">記事を読む →</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <div class="art-back">
+          <a href="/tools/">← 無料ツール一覧へ</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .art-title {
+    word-break: auto-phrase;
+  }
+
+  .tool-meta {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .tool-noscript {
+    max-width: 760px;
+    margin: 0 auto 20px;
+    padding: 14px 18px;
+    border: 1px solid var(--color-primary);
+    border-radius: 12px;
+    background: #fff6f1;
+    color: var(--color-text);
+  }
+
+  .tool-guide {
+    margin-top: 32px;
+  }
+
+  .tool-guide > h2:first-child {
+    margin-top: 0;
+  }
+</style>
