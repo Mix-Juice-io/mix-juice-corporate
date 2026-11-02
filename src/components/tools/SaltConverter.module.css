@@ -1,0 +1,70 @@
+/* Salt equivalent converter. Cards, questions, and choices come from
+   NutritionCheck.module.css and the fields from RecipeInput.module.css;
+   this file adds the unit suffix and the result values. */
+
+/* Results update as the person types, so the form needs less space between
+   questions than a submit-style tool. */
+.form {
+  gap: 28px;
+  margin-top: 24px;
+}
+
+.inputRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 320px;
+}
+
+.unit {
+  flex-shrink: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-light);
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.values > div {
+  padding: 16px 18px;
+  border: 1px solid #d9dce1;
+  border-radius: 14px;
+  background: var(--color-white);
+}
+
+.values dt {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text-light);
+}
+
+.values dd {
+  margin: 4px 0 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.values .main {
+  font-size: 1.8rem;
+  color: var(--color-accent-text);
+}
+
+.formula {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--color-text-light);
+  overflow-wrap: anywhere;
+}
