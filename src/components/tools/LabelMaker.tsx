@@ -15,6 +15,7 @@ import {
   type Role,
 } from '../../lib/label-maker/rules'
 import { SOURCES, type SourceId } from '../../lib/label-maker/sources'
+import { findExample } from '../../lib/label-maker/examples'
 import { currentTargets } from '../../lib/recipe/recipe'
 import { FLABEL_APP_URL } from '../../lib/urls'
 import { trackEvent } from '../../lib/analytics'
@@ -341,7 +342,18 @@ export default function LabelMaker() {
     null,
   )
 
-  useEffect(() => setHydrated(true), [])
+  // The food examples link here with ?example=<id> to start from their
+  // recipe. Read it after hydration so the server-rendered form matches.
+  const [loadedExample, setLoadedExample] = useState<string | null>(null)
+  useEffect(() => {
+    setHydrated(true)
+    const example = findExample(
+      new URLSearchParams(window.location.search).get('example'),
+    )
+    if (!example) return
+    setDraft(example.draft)
+    setLoadedExample(example.food)
+  }, [])
 
   // Move focus after the error summary or result has rendered, and bring its
   // top into view (focus() alone stops as soon as it peeks in at the bottom).
@@ -400,6 +412,7 @@ export default function LabelMaker() {
 
   const handleReset = () => {
     setDraft(emptyDraft([blankRow(newKey())]))
+    setLoadedExample(null)
     setReported(null)
     setSubmitted(null)
     formRef.current?.scrollIntoView({ block: 'start' })
@@ -439,6 +452,12 @@ export default function LabelMaker() {
           <p className={base.lead}>
             1つの商品の一括表示を作ります。入力した内容は送信も保存もしません。
           </p>
+          {loadedExample && (
+            <p className={base.staleBanner} role="status">
+              入力例「{loadedExample}
+              」を読み込みました。名称・配合・期限・事業者などを自分の商品に書き換えてから、「表示を作る」を押してください。
+            </p>
+          )}
         </div>
 
         {problems.length > 0 && (

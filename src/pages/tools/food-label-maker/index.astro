@@ -3,6 +3,7 @@ import Layout from '../../../layouts/Layout.astro'
 import LabelMaker from '../../../components/tools/LabelMaker.tsx'
 import { getPublishedArticles, formatDate } from '../../../lib/articles'
 import { CHECKED_ON, SOURCES } from '../../../lib/label-maker/sources'
+import { EXAMPLES } from '../../../lib/label-maker/examples'
 import { FLABEL_APP_URL } from '../../../lib/urls'
 import '../../../styles/articles.css'
 
@@ -168,6 +169,19 @@ const breadcrumbJsonLd = {
           <p>
             架空の例です。実際の表示は、使う原材料・製法・売り方によって変わります。
           </p>
+          <h3>品目別の表示例</h3>
+          <p>
+            品目ごとの配合と一括表示、間違えやすい点をまとめています。どの例も、配合を読み込んだ状態でこのツールを開けます。
+          </p>
+          <ul>
+            {EXAMPLES.map((e) => (
+              <li>
+                <a href={`/tools/food-label-maker/examples/${e.id}/`}>
+                  {e.food}の食品表示の例
+                </a>
+              </li>
+            ))}
+          </ul>
 
           <h2 id="diy">食品表示ラベル（シール）を自作する流れ</h2>
           <ol>

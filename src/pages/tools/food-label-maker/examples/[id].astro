@@ -1,0 +1,328 @@
+---
+// One page per food example (#149). The label is built here with the same
+// functions as the tool, from the same draft the tool loads via ?example=.
+import Layout from '../../../../layouts/Layout.astro'
+import {
+  EXAMPLES,
+  type LabelExample,
+} from '../../../../lib/label-maker/examples'
+import { buildLabel, checkDraft } from '../../../../lib/label-maker/rules'
+import { KIND_LABELS } from '../../../../components/tools/RecipeInput.tsx'
+import { CHECKED_ON } from '../../../../lib/label-maker/sources'
+import { formatDate } from '../../../../lib/articles'
+import { FLABEL_APP_URL } from '../../../../lib/urls'
+import '../../../../styles/articles.css'
+
+export function getStaticPaths() {
+  return EXAMPLES.map((example) => ({
+    params: { id: example.id },
+    props: { example },
+  }))
+}
+
+interface Props {
+  example: LabelExample
+}
+
+const { example } = Astro.props
+const { answers } = checkDraft(example.draft)
+if (!answers) {
+  // examples.test.ts keeps every draft complete; fail the build otherwise.
+  throw new Error(`Incomplete label example: ${example.id}`)
+}
+const label = buildLabel(answers)
+const others = EXAMPLES.filter((e) => e.id !== example.id)
+const toolHref = `/tools/food-label-maker/?example=${example.id}`
+const checkedOn = formatDate(new Date(`${CHECKED_ON}T00:00:00Z`))
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'ホーム',
+      item: new URL('/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: '無料ツール',
+      item: new URL('/tools/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: '食品表示ラベルの作成',
+      item: new URL('/tools/food-label-maker/', Astro.site).href,
+    },
+    {
+      '@type': 'ListItem',
+      position: 4,
+      name: `表示例：${example.food}`,
+      item: new URL(Astro.url.pathname, Astro.site).href,
+    },
+  ],
+}
+---
+
+<Layout
+  title={`${example.title} | Mix-Juice`}
+  description={example.description}
+>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c')}
+    slot="head"
+  />
+  <div class="art-page">
+    <section class="art-hero">
+      <div class="art-hero-bg">
+        <div class="art-blob1"></div>
+        <div class="art-blob2"></div>
+      </div>
+      <div class="container">
+        <nav class="art-crumbs" aria-label="パンくずリスト">
+          <a href="/">ホーム</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href="/tools/">無料ツール</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <a href="/tools/food-label-maker/">食品表示ラベルの作成</a>
+          <span class="art-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+          <span class="art-crumbs-current">表示例：{example.food}</span>
+        </nav>
+        <p class="art-label">LABEL EXAMPLE</p>
+        <h1 class="art-title">{example.food}の食品表示の例</h1>
+        <p class="art-desc">{example.scenario}</p>
+        <p class="tool-meta">
+          架空の例です ／ 表示のルールの最終確認日：{checkedOn}
+        </p>
+      </div>
+    </section>
+
+    <section class="art-content">
+      <div class="container">
+        <article class="art-body">
+          <h2 id="recipe">この例の配合</h2>
+          <p>
+            1回に作る量の重さ（g）です。原材料名は、ツールに入れた名前のままです。
+          </p>
+          <div class="art-table-wrap">
+            <table class="recipe-example">
+              <thead>
+                <tr>
+                  <th scope="col">原材料名</th>
+                  <th scope="col">重量（g）</th>
+                  <th scope="col">種類</th>
+                </tr>
+              </thead>
+              <tbody>
+                {example.draft.rows.map((r) => (
+                  <tr>
+                    <td>{r.name}</td>
+                    <td>{r.weight}</td>
+                    <td>{r.kind ? KIND_LABELS[r.kind] : ''}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="label">一括表示</h2>
+          <p>
+            上の配合を食品表示ラベルの作成に入れて作った一括表示です。原材料と添加物は重量の多い順に並び、アレルゲンは原材料名の最後にまとまります。
+          </p>
+          <div class="art-table-wrap">
+            <table class="label-example">
+              <tbody>
+                {label.rows.map((r) => (
+                  <tr>
+                    <th scope="row">{r.heading}</th>
+                    <td>{r.text}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p>
+            架空の例です。実際の表示は、使う原材料・製法・売り方によって変わります。仕入れた原材料の名前と内訳は、仕入先の規格書で確認してください。
+          </p>
+
+          <div class="example-cta">
+            <p>
+              この配合を読み込んだ状態でツールを開き、自分の商品に書き換えて表示を作れます。
+            </p>
+            <a
+              class="btn btn-primary"
+              href={toolHref}
+              data-track-event="mix_cta_click"
+              data-track-surface="label_example"
+              data-track-cta-position="example_label"
+              data-track-cta-id="example_open_tool"
+              data-track-tool-id="food_label_maker"
+              data-track-example-id={example.id}
+            >
+              この配合をツールで開く
+            </a>
+          </div>
+
+          <h2 id="points">{example.food}で間違えやすい点</h2>
+          {example.points.map((point) => (
+            <>
+              <h3>{point.title}</h3>
+              <p>{point.text}</p>
+              <p class="example-sources">
+                出典：
+                {point.sources.map((s, i) => (
+                  <>
+                    {i > 0 && '、'}
+                    <a
+                      href={s.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-describedby="new-tab-note"
+                    >
+                      {s.title}
+                    </a>
+                  </>
+                ))}
+              </p>
+            </>
+          ))}
+
+          <h2 id="more">ほかの表示例とツール</h2>
+          <ul>
+            {others.map((o) => (
+              <li>
+                <a href={`/tools/food-label-maker/examples/${o.id}/`}>
+                  {o.food}の食品表示の例
+                </a>
+              </li>
+            ))}
+            <li>
+              <a href="/tools/food-label-maker/">
+                食品表示ラベルの作成（無料ツール）
+              </a>
+            </li>
+            <li>
+              <a href="/tools/food-label-maker/how-to/">
+                食品表示ラベルの作り方（ツールの使い方）
+              </a>
+            </li>
+            <li>
+              <a href="/tools/origin-labeling-check/">
+                原料原産地表示のチェック
+              </a>
+            </li>
+            <li>
+              <a href="/tools/expiry-date-record/">
+                期限表示の設定根拠の記録票
+              </a>
+            </li>
+          </ul>
+          <p>
+            結果は目安です。表示の最終的な判断は、管轄の保健所や消費者庁などにご確認ください。
+          </p>
+        </article>
+
+        <aside class="art-flabel" aria-labelledby="example-flabel-title">
+          <img
+            class="art-flabel-icon"
+            src="/f-label.webp"
+            alt="Fラベル"
+            width="1200"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="art-flabel-body">
+            <p class="art-flabel-badge">Shopify App</p>
+            <h2 id="example-flabel-title" class="art-flabel-title">
+              ネットショップの食品表示は「Fラベル」で
+            </h2>
+            <p class="art-flabel-desc">
+              原材料・添加物・アレルゲン・栄養成分をまとめて管理し、Shopifyの商品ページに食品表示を掲載できるアプリです。原材料マスターの再利用とCSVインポートで、商品が増えても登録・更新の手間を減らせます。
+            </p>
+            <div class="art-flabel-cta">
+              <a
+                class="btn btn-primary"
+                href={FLABEL_APP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-describedby="new-tab-note"
+                data-track-event="mix_outbound_shopify_app,mix_cta_click"
+                data-track-surface="tool_flabel_box"
+                data-track-cta-position="example_end"
+                data-track-cta-id="tool_flabel_install"
+                data-track-tool-id="food_label_maker"
+                data-track-example-id={example.id}
+              >
+                Shopifyアプリストアで見る
+              </a>
+              <a
+                class="btn btn-outline"
+                href="/service/f-label/"
+                data-track-event="mix_cta_click"
+                data-track-surface="tool_flabel_box"
+                data-track-cta-position="example_end"
+                data-track-cta-id="tool_flabel_detail"
+                data-track-tool-id="food_label_maker"
+                data-track-example-id={example.id}
+              >
+                Fラベルの詳細を見る
+              </a>
+            </div>
+          </div>
+        </aside>
+
+        <div class="art-back">
+          <a href="/tools/food-label-maker/">← 食品表示ラベルの作成へ</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .art-title {
+    word-break: auto-phrase;
+  }
+
+  .tool-meta {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Short columns stay on one line so phones do not stack them one
+     character per line; the ingredient names take the remaining width. */
+  .label-example th,
+  .recipe-example th:not(:first-child),
+  .recipe-example td:not(:first-child) {
+    white-space: nowrap;
+  }
+
+  .example-cta {
+    margin: 28px 0 8px;
+    padding: 20px 22px;
+    border: 1px solid var(--color-primary);
+    border-radius: 16px;
+    background: #fff6f1;
+  }
+
+  .example-cta p {
+    margin: 0 0 14px;
+  }
+
+  .example-sources {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+  }
+</style>
