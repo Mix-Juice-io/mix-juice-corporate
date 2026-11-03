@@ -48,3 +48,5 @@
 | 2026-11-03 | — | Search Console で `/tools/salt-equivalent/` のインデックス登録、`/tools/` と栄養成分表示の記事の再クロールをリクエスト | ツールのページのインデックス登録、2ページの再クロール |
 | 2026-11-03 06:00 | #160 | 食品表示ラベルの作成に、品目別の表示例ページを3つ追加（`/tools/food-label-maker/examples/cheesecake/`・`baked-sweets/`・`fruit-sandwich/`）。配合・一括表示・間違えやすい点。「この配合をツールで開く」で、ツールが `?example=<id>` の配合を読み込む。ツールのページの「表示例」の下から導線（#149） | 品目名の語（「チーズケーキ 食品表示」「焼き菓子 原材料表示」「フルーツサンド 食品表示」など）の表示回数・順位、`mix_cta_click`（surface `label_example`・cta_id `example_open_tool`、`example_id`）、`mix_tool_start`・`mix_tool_result`（`food_label_maker`） |
 | 2026-11-03 | — | Search Console で表示例の3ページのインデックス登録と、`/tools/food-label-maker/` の再クロールをリクエスト | 3ページのインデックス登録 |
+| 2026-11-03 20:06 | #163 | 記事「原材料表示の書き方｜順番・複合原材料・どこまで書くかを例で解説」（`/articles/ingredient-labeling-guide/`）を公開。重量順・名称・添加物の区切り、複合原材料（括弧書き・「その他」・省略）、どこまで書くか、クッキーの配合例。完全ガイドの原材料の節から導線。記事のコードブロックを折り返し表示に変更（#151） | 「原材料表示」「原材料 表示義務 どこまで」「原材料表示 順番」「複合原材料 表示」などのクエリの表示回数・順位、記事から `/tools/food-label-maker/`・`/tools/origin-labeling-check/` への遷移（`mix_cta_click` surface `article_body`） |
+| 2026-11-03 | — | Search Console で当記事のインデックス登録と、完全ガイドの再クロールをリクエスト | 当記事のインデックス登録 |
