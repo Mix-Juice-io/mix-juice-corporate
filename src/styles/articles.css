@@ -272,6 +272,9 @@
   padding: 16px 18px;
   border-radius: 12px;
   overflow-x: auto;
+  /* Code blocks in articles hold label text (原材料名 lines), not code, so
+     wrap them instead of making phone readers scroll sideways. */
+  white-space: pre-wrap;
   margin: 18px 0;
 }
 
