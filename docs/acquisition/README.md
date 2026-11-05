@@ -34,6 +34,7 @@ mix-juice.io の検索流入と成果（F-label の App Store 遷移・問い合
 - ツールへの導線は `mix_cta_click` の `surface` で区別する：`article_body`（記事本文のリンク、`cta_id` は `article_tool_link`、`article_slug` 付き）、`articles_index_tool`（記事一覧の枠）、`footer`（`cta_id` は `footer_tools`）。
 - ツールから F-label への導線：ページ末尾の枠は `surface` が `tool_flabel_box`。食品表示ラベルの作成（`food_label_maker`）は結果のすぐ下にも枠があり、`surface` が `tool_result`、`cta_id` が `tool_result_flabel_install`（`mix_outbound_shopify_app` と同時に送る）。
 - 2026-10-25 の PR #68 より前は、Preview 環境とローカルのアクセスも本番の GA4 に記録されていた。それ以前の Direct の数値には内部アクセスが混ざっている可能性がある。
+- 404 ページ（存在しないパス）では GA4 を読み込まない（公開日時は changelog.md）。それより前は、`/law`・`/tokutei` など存在しないパスを開く巡回プログラムの表示が記録されていて、表示回数と Direct のセッションが実際より多く出ている（[2026-11-05 の確認](reports/2026-11-05.md)、10/18 に集中）。その期間を比べるときは、Organic Search のセッションと `mix_*` のイベントで見る。
 - 食品表示ラベルの作成の「ラベルを印刷する」（ラベル用紙・ラベルプリンター向けの印刷）は、1訪問の最初の1回だけ `mix_tool_print` を送る。パラメータは `tool_id`（`food_label_maker`）と `print_layout`（`sheet`＝A4のラベル用紙、`single`＝ラベル1枚ずつ）。ページ全体の「表示を印刷する」は計測しない。
 - 食品表示ラベルの作成の品目別の表示例（`/tools/food-label-maker/examples/<id>/`）からツールを開く導線は、`surface` が `label_example`、`cta_id` が `example_open_tool`（`example_id` 付き）。
 

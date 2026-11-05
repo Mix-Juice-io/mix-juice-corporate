@@ -8,6 +8,8 @@
 //   (b) Each article page shows 1-3 related articles, none pointing to itself.
 //   (c) Every data-track-event names only allowed GA4 events and carries
 //       data-track-surface and data-track-cta-id (see src/scripts/click-tracking.ts).
+//   (d) The 404 page does not load GA4 (bots probing nonexistent paths would
+//       be counted as page views).
 
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { extname, join, relative, sep } from 'node:path'
@@ -190,6 +192,16 @@ for (const file of files) {
 
 if (articleCount === 0) {
   problems.push('no article pages found under dist/articles/')
+}
+
+// (d) no GA4 on the 404 page
+const notFound = join(DIST, '404.html')
+if (!existsSync(notFound)) {
+  problems.push('404.html not found in dist/')
+} else if (
+  readFileSync(notFound, 'utf8').includes('googletagmanager.com/gtag/js')
+) {
+  report(notFound, 'loads GA4; the 404 page must not be measured')
 }
 
 console.log(
