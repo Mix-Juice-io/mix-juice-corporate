@@ -1,11 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro'
+// No GA4 here: bots probing nonexistent paths (e.g. /law, /tokutei) were
+// recorded as page views (docs/acquisition/reports/2026-11-05.md).
 ---
 
 <Layout
   title="ページが見つかりません | Mix-Juice"
   description="お探しのページは見つかりませんでした。"
   noindex={true}
+  analytics={false}
 >
   <div class="notfound">
     <p class="notfound-code">404</p>

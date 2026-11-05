@@ -9,6 +9,8 @@ interface Props {
   ogType?: 'website' | 'article'
   ogImage?: string
   noindex?: boolean
+  // false skips the GA4 bootstrap; trackEvent() then stays a no-op.
+  analytics?: boolean
 }
 
 const {
@@ -17,6 +19,7 @@ const {
   ogType = 'website',
   ogImage = '/logo.png',
   noindex = false,
+  analytics = true,
 } = Astro.props
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href
@@ -93,7 +96,7 @@ const websiteJsonLd = {
     )}
     <slot name="head" />
 
-    {GA_ID && GA_HOST && (
+    {analytics && GA_ID && GA_HOST && (
       <script
         is:inline
         set:html={`
