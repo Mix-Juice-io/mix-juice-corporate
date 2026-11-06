@@ -61,3 +61,5 @@
 | 2026-11-07 | — | Search Console で当記事（`/articles/allergen-labeling-guide/`）の再クロールをリクエスト | 当記事の再クロール |
 | 2026-11-07 07:15 | #176 | サイトマップの更新日（lastmod）を、ツールの15ページと記事一覧（`/articles/`）にも付けた。それまで付いていたのは記事の8ページだけ。トップ・サービス・問い合わせ・規約は、更新日がわからないので付けない。記事以外の日付は `src/lib/page-lastmod.mjs` で管理する | Bing・Google によるツールのページの巡回とインデックス登録、ツールのページの表示回数 |
 | 2026-11-07 07:16 | — | Bing Webmaster Tools の「URL の送信」で、11/3〜11/7 に公開・改訂した11ページを送信（`/tools/food-label-maker/`、その `how-to/`、表示例3ページ、`/tools/salt-equivalent/`、`/tools/`、原材料表示・添加物表示・菓子製造業の許可・アレルギー表示の記事） | Bing での11ページのインデックス登録・表示回数 |
+| 2026-11-07 07:59 | #178 | F-label の LP（`/service/f-label/`）を書き直した。商品ページに表示できるブロック、導入の流れ（5段階）、料金（月額 US$10・年額 US$100・14日間無料）、できないこと、よくある質問を追加し、ページ末尾にも App Store へのボタンを置いた。`mix_lp_view` の `lp_variant` を `flabel_v1` から `flabel_v2` に変更（#34） | LP の表示回数（`mix_lp_view`、`lp_variant` で前後を分ける）、LP からの App Store 遷移（`mix_outbound_shopify_app`、`surface` `flabel_lp_primary_cta`・`flabel_lp_bottom_cta`）、「Fラベル」「shopify 食品表示 アプリ」などのクエリの表示回数 |
+| 2026-11-07 08:01 | — | Search Console と Bing Webmaster Tools で LP（`/service/f-label/`）の再クロールを依頼 | LP の再クロール |
