@@ -1,30 +1,140 @@
+import type { ReactNode } from 'react'
 import Link from '../Link'
 import { ArrowRight, CheckCircle } from 'lucide-react'
 import PageHero from '../PageHero'
 import styles from './FLabelPage.module.css'
 import { FLABEL_APP_URL } from '../../lib/urls'
 
+// Facts on this page (blocks, onboarding, CSV, billing behavior) were checked
+// against the F-label app code and its App Store listing on 2026-11-07
+// (corporate #34). Re-check them when the app or the listing changes.
+
+// Internal links from the page body to free tools and legal pages.
+function BodyLink({
+  to,
+  ctaId,
+  children,
+}: {
+  to: string
+  ctaId: string
+  children: ReactNode
+}) {
+  return (
+    <Link
+      to={to}
+      className={styles.inlineLink}
+      data-track-event="mix_cta_click"
+      data-track-surface="flabel_lp_body"
+      data-track-cta-id={ctaId}
+    >
+      {children}
+    </Link>
+  )
+}
+
+function InstallButton({ position }: { position: 'hero' | 'bottom' }) {
+  return (
+    <a
+      href={FLABEL_APP_URL}
+      className="btn btn-primary"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-describedby="new-tab-note"
+      data-track-event="mix_outbound_shopify_app,mix_lp_cta_click"
+      data-track-surface={
+        position === 'hero' ? 'flabel_lp_primary_cta' : 'flabel_lp_bottom_cta'
+      }
+      data-track-cta-position={position}
+      data-track-cta-id="flabel_lp_install"
+    >
+      Shopifyアプリストアで見る
+      <ArrowRight size={18} />
+    </a>
+  )
+}
+
+const scenes = [
+  'Shopifyの商品説明欄に、食品表示をコピーして貼り付けている',
+  '原材料やアレルゲンが変わるたびに、いくつもの商品ページを直している',
+  '商品ごとに、食品表示の書き方がそろっていない',
+]
+
+const blocks = [
+  {
+    name: '食品表示（一括表示欄）',
+    desc: '名称・原材料名・内容量・期限・保存方法・販売者などを、容器包装の一括表示欄と同じ並びの表で表示します。',
+  },
+  {
+    name: '栄養成分表',
+    desc: '「100gあたり」などの単位とあわせて、栄養成分を表で表示します。一括表示欄には栄養成分が入らないので、並べて置きます。',
+  },
+  {
+    name: 'アレルゲン情報（個別表示）',
+    desc: '特定原材料（表示義務）と、特定原材料に準ずるもの（表示推奨）に分けて表示します。',
+  },
+  {
+    name: '原材料（個別表示）、賞味期限・保存方法（個別表示）',
+    desc: '一括表示欄を使わず、項目ごとに分けて載せたい場合に使います。',
+  },
+]
+
+const steps = [
+  {
+    title: 'Shopify App Storeからインストールする',
+    desc: 'App Storeの掲載ページの「インストール」から、お使いのストアに追加します。',
+  },
+  {
+    title: '料金プランを選ぶ（14日間無料）',
+    desc: 'アプリを開くと料金プランの画面が出ます。プランを選ぶと14日間の無料体験が始まり、その間もすべての機能を使えます。',
+  },
+  {
+    title: '原材料を登録する',
+    desc: '原材料名、原材料か添加物かの区分、含まれるアレルゲン、遺伝子組換えの表示を登録します。よく使う原材料・添加物のプリセット（約130件）の読み込みや、CSVでの一括登録もできます。プリセットのアレルゲンは一般的な例なので、仕入れている原材料の規格書と照らして確かめてください。',
+  },
+  {
+    title: '商品ごとに食品表示を入力する',
+    desc: '名称、原材料・添加物（重量の多い順）、原料原産地、内容量、期限、保存方法、栄養成分、事業者情報を入力します。事業者情報は既定の値を登録しておけます。CSVでまとめて入力することもできます。',
+  },
+  {
+    title: '商品ページに表示ブロックを追加する',
+    desc: 'アプリのホーム画面のボタンからテーマエディタを開き、商品ページに「食品表示（一括表示欄）」のブロックを追加します。食品表示を保存した商品から、商品ページに表示されます。',
+  },
+]
+
+const features = [
+  {
+    title: '原材料マスター',
+    desc: '一度登録した原材料を、複数の商品で使い回せます。',
+  },
+  {
+    title: 'アレルゲンの集計',
+    desc: '商品に使った原材料のアレルゲンを集めて、表示義務と表示推奨に分けて表示します。原材料のアレルゲンを直すと、その原材料を使う商品にも反映されます。',
+  },
+  {
+    title: '原材料名の組み立て',
+    desc: '添加物を「／」で区切り、原料原産地や遺伝子組換えの表示、「（一部に…を含む）」を付けて表示します。',
+  },
+  {
+    title: '入力状況の確認',
+    desc: '必須の項目が足りない商品を、アプリのホーム画面で確かめられます。',
+  },
+  {
+    title: 'Shopifyの商品画面から開ける',
+    desc: '商品の詳細画面に、食品表示の入力状況と、入力画面へのリンクが出ます。',
+  },
+  {
+    title: 'CSVインポート',
+    desc: '原材料と、商品ごとの食品表示を、CSVでまとめて登録できます。',
+  },
+]
+
 export default function FLabelPage() {
-  const features = [
-    '原材料・添加物・アレルゲン・栄養成分をまとめて管理',
-    '原材料マスターを使って複数商品に共通データを再利用',
-    'CSVインポートで既存データを活かした一括登録に対応',
-    'アレルゲン情報を原材料から整理して表示データに反映',
-    '商品ページに必要な食品表示情報を見やすく掲載',
-  ]
-
-  const scenes = [
-    '商品ごとに食品表示をコピペで運用している',
-    '原材料やアレルゲンの修正が複数商品にまたがって手間になっている',
-    '表示情報をもっと整理して管理したい',
-  ]
-
   return (
     <div className={styles.page}>
       <PageHero
         label="PRODUCT"
         title="Fラベル｜EC用の食品表示"
-        description="食品表示を正しく管理・表示し、商品説明欄へのコピペ運用を減らすためのアプリです。"
+        description="Shopifyの商品ページに、原材料・アレルゲン・栄養成分などの食品表示を載せるアプリです。"
       />
 
       <section className={styles.contentSection}>
@@ -47,55 +157,242 @@ export default function FLabelPage() {
                 <span className={styles.productBadge}>Shopify App</span>
                 <h2 className={styles.productName}>Fラベル｜EC用の食品表示</h2>
                 <p className={styles.productTagline}>
-                  表示業務を、貼り付け作業ではなく管理できる状態に整えることを目指しています。
+                  食品表示を、商品説明欄へのコピペではなく、原材料から組み立てて管理します。
                 </p>
                 <p className={styles.productDesc}>
-                  食品ECでは、原材料やアレルゲン、栄養成分などを正しく表示したい一方で、
-                  商品説明欄へのコピペや手作業の更新で運用しているケースが少なくありません。
-                  Fラベルは、そうした食品表示業務を整理し、日々の更新負荷を軽くするためのアプリです。
+                  原材料をマスターに登録しておけば、商品ごとに原材料を選ぶだけで、原材料名とアレルゲンの表示ができあがります。原材料やアレルゲンを直したときも、使っている商品にまとめて反映されます。
                 </p>
                 <div className={styles.ctaRow}>
-                  <a
-                    href={FLABEL_APP_URL}
-                    className="btn btn-primary"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-describedby="new-tab-note"
-                    data-track-event="mix_outbound_shopify_app,mix_lp_cta_click"
-                    data-track-surface="flabel_lp_primary_cta"
-                    data-track-cta-position="hero"
-                    data-track-cta-id="flabel_lp_install"
-                  >
-                    Shopifyアプリストアで見る
-                    <ArrowRight size={18} />
-                  </a>
+                  <InstallButton position="hero" />
                 </div>
+                <p className={styles.ctaNote}>
+                  月額 US$10・14日間無料（
+                  <a href="#pricing" className={styles.inlineLink}>
+                    料金
+                  </a>
+                  ・
+                  <a href="#flow" className={styles.inlineLink}>
+                    導入の流れ
+                  </a>
+                  ）
+                </p>
               </div>
             </div>
 
-            <div className={styles.sectionBlock}>
-              <h3 className={styles.blockTitle}>こんな場面で役立ちます</h3>
+            <section className={styles.sectionBlock} aria-labelledby="scenes">
+              <h2 id="scenes" className={styles.blockTitle}>
+                こんな方に向いています
+              </h2>
               <ul className={styles.pointList}>
-                {scenes.map((scene, i) => (
-                  <li key={i} className={styles.pointItem}>
+                {scenes.map((scene) => (
+                  <li key={scene} className={styles.pointItem}>
                     <CheckCircle size={18} color="var(--color-primary-dark)" />
                     <span>{scene}</span>
                   </li>
                 ))}
               </ul>
-            </div>
+            </section>
 
-            <div className={styles.sectionBlock}>
-              <h3 className={styles.blockTitle}>主な機能</h3>
+            <section className={styles.sectionBlock} aria-labelledby="display">
+              <h2 id="display" className={styles.blockTitle}>
+                商品ページに表示できるもの
+              </h2>
+              <p className={styles.sectionLead}>
+                テーマエディタで、商品ページに次のブロックを置いて表示します。
+              </p>
+              <dl className={styles.defList}>
+                {blocks.map((block) => (
+                  <div key={block.name} className={styles.defItem}>
+                    <dt>{block.name}</dt>
+                    <dd>{block.desc}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className={styles.note}>
+                一括表示欄と、原材料・アレルゲン・期限の個別のブロックを両方置くと、同じ内容が二重に表示されます。見出しの表示・文言・見出しのレベル（H2〜H4）はブロックごとに設定でき、文字の色やフォントはテーマのものを使います。
+              </p>
+            </section>
+
+            <section className={styles.sectionBlock} aria-labelledby="flow">
+              <h2 id="flow" className={styles.blockTitle}>
+                導入の流れ
+              </h2>
+              <ol className={styles.stepList}>
+                {steps.map((step, i) => (
+                  <li key={step.title} className={styles.stepItem}>
+                    <span className={styles.stepNum} aria-hidden="true">
+                      {i + 1}
+                    </span>
+                    <div>
+                      <h3 className={styles.itemTitle}>{step.title}</h3>
+                      <p className={styles.itemDesc}>{step.desc}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
+
+            <section className={styles.sectionBlock} aria-labelledby="features">
+              <h2 id="features" className={styles.blockTitle}>
+                主な機能
+              </h2>
               <ul className={styles.featureGrid}>
-                {features.map((feature, i) => (
-                  <li key={i} className={styles.featureItem}>
+                {features.map((feature) => (
+                  <li key={feature.title} className={styles.featureItem}>
                     <CheckCircle size={18} color="var(--color-primary-dark)" />
-                    <span>{feature}</span>
+                    <div>
+                      <h3 className={styles.itemTitle}>{feature.title}</h3>
+                      <p className={styles.itemDesc}>{feature.desc}</p>
+                    </div>
                   </li>
                 ))}
               </ul>
-            </div>
+            </section>
+
+            <section className={styles.sectionBlock} aria-labelledby="pricing">
+              <h2 id="pricing" className={styles.blockTitle}>
+                料金
+              </h2>
+              <div className={styles.priceCard}>
+                <p className={styles.planName}>basicプラン</p>
+                <p className={styles.price}>
+                  月額 <strong>US$10</strong>
+                  <span className={styles.priceAlt}>
+                    または年額 US$100（月払いより約17%お得）
+                  </span>
+                </p>
+                <p className={styles.trial}>
+                  最初の14日間は無料。すべての機能を使えます。
+                </p>
+              </div>
+              <ul className={styles.noteList}>
+                <li>
+                  料金はShopifyの請求にまとめて請求されます。日本円など、ストアの請求通貨に請求日の為替レートで換算されます（目安：月額
+                  約1,600円、2026年11月時点）。
+                </li>
+                <li>
+                  無料体験の14日間のうちにアプリを削除すれば、料金はかかりません。
+                </li>
+                <li>
+                  最新の料金は、Shopify App Storeの掲載ページでご確認ください。
+                </li>
+              </ul>
+            </section>
+
+            <section className={styles.sectionBlock} aria-labelledby="limits">
+              <h2 id="limits" className={styles.blockTitle}>
+                できないこと・注意点
+              </h2>
+              <ul className={styles.noteList}>
+                <li>
+                  Fラベルは食品表示の整理と掲載を手伝うアプリで、表示の内容が法令に合っていることを保証するものではありません。
+                </li>
+                <li>
+                  容器包装に貼るラベルの印刷はできません。ラベルの文面と印刷は、無料の
+                  <BodyLink
+                    to="/tools/food-label-maker/"
+                    ctaId="flabel_lp_label_maker"
+                  >
+                    食品表示ラベルの作成
+                  </BodyLink>
+                  でできます。
+                </li>
+                <li>
+                  栄養成分の計算はしません。分析や計算で求めた値を入力します。食塩相当量も直接入力します（ナトリウムからの換算は
+                  <BodyLink
+                    to="/tools/salt-equivalent/"
+                    ctaId="flabel_lp_salt_equivalent"
+                  >
+                    食塩相当量の換算
+                  </BodyLink>
+                  で）。
+                </li>
+                <li>
+                  表示できるのは商品ページだけです。テーマエディタでアプリのブロックを追加できるテーマ（Online
+                  Store 2.0 に対応したテーマ）が必要です。
+                </li>
+                <li>管理画面と商品ページの表示は、日本語だけです。</li>
+                <li>
+                  無料体験のあと料金プランが有効でないと、管理画面が使えず、商品ページの食品表示も表示されなくなります。
+                </li>
+              </ul>
+            </section>
+
+            <section className={styles.sectionBlock} aria-labelledby="faq">
+              <h2 id="faq" className={styles.blockTitle}>
+                よくある質問
+              </h2>
+              <div className={styles.faqList}>
+                <div className={styles.faqItem}>
+                  <h3 className={styles.itemTitle}>
+                    いま商品説明欄に書いている食品表示はどうなりますか？
+                  </h3>
+                  <p className={styles.itemDesc}>
+                    Fラベルは商品説明欄を書き換えません。Fラベルの表示に切り替えたら、二重にならないよう、商品説明欄の食品表示を削除してください。
+                  </p>
+                </div>
+                <div className={styles.faqItem}>
+                  <h3 className={styles.itemTitle}>CSVで登録できますか？</h3>
+                  <p className={styles.itemDesc}>
+                    原材料と、商品ごとの食品表示を、それぞれCSVで登録できます。文字コードはUTF-8で、Excelで作る場合は「CSV
+                    UTF-8」形式で保存してください。アプリからサンプルのCSVをダウンロードできます。商品のCSVの原材料は、先に登録した原材料の名前で書きます。原材料のアレルゲンは英語のキー（小麦は
+                    wheat など）で書きます。CSVへの書き出しはできません。
+                  </p>
+                </div>
+                <div className={styles.faqItem}>
+                  <h3 className={styles.itemTitle}>どのテーマで使えますか？</h3>
+                  <p className={styles.itemDesc}>
+                    テーマエディタで、商品ページにアプリのブロックを追加できるテーマ（Online
+                    Store 2.0
+                    に対応したテーマ）で使えます。対応していない古いテーマでは表示できません。
+                  </p>
+                </div>
+                <div className={styles.faqItem}>
+                  <h3 className={styles.itemTitle}>
+                    食品表示のデータはどこに保存されますか？
+                  </h3>
+                  <p className={styles.itemDesc}>
+                    原材料名・アレルゲン・栄養成分の値・事業者情報などは、Shopifyのメタフィールドとメタオブジェクトとして、お使いのストアに保存されます。Mix-Juiceのサーバーには保存しません。詳しくは
+                    <BodyLink
+                      to="/service/f-label/privacy/"
+                      ctaId="flabel_lp_privacy"
+                    >
+                      プライバシーポリシー
+                    </BodyLink>
+                    をご覧ください。
+                  </p>
+                </div>
+                <div className={styles.faqItem}>
+                  <h3 className={styles.itemTitle}>
+                    やめたいときはどうすればいいですか？
+                  </h3>
+                  <p className={styles.itemDesc}>
+                    Shopifyの管理画面からアプリを削除すると、料金の請求も止まります。削除すると、商品ページの食品表示は表示されなくなります。
+                  </p>
+                </div>
+                <div className={styles.faqItem}>
+                  <h3 className={styles.itemTitle}>
+                    問い合わせはどこにすればいいですか？
+                  </h3>
+                  <p className={styles.itemDesc}>
+                    Shopify App
+                    StoreのFラベルの掲載ページにある、サポートの窓口からご連絡ください。
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section className={styles.ctaBox} aria-labelledby="cta-bottom">
+              <h2 id="cta-bottom" className={styles.blockTitle}>
+                14日間、無料で試せます
+              </h2>
+              <p className={styles.itemDesc}>
+                インストールして料金プランを選ぶと、無料体験が始まります。
+              </p>
+              <div className={styles.ctaRow}>
+                <InstallButton position="bottom" />
+              </div>
+            </section>
 
             <div className={styles.legalLinks}>
               <Link to="/service/f-label/terms/" className={styles.legalLink}>

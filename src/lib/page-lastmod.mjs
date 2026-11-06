@@ -7,12 +7,14 @@
 // analytics. Every page under /tools/ needs an entry, and every entry must be
 // a page in the sitemap; `npm run verify` checks both.
 //
-// Pages without a known update date (home, service, contact, legal) are left
-// out rather than given a guessed date.
+// Pages without a known update date (home, service index, contact, legal) are
+// left out rather than given a guessed date; add one when such a page gets a
+// substantive change.
 
 import { articleLastmod, parseDate } from './article-lastmod.mjs'
 
 export const PAGE_LASTMOD = {
+  '/service/f-label/': '2026-11-07',
   '/tools/': '2026-11-03',
   '/tools/food-label-maker/': '2026-11-04',
   '/tools/food-label-maker/how-to/': '2026-11-04',

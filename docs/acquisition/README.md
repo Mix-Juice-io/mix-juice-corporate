@@ -37,6 +37,7 @@ mix-juice.io の検索流入と成果（F-label の App Store 遷移・問い合
 - 404 ページ（存在しないパス）では GA4 を読み込まない（公開日時は changelog.md）。それより前は、`/law`・`/tokutei` など存在しないパスを開く巡回プログラムの表示が記録されていて、表示回数と Direct のセッションが実際より多く出ている（[2026-11-05 の確認](reports/2026-11-05.md)、10/18 に集中）。その期間を比べるときは、Organic Search のセッションと `mix_*` のイベントで見る。
 - 食品表示ラベルの作成の「ラベルを印刷する」（ラベル用紙・ラベルプリンター向けの印刷）は、1訪問の最初の1回だけ `mix_tool_print` を送る。パラメータは `tool_id`（`food_label_maker`）と `print_layout`（`sheet`＝A4のラベル用紙、`single`＝ラベル1枚ずつ）。ページ全体の「表示を印刷する」は計測しない。
 - 食品表示ラベルの作成の品目別の表示例（`/tools/food-label-maker/examples/<id>/`）からツールを開く導線は、`surface` が `label_example`、`cta_id` が `example_open_tool`（`example_id` 付き）。
+- F-label の LP（`/service/f-label/`）：`mix_lp_view` の `lp_variant` は、2026-11-07 の書き直し（#34）から `flabel_v2`（それまでは `flabel_v1`）。App Store へのボタンは `cta_id` が `flabel_lp_install` で、`surface` が `flabel_lp_primary_cta`（ページ上部）と `flabel_lp_bottom_cta`（ページ末尾）。本文から無料ツール・プライバシーポリシーへのリンクは `mix_cta_click` の `surface` `flabel_lp_body`。
 
 ### ラッコキーワード（検索数と、100位以内に入った語）
 
