@@ -10,9 +10,12 @@
 //       data-track-surface and data-track-cta-id (see src/scripts/click-tracking.ts).
 //   (d) The 404 page does not load GA4 (bots probing nonexistent paths would
 //       be counted as page views).
+//   (e) Every sitemap URL under /articles/ and /tools/ has a lastmod, and each
+//       entry in src/lib/page-lastmod.mjs is a sitemap URL with that date.
 
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { extname, join, relative, sep } from 'node:path'
+import { PAGE_LASTMOD } from '../src/lib/page-lastmod.mjs'
 
 const DIST = 'dist'
 const SITE_ORIGIN = 'https://mix-juice.io'
@@ -204,9 +207,42 @@ if (!existsSync(notFound)) {
   report(notFound, 'loads GA4; the 404 page must not be measured')
 }
 
+// (e) sitemap lastmod
+const sitemapLastmod = new Map() // URL path -> lastmod, or null when absent
+for (const name of readdirSync(DIST)) {
+  if (!/^sitemap-\d+\.xml$/.test(name)) continue
+  const xml = readFileSync(join(DIST, name), 'utf8')
+  for (const [, entry] of xml.matchAll(/<url>([\s\S]*?)<\/url>/g)) {
+    const loc = entry.match(/<loc>([^<]+)<\/loc>/)?.[1]
+    if (!loc) continue
+    const lastmod = entry.match(/<lastmod>([^<]+)<\/lastmod>/)?.[1] ?? null
+    sitemapLastmod.set(decodeURIComponent(new URL(loc).pathname), lastmod)
+  }
+}
+if (sitemapLastmod.size === 0) {
+  problems.push('no URLs found in dist/sitemap-*.xml')
+}
+for (const [path, lastmod] of sitemapLastmod) {
+  if (lastmod === null && /^\/(articles|tools)\//.test(path)) {
+    problems.push(
+      `sitemap: ${path} has no lastmod (add it to src/lib/page-lastmod.mjs)`,
+    )
+  }
+}
+for (const [path, date] of Object.entries(PAGE_LASTMOD)) {
+  if (!sitemapLastmod.has(path)) {
+    problems.push(`src/lib/page-lastmod.mjs: ${path} is not in the sitemap`)
+  } else if (sitemapLastmod.get(path)?.slice(0, 10) !== date) {
+    problems.push(
+      `sitemap: ${path} lastmod is ${sitemapLastmod.get(path)}, expected ${date}`,
+    )
+  }
+}
+
 console.log(
   `verify-dist: ${files.length} pages, ${linkCount} internal references, ` +
-    `${articleCount} articles, ${trackCount} tracked elements`,
+    `${articleCount} articles, ${trackCount} tracked elements, ` +
+    `${sitemapLastmod.size} sitemap URLs`,
 )
 if (problems.length > 0) {
   console.error(`\n${problems.length} problem(s):`)

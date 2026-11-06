@@ -5,9 +5,9 @@ import sitemap from '@astrojs/sitemap'
 import { unified } from '@astrojs/markdown-remark'
 import rehypeWrapTables from './src/lib/rehype-wrap-tables.mjs'
 import rehypeTaskListLabels from './src/lib/rehype-task-list-labels.mjs'
-import { articleLastmod } from './src/lib/article-lastmod.mjs'
+import { sitemapLastmod } from './src/lib/page-lastmod.mjs'
 
-const lastmod = articleLastmod()
+const lastmod = sitemapLastmod()
 
 // Production site origin. Used for canonical URLs, OGP, and sitemap generation.
 export default defineConfig({

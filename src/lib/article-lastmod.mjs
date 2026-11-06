@@ -1,7 +1,7 @@
 // Sitemap <lastmod> values for articles, read from frontmatter: updatedDate
 // when an author records a substantive update, otherwise publishDate. Dates
 // come from the files, so rebuilding without content changes never moves
-// them. Static pages get no lastmod because they have no recorded update date.
+// them. Other pages take theirs from page-lastmod.mjs.
 
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -17,7 +17,7 @@ function field(frontmatter, name) {
 
 // Frontmatter dates are calendar days (YYYY-MM-DD). Parse them as UTC, as
 // the content collection does, so the day never shifts with the timezone.
-function parseDate(file, name, raw) {
+export function parseDate(file, name, raw) {
   const date = new Date(`${raw}T00:00:00Z`)
   if (!/^\d{4}-\d{2}-\d{2}$/.test(raw) || Number.isNaN(date.valueOf())) {
     throw new Error(`${file}: ${name} "${raw}" is not a YYYY-MM-DD date`)
