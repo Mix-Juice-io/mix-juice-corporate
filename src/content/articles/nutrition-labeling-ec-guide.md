@@ -272,7 +272,7 @@ Mix-JuiceのShopifyアプリ「[Fラベル](/service/f-label/)」では、栄養
 
 ---
 
-食品表示全般についてまとめた「[食品をネット販売するときの食品表示 完全ガイド](/articles/food-labeling-complete-guide/)」や、「[アレルゲン表示の義務と通販での対応方法](/articles/allergen-labeling-guide/)」も合わせてご覧ください。
+食品表示全般についてまとめた「[食品をネット販売するときの食品表示 完全ガイド](/articles/food-labeling-complete-guide/)」や、「[アレルギー表示の対象品目と書き方](/articles/allergen-labeling-guide/)」も合わせてご覧ください。
 
 栄養成分表示や食品表示全般のご相談は、[お問い合わせ](/contact/)からお気軽にどうぞ。
 

@@ -138,7 +138,7 @@ draft: false
 
 - [食品表示ラベルの作成](/tools/food-label-maker/)：配合の重量を入れると、原材料の並び順とアレルゲンを含む一括表示の文案を作れます
 - [焼き菓子の表示例](/tools/food-label-maker/examples/baked-sweets/)：マドレーヌなどの配合と、一括表示の例
-- [原材料表示の書き方](/articles/ingredient-labeling-guide/)、[添加物表示の書き方](/articles/food-additive-labeling-guide/)、[アレルゲン表示の義務と通販での対応方法](/articles/allergen-labeling-guide/)
+- [原材料表示の書き方](/articles/ingredient-labeling-guide/)、[添加物表示の書き方](/articles/food-additive-labeling-guide/)、[アレルギー表示の対象品目と書き方](/articles/allergen-labeling-guide/)
 
 ### ネットで売る準備をする
 
