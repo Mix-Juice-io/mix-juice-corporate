@@ -1,0 +1,62 @@
+// Delivery of a validated inquiry to the Zoho CRM web form ("Web-to-Lead",
+// Japan data center). The form identifiers come from the web form's embed
+// code; they are not credentials, but they are kept out of the repository and
+// set as Cloudflare Pages variables, so the only way in stays the site's own
+// endpoint with its Turnstile check.
+
+import { CONTACT_TOPICS, type ContactData } from './validate.ts'
+
+export const ZOHO_WEBFORM_URL = 'https://crm.zoho.jp/crm/WebToLeadForm'
+
+// Where Zoho redirects after accepting a submission. Set as the web form's
+// "送信時の処理" URL in Zoho CRM and posted with every submission; the
+// redirect to it is how the endpoint tells success from failure.
+export const ZOHO_RETURN_URL = 'https://mix-juice.io/contact/?sent=1'
+
+// Company is mandatory on Zoho leads; individuals often have none.
+export const NO_COMPANY = '（未記入）'
+
+export interface ZohoWebformConfig {
+  xnQsjsdp: string
+  xmIwtLD: string
+  actionType: string
+}
+
+export function zohoFormBody(
+  data: ContactData,
+  config: ZohoWebformConfig,
+): URLSearchParams {
+  return new URLSearchParams({
+    xnQsjsdp: config.xnQsjsdp,
+    zc_gad: '',
+    xmIwtLD: config.xmIwtLD,
+    actionType: config.actionType,
+    returnURL: ZOHO_RETURN_URL,
+    'Last Name': data.name,
+    Company: data.company || NO_COMPANY,
+    Email: data.email,
+    Description: `お問い合わせの種類：${CONTACT_TOPICS[data.topic]}\n\n${data.message}`,
+    // Zoho's own honeypot field; must stay empty.
+    aG9uZXlwb3Q: '',
+  })
+}
+
+/**
+ * Zoho answers an accepted submission with a redirect to the return URL.
+ * Anything else (an error page, a redirect elsewhere) counts as a failure,
+ * so the visitor is never told a lost inquiry was sent.
+ */
+export function isZohoAccepted(status: number, location: string | null) {
+  if (status < 300 || status >= 400 || !location) return false
+  try {
+    const target = new URL(location, ZOHO_WEBFORM_URL)
+    const expected = new URL(ZOHO_RETURN_URL)
+    return (
+      target.origin === expected.origin &&
+      target.pathname === expected.pathname &&
+      target.searchParams.get('sent') === '1'
+    )
+  } catch {
+    return false
+  }
+}
