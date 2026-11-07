@@ -61,6 +61,9 @@ test('accepts a 200 page that leads to the return URL', () => {
     `<meta http-equiv="refresh" content="0;url=${ZOHO_RETURN_URL}">`,
     `{"redirect":"${ZOHO_RETURN_URL.replaceAll('/', '\\/')}"}`,
     `<a href="/r?to=${encodeURIComponent(ZOHO_RETURN_URL)}">`,
+    `<input value="https&#x3a;&#x2f;&#x2f;mix-juice.io&#x2f;contact&#x2f;&#x3f;sent&#x3d;1">`,
+    `<input value="https:&#47;&#47;mix-juice.io&#47;contact&#47;?sent=1">`,
+    `<script>go('https\\x3a\\x2f\\x2fmix-juice.io\\x2fcontact\\x2f\\x3fsent\\x3d1')</script>`,
   ]
   for (const page of pages) {
     assert.equal(isZohoAccepted(200, null, page), true, page)

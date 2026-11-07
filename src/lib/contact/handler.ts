@@ -5,7 +5,11 @@
 // are logged as an error code without any personal data; read them with
 // `npx wrangler pages deployment tail` or in the Cloudflare dashboard.
 
-import { validateContact, type ContactField } from './validate.ts'
+import {
+  validateContact,
+  type ContactData,
+  type ContactField,
+} from './validate.ts'
 import {
   ZOHO_WEBFORM_URL,
   isZohoAccepted,
@@ -84,6 +88,21 @@ async function readJson(request: Request): Promise<unknown> {
     offset += chunk.byteLength
   }
   return JSON.parse(new TextDecoder().decode(bytes))
+}
+
+// A short outline of an unrecognized Zoho page for the failure log: the
+// visitor's input is replaced, and long letter/digit runs (identifiers,
+// tokens) are masked.
+export function pageShape(body: string | null, data: ContactData): string {
+  if (!body) return ''
+  let shape = body
+  for (const value of Object.values(data)) {
+    if (value) shape = shape.split(value).join('<input>')
+  }
+  return shape
+    .replace(/[A-Za-z0-9+/=_-]{16,}/g, '<id>')
+    .replace(/\s+/g, ' ')
+    .slice(0, 600)
 }
 
 function zohoConfig(env: ContactEnv): ZohoWebformConfig | null {
@@ -204,6 +223,7 @@ export async function handleContact(
             ?.match(/<title[^>]*>([^<]{0,80})/i)?.[1]
             .replace(/\s+/g, ' ')
             .trim() ?? '',
+        shape: pageShape(body, input.data),
       })
     }
     return json(200, { ok: true })

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import {
   TURNSTILE_VERIFY_URL,
   handleContact,
+  pageShape,
   type ContactEnv,
 } from './handler.ts'
 import { ZOHO_RETURN_URL, ZOHO_WEBFORM_URL } from './zoho.ts'
@@ -268,7 +269,22 @@ test('logs what Zoho returned, without the input, when it is not accepted', asyn
     location: '',
     length: 56,
     title: 'Zoho CRM エラー',
+    shape: '<html><head><title> Zoho CRM エラー </title></head></html>',
   })
+})
+
+test('masks the input and identifiers in the page outline', () => {
+  const shape = pageShape(
+    '<p>山田 太郎 taro@example.com</p><input value="abcdefghijklmnop1234">',
+    {
+      name: '山田 太郎',
+      company: '',
+      email: 'taro@example.com',
+      topic: 'flabel',
+      message: 'メッセージ',
+    },
+  )
+  assert.equal(shape, '<p><input> <input></p><input value="<id>">')
 })
 
 test('never confirms an inquiry Zoho did not accept', async () => {

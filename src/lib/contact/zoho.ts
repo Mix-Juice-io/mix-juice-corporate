@@ -63,8 +63,42 @@ function isReturnUrl(location: string): boolean {
   }
 }
 
+// Undo HTML character references (&#x2f; &#47; &amp; ...) and JS escapes
+// (\x2f / \/) so the return URL is found however the page writes it.
+export function unescapePage(body: string): string {
+  const named: Record<string, string> = {
+    amp: '&',
+    quot: '"',
+    apos: "'",
+    lt: '<',
+    gt: '>',
+    sol: '/',
+    colon: ':',
+    quest: '?',
+    equals: '=',
+    period: '.',
+  }
+  return body
+    .replace(/&#x([0-9a-f]+);?/gi, (_, hex: string) =>
+      String.fromCodePoint(parseInt(hex, 16)),
+    )
+    .replace(/&#(\d+);?/g, (_, dec: string) =>
+      String.fromCodePoint(parseInt(dec, 10)),
+    )
+    .replace(/&([a-z]+);/gi, (match, name: string) => named[name] ?? match)
+    .replace(/\\x([0-9a-f]{2})/gi, (_, hex: string) =>
+      String.fromCharCode(parseInt(hex, 16)),
+    )
+    .replace(/\\u([0-9a-f]{4})/gi, (_, hex: string) =>
+      String.fromCharCode(parseInt(hex, 16)),
+    )
+}
+
 export function mentionsReturnUrl(body: string): boolean {
-  return RETURN_URL_FORMS.some((form) => body.includes(form))
+  const texts = [body, unescapePage(body)]
+  return texts.some((text) =>
+    RETURN_URL_FORMS.some((form) => text.includes(form)),
+  )
 }
 
 /**
