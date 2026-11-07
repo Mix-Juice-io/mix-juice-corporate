@@ -314,7 +314,43 @@
   justify-content: center;
 }
 
+.statList {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid rgba(109, 103, 95, 0.16);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.statValue {
+  font-family: var(--font-en);
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-accent-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.statLabel {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--color-text-light);
+}
+
 @media (max-width: 768px) {
+  .statList {
+    grid-template-columns: 1fr;
+  }
+
   .contentSection {
     padding: 0 0 64px;
   }
