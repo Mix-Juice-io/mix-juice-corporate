@@ -351,6 +351,13 @@
   color: var(--color-accent-text);
 }
 
+/* The index sits in a grid with its own gap, so the article-end box's top
+   margin and centered width are reset here. */
+.art-index-flabel {
+  max-width: none;
+  margin: 0;
+}
+
 .art-newest {
   display: grid;
   gap: 10px;

@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro'
 import { getPublishedArticles, formatDate } from '../../lib/articles'
 import { groupByTopic, topicName } from '../../lib/article-topics'
+import { FLABEL_APP_URL } from '../../lib/urls'
 import '../../styles/articles.css'
 
 const articles = await getPublishedArticles()
@@ -155,6 +156,53 @@ const tools = [
             </ul>
           </section>
         ))}
+
+        <aside
+          class="art-flabel art-index-flabel"
+          aria-labelledby="index-flabel-title"
+        >
+          <img
+            class="art-flabel-icon"
+            src="/f-label.webp"
+            alt="Fラベル"
+            width="1200"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="art-flabel-body">
+            <p class="art-flabel-badge">Shopify App</p>
+            <h2 id="index-flabel-title" class="art-flabel-title">
+              Shopifyで食品を売っているなら「Fラベル」
+            </h2>
+            <p class="art-flabel-desc">
+              原材料・添加物・アレルゲン・栄養成分をまとめて管理し、Shopifyの商品ページに食品表示を掲載できるアプリです。商品が増えても、表示の書き直しを減らせます。
+            </p>
+            <div class="art-flabel-cta">
+              <a
+                class="btn btn-primary"
+                href={FLABEL_APP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-describedby="new-tab-note"
+                data-track-event="mix_outbound_shopify_app,mix_cta_click"
+                data-track-surface="articles_index_flabel"
+                data-track-cta-id="articles_flabel_install"
+              >
+                Shopifyアプリストアで見る
+              </a>
+              <a
+                class="btn btn-outline"
+                href="/service/f-label/"
+                data-track-event="mix_cta_click"
+                data-track-surface="articles_index_flabel"
+                data-track-cta-id="articles_flabel_detail"
+              >
+                Fラベルの詳細を見る
+              </a>
+            </div>
+          </div>
+        </aside>
 
         <section class="art-newest" aria-labelledby="newest-title">
           <h2 class="art-newest-title" id="newest-title">

@@ -2,7 +2,19 @@ import Link from '../Link'
 import { Package, ArrowRight, Wrench, CheckCircle } from 'lucide-react'
 import styles from './HomePage.module.css'
 
-export default function HomePage() {
+/** One topic of the article index, with the article to read first. */
+export interface GuideTopic {
+  id: string
+  name: string
+  lead: string
+  article: { href: string; title: string }
+}
+
+interface Props {
+  guide: GuideTopic[]
+}
+
+export default function HomePage({ guide }: Props) {
   return (
     <>
       {/* Hero */}
@@ -309,6 +321,90 @@ export default function HomePage() {
                 <ArrowRight size={16} />
               </Link>
             </article>
+          </div>
+        </div>
+      </section>
+
+      {/* Guide: articles and free tools for people who make and sell food */}
+      <section className={`${styles.section} ${styles.guideSection}`}>
+        <div className="container">
+          <div className={`${styles.sectionHead} reveal`}>
+            <span className={styles.sectionEn}>GUIDE</span>
+            <h2 className={styles.sectionJp}>
+              食品表示のガイドと
+              <span className={styles.noWrap}>無料ツール</span>
+            </h2>
+            <p className={styles.serviceLead}>
+              お菓子や惣菜を作って売る人に向けて、表示の書き方と売る前の準備を、法令と消費者庁の資料をもとにまとめています。
+            </p>
+          </div>
+          <div className={`${styles.guideGrid} reveal`}>
+            <Link
+              to="/tools/food-label-maker/"
+              className={`${styles.guideTool} glass-panel`}
+              data-track-event="mix_cta_click"
+              data-track-cta-id="home_guide_label_maker"
+              data-track-surface="home_guide"
+            >
+              <span className={styles.guideEyebrow}>無料ツール</span>
+              <span className={styles.guideToolTitle}>食品表示ラベル作成</span>
+              <span className={styles.guideText}>
+                配合の重量から一括表示の文面を作り、ラベル用紙やラベルプリンターで印刷できます。
+              </span>
+              <span className={styles.productLink}>
+                ツールを使う
+                <ArrowRight size={16} />
+              </span>
+            </Link>
+            {guide.map((topic) => (
+              <div
+                key={topic.id}
+                className={`${styles.guideTopic} glass-panel`}
+              >
+                <Link
+                  to={`/articles/#topic-${topic.id}`}
+                  className={styles.guideTopicName}
+                  data-track-event="mix_cta_click"
+                  data-track-cta-id={`home_guide_topic_${topic.id}`}
+                  data-track-surface="home_guide"
+                >
+                  {topic.name}
+                </Link>
+                <span className={styles.guideText}>{topic.lead}</span>
+                <span className={styles.guideFirst}>まずはこの記事</span>
+                <Link
+                  to={topic.article.href}
+                  className={styles.guideArticle}
+                  data-track-event="mix_cta_click"
+                  data-track-cta-id={`home_guide_article_${topic.id}`}
+                  data-track-surface="home_guide"
+                >
+                  {topic.article.title}
+                </Link>
+              </div>
+            ))}
+          </div>
+          <div className={styles.guideMore}>
+            <Link
+              to="/articles/"
+              className={styles.productLink}
+              data-track-event="mix_cta_click"
+              data-track-cta-id="home_guide_articles"
+              data-track-surface="home_guide"
+            >
+              記事をすべて見る
+              <ArrowRight size={16} />
+            </Link>
+            <Link
+              to="/tools/"
+              className={styles.productLink}
+              data-track-event="mix_cta_click"
+              data-track-cta-id="home_guide_tools"
+              data-track-surface="home_guide"
+            >
+              無料ツールをすべて見る
+              <ArrowRight size={16} />
+            </Link>
           </div>
         </div>
       </section>

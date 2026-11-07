@@ -1,11 +1,40 @@
 ---
 import Layout from '../layouts/Layout.astro'
-import HomePage from '../components/pages/HomePage.tsx'
+import HomePage, { type GuideTopic } from '../components/pages/HomePage.tsx'
+import { getPublishedArticles } from '../lib/articles'
+import { TOPICS, type TopicId } from '../lib/article-topics'
+
+// The article to read first in each topic, chosen by search demand rather
+// than by date: 一括表示 is the hub for making labels, 菓子製造業の許可 has the
+// largest demand among the preparation topics, and the complete guide covers
+// selling online.
+const FIRST_ARTICLE: Record<TopicId, string> = {
+  make: 'food-label-format-guide',
+  prepare: 'confectionery-business-permit-guide',
+  online: 'food-labeling-complete-guide',
+}
+
+const articles = await getPublishedArticles()
+const guide: GuideTopic[] = TOPICS.map((topic) => {
+  const article = articles.find((a) => a.id === FIRST_ARTICLE[topic.id])
+  if (!article) {
+    throw new Error(`First article for "${topic.id}" is not published`)
+  }
+  return {
+    id: topic.id,
+    name: topic.name,
+    lead: topic.lead,
+    article: {
+      href: `/articles/${article.id}/`,
+      title: article.data.title.split('｜')[0],
+    },
+  }
+})
 ---
 
 <Layout
   title="Shopifyアプリ開発・食品表示管理 | Mix-Juice"
   description="Mix-Juiceは、EC現場の「困った」を丁寧にアプリにする小さな専門集団です。Shopifyアプリの開発・提供とカスタムアプリ開発を行っています。"
 >
-  <HomePage />
+  <HomePage guide={guide} />
 </Layout>
