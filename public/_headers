@@ -14,6 +14,11 @@
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Article feed (src/pages/articles/rss.xml.ts). Static files get their type from
+# the extension, which would be application/xml.
+/articles/rss.xml
+  Content-Type: application/rss+xml; charset=utf-8
+
 # Keep pages.dev aliases (production alias and preview branches) out of search.
 https://mix-juice-corporate.pages.dev/*
   X-Robots-Tag: noindex
