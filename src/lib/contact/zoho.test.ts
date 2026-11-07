@@ -37,16 +37,43 @@ test('keeps a given company name', () => {
   assert.equal(body.get('Company'), '山田菓子店')
 })
 
-test('treats only a redirect to the return URL as accepted', () => {
-  assert.equal(isZohoAccepted(302, ZOHO_RETURN_URL), true)
-  assert.equal(isZohoAccepted(303, ZOHO_RETURN_URL), true)
-  assert.equal(isZohoAccepted(200, ZOHO_RETURN_URL), false)
-  assert.equal(isZohoAccepted(302, null), false)
-  assert.equal(isZohoAccepted(302, 'https://crm.zoho.jp/crm/error'), false)
-  assert.equal(isZohoAccepted(302, 'https://mix-juice.io/contact/'), false)
+test('accepts a redirect to the return URL', () => {
+  assert.equal(isZohoAccepted(302, ZOHO_RETURN_URL, null), true)
+  assert.equal(isZohoAccepted(303, ZOHO_RETURN_URL, null), true)
+  assert.equal(isZohoAccepted(302, null, null), false)
   assert.equal(
-    isZohoAccepted(302, 'https://evil.example/contact/?sent=1'),
+    isZohoAccepted(302, 'https://crm.zoho.jp/crm/error', null),
     false,
   )
-  assert.equal(isZohoAccepted(500, ZOHO_RETURN_URL), false)
+  assert.equal(
+    isZohoAccepted(302, 'https://mix-juice.io/contact/', null),
+    false,
+  )
+  assert.equal(
+    isZohoAccepted(302, 'https://evil.example/contact/?sent=1', null),
+    false,
+  )
+})
+
+test('accepts a 200 page that leads to the return URL', () => {
+  const pages = [
+    `<script>window.location.href = '${ZOHO_RETURN_URL}';</script>`,
+    `<meta http-equiv="refresh" content="0;url=${ZOHO_RETURN_URL}">`,
+    `{"redirect":"${ZOHO_RETURN_URL.replaceAll('/', '\\/')}"}`,
+    `<a href="/r?to=${encodeURIComponent(ZOHO_RETURN_URL)}">`,
+  ]
+  for (const page of pages) {
+    assert.equal(isZohoAccepted(200, null, page), true, page)
+  }
+})
+
+test('rejects error pages and other statuses', () => {
+  assert.equal(isZohoAccepted(200, null, '<title>Error</title>'), false)
+  assert.equal(isZohoAccepted(200, null, ''), false)
+  assert.equal(isZohoAccepted(200, null, null), false)
+  assert.equal(
+    isZohoAccepted(200, null, '<a href="https://mix-juice.io/contact/">'),
+    false,
+  )
+  assert.equal(isZohoAccepted(500, ZOHO_RETURN_URL, ZOHO_RETURN_URL), false)
 })

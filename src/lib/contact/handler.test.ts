@@ -54,7 +54,7 @@ function fakeFetch(
   options: {
     challenge?: Record<string, unknown>
     turnstileStatus?: number
-    zoho?: { status: number; location?: string } | 'throw'
+    zoho?: { status: number; location?: string; body?: string } | 'throw'
   } = {},
 ) {
   const calls: Call[] = []
@@ -73,11 +73,12 @@ function fakeFetch(
     }
     if (url === ZOHO_WEBFORM_URL) {
       if (options.zoho === 'throw') throw new TypeError('network')
-      const { status, location } = options.zoho ?? {
-        status: 302,
-        location: ZOHO_RETURN_URL,
+      // Default: what Zoho returned for an accepted lead on 2026-11-07.
+      const { status, location, body } = options.zoho ?? {
+        status: 200,
+        body: `<html><script>location.href='${ZOHO_RETURN_URL}'</script></html>`,
       }
-      return new Response(null, {
+      return new Response(body ?? null, {
         status,
         headers: location ? { Location: location } : {},
       })
@@ -242,9 +243,37 @@ test('reports an unavailable Turnstile service as unavailable', async () => {
   assert.equal(response.status, 503)
 })
 
+test('also accepts a redirect to the return URL', async () => {
+  const { impl } = fakeFetch({
+    zoho: { status: 302, location: ZOHO_RETURN_URL },
+  })
+  const response = await handleContact(request(), env, impl, silentLog().log)
+  assert.equal(response.status, 200)
+})
+
+test('logs what Zoho returned, without the input, when it is not accepted', async () => {
+  const { impl } = fakeFetch({
+    zoho: {
+      status: 200,
+      body: '<html><head><title> Zoho CRM  エラー </title></head></html>',
+    },
+  })
+  const { log, lines } = silentLog()
+  const response = await handleContact(request(), env, impl, log)
+  assert.equal(response.status, 502)
+  assert.deepEqual(JSON.parse(lines[0]), {
+    event: 'contact_failure',
+    error: 'send_failed',
+    status: 200,
+    location: '',
+    length: 56,
+    title: 'Zoho CRM エラー',
+  })
+})
+
 test('never confirms an inquiry Zoho did not accept', async () => {
   for (const zoho of [
-    { status: 200 },
+    { status: 200, body: '' },
     { status: 302, location: 'https://crm.zoho.jp/crm/error.do' },
     { status: 500 },
   ]) {

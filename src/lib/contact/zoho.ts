@@ -41,13 +41,15 @@ export function zohoFormBody(
   })
 }
 
-/**
- * Zoho answers an accepted submission with a redirect to the return URL.
- * Anything else (an error page, a redirect elsewhere) counts as a failure,
- * so the visitor is never told a lost inquiry was sent.
- */
-export function isZohoAccepted(status: number, location: string | null) {
-  if (status < 300 || status >= 400 || !location) return false
+// The return URL as it may appear inside Zoho's page: plain, with JSON- or
+// JS-escaped slashes, or percent-encoded.
+const RETURN_URL_FORMS = [
+  ZOHO_RETURN_URL,
+  ZOHO_RETURN_URL.replaceAll('/', '\\/'),
+  encodeURIComponent(ZOHO_RETURN_URL),
+]
+
+function isReturnUrl(location: string): boolean {
   try {
     const target = new URL(location, ZOHO_WEBFORM_URL)
     const expected = new URL(ZOHO_RETURN_URL)
@@ -59,4 +61,26 @@ export function isZohoAccepted(status: number, location: string | null) {
   } catch {
     return false
   }
+}
+
+export function mentionsReturnUrl(body: string): boolean {
+  return RETURN_URL_FORMS.some((form) => body.includes(form))
+}
+
+/**
+ * Zoho accepts a submission by sending the visitor on to the return URL:
+ * observed on 2026-11-07 as a 200 page that leads to it (the lead was
+ * created), and possibly as an HTTP redirect. Anything else (an error page,
+ * a redirect elsewhere) counts as a failure, so the visitor is never told a
+ * lost inquiry was sent.
+ */
+export function isZohoAccepted(
+  status: number,
+  location: string | null,
+  body: string | null,
+): boolean {
+  if (status >= 300 && status < 400) {
+    return location !== null && isReturnUrl(location)
+  }
+  return status === 200 && body !== null && mentionsReturnUrl(body)
 }

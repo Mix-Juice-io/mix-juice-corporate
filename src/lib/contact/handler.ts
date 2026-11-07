@@ -35,6 +35,7 @@ export const TURNSTILE_VERIFY_URL =
   'https://challenges.cloudflare.com/turnstile/v0/siteverify'
 export const TURNSTILE_ACTION = 'contact'
 const MAX_BYTES = 32_768
+const MAX_ZOHO_BODY = 65_536
 const TIMEOUT_MS = 10_000
 
 type Logger = Pick<Console, 'error'>
@@ -184,16 +185,25 @@ export async function handleContact(
       signal: AbortSignal.timeout(TIMEOUT_MS),
     })
     const location = sent.headers.get('Location')
-    if (!isZohoAccepted(sent.status, location)) {
+    const body =
+      sent.status === 200 ? (await sent.text()).slice(0, MAX_ZOHO_BODY) : null
+    if (!isZohoAccepted(sent.status, location, body)) {
       let target = ''
       try {
         target = location ? new URL(location, ZOHO_WEBFORM_URL).host : ''
       } catch {
         target = 'unparsable'
       }
+      // Describes Zoho's page (never the visitor's input) to tell why.
       return failure(log, 502, 'send_failed', {
         status: sent.status,
         location: target,
+        length: body?.length ?? 0,
+        title:
+          body
+            ?.match(/<title[^>]*>([^<]{0,80})/i)?.[1]
+            .replace(/\s+/g, ' ')
+            .trim() ?? '',
       })
     }
     return json(200, { ok: true })
