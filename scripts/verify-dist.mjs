@@ -14,6 +14,9 @@
 //       entry in src/lib/page-lastmod.mjs is a sitemap URL with that date.
 //   (f) A page with BreadcrumbList JSON-LD shows the same trail: the same
 //       names, links to the same URLs, and the last item is the page itself.
+//   (g) Each topic section on /articles/ lists at most 7 articles. Past that,
+//       the agreed next step is topic pages (/articles/topic/<id>/): show the
+//       newest 6 per topic on the index and link to the topic page.
 
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { extname, join, relative, sep } from 'node:path'
@@ -239,6 +242,27 @@ for (const file of files) {
 }
 if (breadcrumbCount === 0) {
   problems.push('no pages with BreadcrumbList found')
+}
+
+// (g) topic sections on the article index stay short
+const TOPIC_SECTION_MAX = 7
+const articleIndex = join(DIST, 'articles', 'index.html')
+if (existsSync(articleIndex)) {
+  const html = readFileSync(articleIndex, 'utf8')
+  let topicSections = 0
+  for (const m of html.matchAll(
+    /<section class="art-topic" id="topic-([a-z]+)"[\s\S]*?<\/section>/g,
+  )) {
+    topicSections++
+    const count = (m[0].match(/class="art-item"/g) ?? []).length
+    if (count > TOPIC_SECTION_MAX) {
+      report(
+        articleIndex,
+        `topic "${m[1]}" lists ${count} articles (max ${TOPIC_SECTION_MAX}); time to add topic pages /articles/topic/<id>/ (see src/lib/article-topics.ts)`,
+      )
+    }
+  }
+  if (topicSections === 0) report(articleIndex, 'no topic sections found')
 }
 
 if (articleCount === 0) {

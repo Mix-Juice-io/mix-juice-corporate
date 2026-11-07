@@ -1,6 +1,11 @@
 // Topics that group the articles on /articles/. Each article names one in its
 // frontmatter (`topic`), so a new article lands in the right section without
 // touching the index page. Order here is the order on the page.
+//
+// When a topic passes 7 articles, add topic pages (/articles/topic/<id>/) with
+// their own introduction, and show only the newest 6 per topic on the index
+// with a link to the topic page. scripts/verify-dist.mjs (g) fails the build
+// check at that point so the step is not missed.
 
 export const TOPICS = [
   {
