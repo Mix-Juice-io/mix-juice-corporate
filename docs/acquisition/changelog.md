@@ -75,3 +75,5 @@
 | 2026-11-07 21:50 | — | Search Console で `/articles/` の再クロールを依頼し、Bing Webmaster Tools の「URL の送信」で同じ URL を送信（Bing の送信一覧で 21:50） | 一覧の再クロール |
 | 2026-11-07 22:21 | #201 | トップに「食品表示のガイドと無料ツール」の節を足した（ラベル作成ツール、テーマ3つ、各テーマの「まずはこの記事」：一括表示とは・菓子製造業の許可の取り方・食品表示の完全ガイド）。記事一覧の新着の上に Fラベルの枠を足した（#9） | トップから記事・ツールへの遷移（`mix_cta_click` surface `home_guide`）、一覧から F-label への遷移（surface `articles_index_flabel`、`mix_outbound_shopify_app` cta_id `articles_flabel_install`） |
 | 2026-11-07 22:24 | — | Search Console でトップの再クロールを依頼し、Bing Webmaster Tools の「URL の送信」でトップを送信（Bing の送信一覧で 22:24）。`/articles/` は同じ夜（21:50）に依頼済みのため送っていない | トップの再クロール |
+| 2026-11-07 22:40 | #203 | Fラベルの LP の一番下に「導入について相談する」ボタンを足した。問い合わせフォームを「Fラベルについて」を選んだ状態で開く（`/contact/?topic=flabel`）。フォームが届くようになった（#180）ので、10/17 から出さずにいた相談の導線を出した（#10） | LP から相談への遷移（`mix_lp_cta_click` cta_id `flabel_lp_consult`）、`mix_contact_submit` の `contact_topic` `flabel`、Zoho CRM の見込み客 |
+| 2026-11-07 22:43 | — | Search Console で LP（`/service/f-label/`）の再クロールを依頼し、Bing Webmaster Tools の「URL の送信」で同じ URL を送信（Bing の送信一覧で 22:43） | LP の再クロール |
