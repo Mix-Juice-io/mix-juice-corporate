@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="14 13 200 200" width="200" height="200" role="img" aria-label="Mix-Juice">
+  <title>Mix-Juice</title>
+  <desc>Mix-Juice mark for favicons, built from logo.svg with thicker strokes for small sizes.</desc>
+
+  <!-- Icon: rounded-square peach container with juice-glass illustration -->
+  <g id="mark">
+    <rect x="14" y="13" width="200" height="200" rx="28" ry="28" fill="#FFB38A"/>
+
+    <!-- Glass body (slightly tapered tumbler) -->
+    <g stroke="#3D2418" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M 78 78 L 82 178 Q 82 186 90 186 L 138 186 Q 146 186 146 178 L 150 78 Z"/>
+      <!-- juice surface (wavy line near top of glass) -->
+      <path d="M 80 95 Q 95 90 114 95 T 148 95" stroke-width="9"/>
+      <!-- straw exiting the glass -->
+      <line x1="134" y1="68" x2="124" y2="120"/>
+      <!-- pulp / seed marks inside glass -->
+      <circle cx="100" cy="160" r="2.5" fill="#3D2418" stroke="none"/>
+      <circle cx="125" cy="170" r="2.5" fill="#3D2418" stroke="none"/>
+    </g>
+
+    <!-- Lemon slice on the upper-left of the glass -->
+    <g>
+      <circle cx="78" cy="100" r="20" fill="#FFB38A" stroke="#3D2418" stroke-width="10"/>
+      <line x1="62" y1="84" x2="94" y2="116" stroke="#3D2418" stroke-width="7" stroke-linecap="round"/>
+      <line x1="62" y1="116" x2="94" y2="84" stroke="#3D2418" stroke-width="7" stroke-linecap="round"/>
+    </g>
+
+    </g>
+</svg>
