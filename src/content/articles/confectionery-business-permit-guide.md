@@ -5,6 +5,7 @@ publishDate: 2026-11-05
 updatedDate: 2026-11-07
 author: "Mix-Juice"
 category: "食品表示"
+topic: "prepare"
 tags: ["菓子製造業", "営業許可", "食品表示", "ネット販売", "始め方", "法律"]
 draft: false
 ---

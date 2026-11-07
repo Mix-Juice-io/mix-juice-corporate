@@ -5,6 +5,7 @@ publishDate: 2026-05-15
 updatedDate: 2026-11-05
 author: "Mix-Juice"
 category: "Shopify"
+topic: "online"
 tags: ["Shopify", "食品EC", "食品表示", "ネット販売", "始め方"]
 draft: false
 ---

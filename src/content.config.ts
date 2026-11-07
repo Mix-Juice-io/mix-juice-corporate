@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content'
 import { z } from 'astro/zod'
 import { glob } from 'astro/loaders'
+import { TOPIC_IDS } from './lib/article-topics'
 
 // Articles are authored as Markdown files in src/content/articles/.
 // Frontmatter is validated at build time so missing required fields fail fast.
@@ -15,6 +16,9 @@ const articles = defineCollection({
     updatedDate: z.coerce.date().optional(),
     author: z.string().default('Mix-Juice'),
     category: z.enum(['食品表示', 'Shopify']).optional(),
+    // Section on /articles/ (src/lib/article-topics.ts). Required so a new
+    // article cannot silently drop off the index page.
+    topic: z.enum(TOPIC_IDS),
     tags: z.array(z.string()).default([]),
     ogImage: z.string().optional(),
     draft: z.boolean().default(false),

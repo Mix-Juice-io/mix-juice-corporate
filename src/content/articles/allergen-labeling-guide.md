@@ -5,6 +5,7 @@ publishDate: 2026-05-15
 updatedDate: 2026-11-07
 author: "Mix-Juice"
 category: "食品表示"
+topic: "make"
 tags: ["アレルゲン", "食品表示", "ネット販売", "義務", "EC運営"]
 draft: false
 ---

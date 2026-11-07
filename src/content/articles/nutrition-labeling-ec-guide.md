@@ -5,6 +5,7 @@ publishDate: 2026-05-15
 updatedDate: 2026-10-31
 author: "Mix-Juice"
 category: "食品表示"
+topic: "make"
 tags: ["栄養成分表示", "食品表示", "義務", "EC運営", "ネット販売"]
 draft: false
 ---
