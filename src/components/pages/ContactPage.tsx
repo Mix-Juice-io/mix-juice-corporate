@@ -63,6 +63,17 @@ export default function ContactPage({ siteKey = '' }: { siteKey?: string }) {
     if (status === 'sent') sentHeading.current?.focus()
   }, [status])
 
+  // Links from product pages open the form with the topic chosen, e.g.
+  // /contact/?topic=flabel. Only a known topic id is read from the URL.
+  useEffect(() => {
+    const topic = new URLSearchParams(window.location.search).get('topic')
+    if (isContactTopic(topic)) {
+      setForm((current) =>
+        current.topic === '' ? { ...current, topic } : current,
+      )
+    }
+  }, [])
+
   const update = (field: ContactField, value: string) => {
     setForm((current) => ({ ...current, [field]: value }))
     if (fieldErrors.includes(field)) {

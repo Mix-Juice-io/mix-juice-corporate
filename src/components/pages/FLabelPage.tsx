@@ -387,10 +387,20 @@ export default function FLabelPage() {
                 14日間、無料で試せます
               </h2>
               <p className={styles.itemDesc}>
-                インストールして料金プランを選ぶと、無料体験が始まります。
+                インストールして料金プランを選ぶと、無料体験が始まります。導入の前に、自社の商品で使えるかを相談することもできます。
               </p>
               <div className={styles.ctaRow}>
                 <InstallButton position="bottom" />
+                <Link
+                  to="/contact/?topic=flabel"
+                  className="btn btn-outline"
+                  data-track-event="mix_lp_cta_click"
+                  data-track-surface="flabel_lp_bottom_cta"
+                  data-track-cta-position="bottom"
+                  data-track-cta-id="flabel_lp_consult"
+                >
+                  導入について相談する
+                </Link>
               </div>
             </section>
 
