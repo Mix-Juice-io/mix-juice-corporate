@@ -8,6 +8,7 @@ mix-juice.io の検索流入と成果（F-label の App Store 遷移・問い合
 |---|---|
 | [changelog.md](changelog.md) | 流入・計測に関わる変更の公開日時（前後比較の起点） |
 | [reports/](reports/) | 各回の確認結果。ファイル名は確認日（`YYYY-MM-DD.md`） |
+| [weekly-reports.md](weekly-reports.md) | 週次の流入レポート（企業サイトと App Store の掲載）のリンクと要点の数字 |
 
 ## 記録のルール
 
