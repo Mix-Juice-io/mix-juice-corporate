@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from '../../../components/Breadcrumbs.astro'
 import Layout from '../../../layouts/Layout.astro'
 import SaltConverter from '../../../components/tools/SaltConverter.tsx'
 import { getPublishedArticles, formatDate } from '../../../lib/articles'
@@ -62,17 +63,13 @@ const breadcrumbJsonLd = {
         <div class="art-blob2"></div>
       </div>
       <div class="container">
-        <nav class="art-crumbs" aria-label="パンくずリスト">
-          <a href="/">ホーム</a>
-          <span class="art-crumbs-sep" aria-hidden="true">
-            /
-          </span>
-          <a href="/tools/">無料ツール</a>
-          <span class="art-crumbs-sep" aria-hidden="true">
-            /
-          </span>
-          <span class="art-crumbs-current">食塩相当量の計算</span>
-        </nav>
+        <Breadcrumbs
+          items={[
+            { name: 'ホーム', href: '/' },
+            { name: '無料ツール', href: '/tools/' },
+            { name: '食塩相当量の計算' },
+          ]}
+        />
         <p class="art-label">FREE TOOL</p>
         <h1 class="art-title">食塩相当量、どう計算する？</h1>
         <p class="art-desc">

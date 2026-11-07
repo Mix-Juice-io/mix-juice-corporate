@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from '../../../components/Breadcrumbs.astro'
 import Layout from '../../../layouts/Layout.astro'
 import '../../../styles/articles.css'
 
@@ -108,21 +109,14 @@ const breadcrumbJsonLd = {
         <div class="art-blob2"></div>
       </div>
       <div class="container">
-        <nav class="art-crumbs" aria-label="パンくずリスト">
-          <a href="/">ホーム</a>
-          <span class="art-crumbs-sep" aria-hidden="true">
-            /
-          </span>
-          <a href="/tools/">無料ツール</a>
-          <span class="art-crumbs-sep" aria-hidden="true">
-            /
-          </span>
-          <a href={TOOL_PATH}>期限表示の設定根拠の記録票</a>
-          <span class="art-crumbs-sep" aria-hidden="true">
-            /
-          </span>
-          <span class="art-crumbs-current">使い方</span>
-        </nav>
+        <Breadcrumbs
+          items={[
+            { name: 'ホーム', href: '/' },
+            { name: '無料ツール', href: '/tools/' },
+            { name: '期限表示の設定根拠の記録票', href: TOOL_PATH },
+            { name: '使い方' },
+          ]}
+        />
         <p class="art-label">HOW TO</p>
         <h1 class="art-title">賞味期限・消費期限の記録票ツールの使い方</h1>
         <p class="art-desc">

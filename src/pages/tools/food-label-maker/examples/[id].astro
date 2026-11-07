@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from '../../../../components/Breadcrumbs.astro'
 // One page per food example (#149). The label is built here with the same
 // functions as the tool, from the same draft the tool loads via ?example=.
 import Layout from '../../../../layouts/Layout.astro'
@@ -83,21 +84,14 @@ const breadcrumbJsonLd = {
         <div class="art-blob2"></div>
       </div>
       <div class="container">
-        <nav class="art-crumbs" aria-label="パンくずリスト">
-          <a href="/">ホーム</a>
-          <span class="art-crumbs-sep" aria-hidden="true">
-            /
-          </span>
-          <a href="/tools/">無料ツール</a>
-          <span class="art-crumbs-sep" aria-hidden="true">
-            /
-          </span>
-          <a href="/tools/food-label-maker/">食品表示ラベルの作成</a>
-          <span class="art-crumbs-sep" aria-hidden="true">
-            /
-          </span>
-          <span class="art-crumbs-current">表示例：{example.food}</span>
-        </nav>
+        <Breadcrumbs
+          items={[
+            { name: 'ホーム', href: '/' },
+            { name: '無料ツール', href: '/tools/' },
+            { name: '食品表示ラベルの作成', href: '/tools/food-label-maker/' },
+            { name: `表示例：${example.food}` },
+          ]}
+        />
         <p class="art-label">LABEL EXAMPLE</p>
         <h1 class="art-title">{example.food}の食品表示の例</h1>
         <p class="art-desc">{example.scenario}</p>
