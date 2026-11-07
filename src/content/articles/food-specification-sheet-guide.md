@@ -4,6 +4,7 @@ description: "スーパーや卸、飲食店に食品を出すときに求めら
 publishDate: 2026-11-07
 author: "Mix-Juice"
 category: "食品表示"
+topic: "prepare"
 tags: ["規格書", "食品表示", "業務用", "卸売", "アレルギー表示"]
 draft: false
 ---

@@ -4,6 +4,7 @@ description: "食品表示をコピペで管理すると変更漏れ・表記揺
 publishDate: 2026-06-21
 author: "Mix-Juice"
 category: "食品表示"
+topic: "online"
 tags: ["食品表示", "EC運営", "リスク管理", "アレルゲン"]
 draft: false
 ---

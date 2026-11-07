@@ -4,6 +4,7 @@ description: "野菜・果物・肉・魚を直売所やネットで売るとき
 publishDate: 2026-11-07
 author: "Mix-Juice"
 category: "食品表示"
+topic: "prepare"
 tags: ["生鮮食品", "食品表示", "原産地", "直売所", "ネット販売"]
 draft: false
 ---

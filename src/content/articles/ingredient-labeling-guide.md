@@ -5,6 +5,7 @@ publishDate: 2026-11-03
 updatedDate: 2026-11-07
 author: "Mix-Juice"
 category: "食品表示"
+topic: "make"
 tags: ["原材料表示", "食品表示", "複合原材料", "添加物", "ネット販売"]
 draft: false
 ---

@@ -4,6 +4,7 @@ description: "食品添加物の表示の書き方を、食品表示基準と消
 publishDate: 2026-11-03
 author: "Mix-Juice"
 category: "食品表示"
+topic: "make"
 tags: ["添加物表示", "食品添加物", "キャリーオーバー", "食品表示", "ネット販売"]
 draft: false
 ---

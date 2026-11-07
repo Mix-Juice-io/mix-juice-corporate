@@ -4,6 +4,7 @@ description: "食品の一括表示（名称・原材料名・期限などをま
 publishDate: 2026-11-07
 author: "Mix-Juice"
 category: "食品表示"
+topic: "make"
 tags: ["一括表示", "食品表示", "文字サイズ", "ラベル", "ネット販売"]
 draft: false
 ---
