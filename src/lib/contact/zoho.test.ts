@@ -80,3 +80,27 @@ test('rejects error pages and other statuses', () => {
   )
   assert.equal(isZohoAccepted(500, ZOHO_RETURN_URL, ZOHO_RETURN_URL), false)
 })
+
+test('finds the return URL Base64-encoded in the page', () => {
+  const encoded = btoa(ZOHO_RETURN_URL)
+  const urlSafe = encoded
+    .replaceAll('+', '-')
+    .replaceAll('/', '_')
+    .replace(/=+$/, '')
+  assert.equal(
+    isZohoAccepted(200, null, `<script>go('${encoded}')</script>`),
+    true,
+  )
+  assert.equal(
+    isZohoAccepted(200, null, `<script>go('${urlSafe}')</script>`),
+    true,
+  )
+  assert.equal(
+    isZohoAccepted(
+      200,
+      null,
+      `<script>go('${btoa('https://example.com/x')}')</script>`,
+    ),
+    false,
+  )
+})

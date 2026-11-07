@@ -94,11 +94,60 @@ export function unescapePage(body: string): string {
     )
 }
 
+// Long letter/digit runs in the page, decoded as Base64 (standard or
+// URL-safe) where that yields text.
+function decodedRuns(body: string): string[] {
+  const runs = body.match(/[A-Za-z0-9+/=_-]{16,}/g) ?? []
+  const texts: string[] = []
+  for (const run of runs) {
+    try {
+      const b64 = run.replaceAll('-', '+').replaceAll('_', '/')
+      const padded = b64 + '='.repeat((4 - (b64.length % 4)) % 4)
+      texts.push(
+        new TextDecoder().decode(
+          Uint8Array.from(atob(padded), (c) => c.charCodeAt(0)),
+        ),
+      )
+    } catch {
+      // Not Base64.
+    }
+  }
+  return texts
+}
+
 export function mentionsReturnUrl(body: string): boolean {
-  const texts = [body, unescapePage(body)]
+  const texts = [body, unescapePage(body), ...decodedRuns(body)]
   return texts.some((text) =>
     RETURN_URL_FORMS.some((form) => text.includes(form)),
   )
+}
+
+/**
+ * Yes/no facts about a Zoho answer page, plus hosts it points to. Safe to
+ * log: no paths, queries, identifiers, or visitor input.
+ */
+export function pageSignals(body: string): Record<string, string | number> {
+  const unescaped = unescapePage(body)
+  const decoded = decodedRuns(body)
+  const host = (re: RegExp) => {
+    const raw = unescaped.match(re)?.[1]
+    if (!raw) return ''
+    try {
+      return new URL(raw, ZOHO_WEBFORM_URL).host
+    } catch {
+      return 'unparsable'
+    }
+  }
+  const flag = (value: boolean) => (value ? 1 : 0)
+  return {
+    runs: (body.match(/[A-Za-z0-9+/=_-]{16,}/g) ?? []).length,
+    decodedRuns: decoded.length,
+    decodedMixJuice: flag(decoded.some((t) => t.includes('mix-juice'))),
+    unescapedMixJuice: flag(unescaped.includes('mix-juice')),
+    metaRefreshHost: host(/http-equiv=["']?refresh["']?[^>]*url=([^"'>\s]+)/i),
+    scriptUrlHost: host(/<script[^>]*>[\s\S]*?["'](https?:\/\/[^"']+)["']/i),
+    errorWord: flag(/error|invalid|fail|エラー|失敗/i.test(unescaped)),
+  }
 }
 
 /**

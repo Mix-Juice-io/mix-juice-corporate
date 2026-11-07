@@ -5,14 +5,11 @@
 // are logged as an error code without any personal data; read them with
 // `npx wrangler pages deployment tail` or in the Cloudflare dashboard.
 
-import {
-  validateContact,
-  type ContactData,
-  type ContactField,
-} from './validate.ts'
+import { validateContact, type ContactField } from './validate.ts'
 import {
   ZOHO_WEBFORM_URL,
   isZohoAccepted,
+  pageSignals,
   zohoFormBody,
   type ZohoWebformConfig,
 } from './zoho.ts'
@@ -88,21 +85,6 @@ async function readJson(request: Request): Promise<unknown> {
     offset += chunk.byteLength
   }
   return JSON.parse(new TextDecoder().decode(bytes))
-}
-
-// A short outline of an unrecognized Zoho page for the failure log: the
-// visitor's input is replaced, and long letter/digit runs (identifiers,
-// tokens) are masked.
-export function pageShape(body: string | null, data: ContactData): string {
-  if (!body) return ''
-  let shape = body
-  for (const value of Object.values(data)) {
-    if (value) shape = shape.split(value).join('<input>')
-  }
-  return shape
-    .replace(/[A-Za-z0-9+/=_-]{16,}/g, '<id>')
-    .replace(/\s+/g, ' ')
-    .slice(0, 600)
 }
 
 function zohoConfig(env: ContactEnv): ZohoWebformConfig | null {
@@ -194,19 +176,41 @@ export async function handleContact(
       return failure(log, 400, 'verification_failed', { codes })
     }
 
+    // TEMPORARY (#7, preview diagnosis; remove before merging): on
+    // *.pages.dev only, `debug: 'zoho_bad_form'` sends a broken form id to
+    // see Zoho's failure page, and every Zoho page is described in the log.
+    const preview = url.hostname.endsWith('.pages.dev')
+    const breakForm =
+      preview && (body as Record<string, unknown>).debug === 'zoho_bad_form'
+    const form = breakForm
+      ? { ...zoho, xmIwtLD: `${zoho.xmIwtLD.slice(0, -4)}zzzz` }
+      : zoho
+
     const sent = await fetchImpl(ZOHO_WEBFORM_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
       },
-      body: zohoFormBody(input.data, zoho).toString(),
+      body: zohoFormBody(input.data, form).toString(),
       redirect: 'manual',
       signal: AbortSignal.timeout(TIMEOUT_MS),
     })
     const location = sent.headers.get('Location')
-    const body =
+    const page =
       sent.status === 200 ? (await sent.text()).slice(0, MAX_ZOHO_BODY) : null
-    if (!isZohoAccepted(sent.status, location, body)) {
+    const accepted = isZohoAccepted(sent.status, location, page)
+    if (preview && page) {
+      log.error(
+        JSON.stringify({
+          event: 'contact_zoho_page',
+          accepted: accepted ? 1 : 0,
+          brokenForm: breakForm ? 1 : 0,
+          length: page.length,
+          ...pageSignals(page),
+        }),
+      )
+    }
+    if (!accepted) {
       let target = ''
       try {
         target = location ? new URL(location, ZOHO_WEBFORM_URL).host : ''
@@ -217,13 +221,13 @@ export async function handleContact(
       return failure(log, 502, 'send_failed', {
         status: sent.status,
         location: target,
-        length: body?.length ?? 0,
+        length: page?.length ?? 0,
         title:
-          body
+          page
             ?.match(/<title[^>]*>([^<]{0,80})/i)?.[1]
             .replace(/\s+/g, ' ')
             .trim() ?? '',
-        shape: pageShape(body, input.data),
+        ...(page ? pageSignals(page) : {}),
       })
     }
     return json(200, { ok: true })
