@@ -120,6 +120,7 @@ test('stores the inquiry as a Zoho lead after the Turnstile check', async () => 
   assert.equal(response.status, 200)
   assert.deepEqual(await response.json(), { ok: true })
   assert.equal(response.headers.get('Cache-Control'), 'no-store')
+  assert.equal(response.headers.get('X-Content-Type-Options'), 'nosniff')
   assert.deepEqual(
     calls.map((c) => c.url),
     [TURNSTILE_VERIFY_URL, TOKEN_URL, LEADS_URL],

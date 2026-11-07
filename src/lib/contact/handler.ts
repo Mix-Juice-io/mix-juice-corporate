@@ -58,10 +58,15 @@ class DeliveryError extends Error {
   }
 }
 
+// public/_headers does not apply to Pages Functions, so the API sets its own.
 function json(status: number, body: object): Response {
   return Response.json(body, {
     status,
-    headers: { 'Cache-Control': 'no-store' },
+    headers: {
+      'Cache-Control': 'no-store',
+      'X-Content-Type-Options': 'nosniff',
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+    },
   })
 }
 
