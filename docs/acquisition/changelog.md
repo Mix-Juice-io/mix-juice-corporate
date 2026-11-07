@@ -77,3 +77,10 @@
 | 2026-11-07 22:24 | — | Search Console でトップの再クロールを依頼し、Bing Webmaster Tools の「URL の送信」でトップを送信（Bing の送信一覧で 22:24）。`/articles/` は同じ夜（21:50）に依頼済みのため送っていない | トップの再クロール |
 | 2026-11-07 22:40 | #203 | Fラベルの LP の一番下に「導入について相談する」ボタンを足した。問い合わせフォームを「Fラベルについて」を選んだ状態で開く（`/contact/?topic=flabel`）。フォームが届くようになった（#180）ので、10/17 から出さずにいた相談の導線を出した（#10） | LP から相談への遷移（`mix_lp_cta_click` cta_id `flabel_lp_consult`）、`mix_contact_submit` の `contact_topic` `flabel`、Zoho CRM の見込み客 |
 | 2026-11-07 22:43 | — | Search Console で LP（`/service/f-label/`）の再クロールを依頼し、Bing Webmaster Tools の「URL の送信」で同じ URL を送信（Bing の送信一覧で 22:43） | LP の再クロール |
+| 2026-11-07 23:13 | #205 | リンクを共有したときの画像を 1200×630 にした（サイト共通の `og-default.png`、Fラベルの LP の `og-flabel.png`）。`og:image` の幅・高さ・alt を出す（#12） | SNS・チャットで共有されたときの表示（計測はなし。記事ごとの画像は #36） |
+| 2026-11-07 23:39 | #206 | サイトマップで、トップと `/contact/` に lastmod を付けた（#14） | 2ページの再クロール |
+| 2026-11-07 23:47 | #207 | 記事の RSS フィード（`/articles/rss.xml`）を公開し、全ページの head から案内（#16） | 新しい記事の発見（クロール） |
+| 2026-11-07 23時台 | — | 所有者が RSS フィードを Search Console と Bing Webmaster Tools のサイトマップに送信。Search Console は同じ日に読み込み「成功」（12ページを検出）、Bing は「処理中」 | 新しい記事の発見 |
+| 2026-11-08 00:01 | #208 | ファビコンを、ロゴマークから作った正方形のアイコンにした（`favicon.ico`・`favicon.svg`・192px の PNG・`apple-touch-icon`）（#17） | 検索結果に出るサイトのアイコン |
+| 2026-11-08 00:17 | #209 | 構造化データの Organization に、説明文と公式 X（`sameAs`）を足した（#18） | 検索での会社名の扱い（計測はなし） |
+| 2026-11-08 00:32 | #210 | お問い合わせページに、相談の種類ごとの「書いていただくと話が早く進むこと」と、メールで返事することを足した。送信に失敗したときだけ、エラー文に `support@mix-juice.io` を出す。フォームの下から Fラベルのページと無料ツールへ案内（#22） | `mix_contact_submit`・`mix_contact_error`、`mix_cta_click`（surface `contact_guide`） |
