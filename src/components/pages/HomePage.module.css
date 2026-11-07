@@ -1034,3 +1034,103 @@
     padding: 40px 24px;
   }
 }
+
+/* ===== Guide (articles and free tools) ===== */
+.guideSection {
+  padding-top: 56px;
+  padding-bottom: 88px;
+}
+
+.guideGrid {
+  display: grid;
+  grid-template-columns: 1.2fr repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.guideTool,
+.guideTopic {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 22px;
+}
+
+.guideTool {
+  border-color: var(--color-primary);
+  background: linear-gradient(135deg, #fff4ec, rgba(255, 255, 255, 0.85) 70%);
+}
+
+.guideTool .productLink {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.guideEyebrow,
+.guideFirst {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-accent-text);
+}
+
+.guideFirst {
+  margin-top: auto;
+  padding-top: 8px;
+  color: var(--color-text-muted);
+}
+
+.guideToolTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.guideTopicName {
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.guideTopicName:hover,
+.guideArticle:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.guideText {
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--color-text-light);
+}
+
+.guideArticle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--color-accent-text);
+}
+
+.noWrap {
+  white-space: nowrap;
+}
+
+.guideMore {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  margin-top: 24px;
+}
+
+@media (max-width: 1024px) {
+  .guideGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .guideGrid {
+    grid-template-columns: 1fr;
+  }
+}
