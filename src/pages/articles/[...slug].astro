@@ -99,7 +99,7 @@ const shareLinks = {
   title={`${article.data.title} | Mix-Juice`}
   description={article.data.description}
   ogType="article"
-  ogImage={article.data.ogImage ?? '/logo.png'}
+  ogImage={article.data.ogImage}
   noindex={article.data.draft}
 >
   <meta property="article:published_time" content={publishedTime} slot="head" />

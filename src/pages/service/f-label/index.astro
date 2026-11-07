@@ -1,11 +1,18 @@
 ---
 import Layout from '../../../layouts/Layout.astro'
 import FLabelPage from '../../../components/pages/FLabelPage.tsx'
+
+// public/og-flabel.png shows the price (月額 US$10・14日間無料). Remake the
+// image when the price or the trial changes.
 ---
 
 <Layout
   title="Fラベル｜Shopifyの食品表示管理アプリ | Mix-Juice"
   description="Shopifyの商品ページに原材料・アレルゲン・栄養成分などの食品表示を載せるアプリ「Fラベル」。原材料マスターとCSVインポートで登録の手間を減らします。月額US$10・14日間無料。導入の流れ、できないこと、よくある質問。"
+  ogImage="/og-flabel.png"
+  ogImageAlt="Fラベル：Shopifyで食品表示を管理するアプリ。月額 US$10・14日間無料"
+  ogImageWidth={1200}
+  ogImageHeight={630}
 >
   <FLabelPage />
 </Layout>
