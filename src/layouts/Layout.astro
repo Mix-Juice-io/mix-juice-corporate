@@ -60,6 +60,13 @@ const organizationJsonLd = {
   name: 'Mix-Juice',
   url: Astro.site?.href,
   logo: new URL('/logo.png', Astro.site).href,
+  // Same text as the home page description.
+  description:
+    'Mix-Juiceは、EC現場の「困った」を丁寧にアプリにする小さな専門集団です。Shopifyアプリの開発・提供とカスタムアプリ開発を行っています。',
+  // Official accounts linked from the footer (src/components/Footer.astro).
+  // Address and contact details come with the company page (#52), taken
+  // from what that page shows.
+  sameAs: ['https://x.com/Mix_Juice_io'],
 }
 
 const websiteJsonLd = {
