@@ -17,7 +17,7 @@ export const PAGE_LASTMOD = {
   // Home: guide section linking to articles and tools (#201).
   '/': '2026-11-07',
   // Contact: the form now delivers inquiries, with new fields (#180).
-  '/contact/': '2026-11-07',
+  '/contact/': '2026-11-08',
   '/service/f-label/': '2026-11-07',
   '/tools/': '2026-11-03',
   '/tools/food-label-maker/': '2026-11-07',

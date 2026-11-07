@@ -16,6 +16,11 @@ import styles from './ContactPage.module.css'
 // Sends to /api/contact (functions/api/contact.ts), which stores the inquiry
 // in Zoho CRM. The page shows "sent" only after the endpoint confirms it.
 
+// The mail address is shown only when the form cannot be used, so ordinary
+// inquiries keep coming through the form (and the address draws less spam).
+const MAIL_FALLBACK =
+  'うまくいかないときは、メール（support@mix-juice.io）でもご連絡いただけます。'
+
 const FIELD_ERRORS: Record<ContactField, string> = {
   name: 'お名前を入力してください（80文字まで）。',
   company: '会社名・屋号は200文字までで入力してください。',
@@ -55,7 +60,7 @@ export default function ContactPage({ siteKey = '' }: { siteKey?: string }) {
   const handleToken = useCallback((value: string) => setToken(value), [])
   const handleVerificationError = useCallback(() => {
     setError(
-      '迷惑な送信を防ぐための確認を読み込めませんでした。ページを再読み込みしてお試しください。',
+      `迷惑な送信を防ぐための確認を読み込めませんでした。ページを再読み込みしてお試しください。${MAIL_FALLBACK}`,
     )
   }, [])
 
@@ -142,12 +147,12 @@ export default function ContactPage({ siteKey = '' }: { siteKey?: string }) {
         )
       } else {
         setError(
-          '送信できませんでした。入力した内容はそのまま残っています。時間をおいて、もう一度お試しください。',
+          `送信できませんでした。入力した内容はそのまま残っています。時間をおいて、もう一度お試しください。${MAIL_FALLBACK}`,
         )
       }
     } catch {
       setError(
-        '送信できませんでした。通信状況を確かめて、もう一度お試しください。入力した内容はそのまま残っています。',
+        `送信できませんでした。通信状況を確かめて、もう一度お試しください。入力した内容はそのまま残っています。${MAIL_FALLBACK}`,
       )
     }
     trackEvent('mix_contact_error', { form_id: 'contact_main', error: code })
@@ -210,8 +215,23 @@ export default function ContactPage({ siteKey = '' }: { siteKey?: string }) {
                     ご相談内容をお聞かせください
                   </h2>
                   <p className={styles.formLead}>
-                    自社アプリについてのご質問や、カスタムアプリ開発のご相談など、内容が固まっていない段階でも問題ありません。
+                    自社アプリについてのご質問や、カスタムアプリ開発のご相談など、内容が固まっていない段階でも問題ありません。いただいた内容を読んで、ご入力のメールアドレスにメールでお返事します。
                   </p>
+                  <div className={styles.guide}>
+                    <p className={styles.guideTitle}>
+                      書いていただくと、話が早く進むこと
+                    </p>
+                    <dl className={styles.guideList}>
+                      <dt>{CONTACT_TOPICS.flabel}</dt>
+                      <dd>
+                        ShopifyストアのURL（あれば）と、表示したい内容（アレルギー表示、栄養成分表示など）
+                      </dd>
+                      <dt>{CONTACT_TOPICS.development}</dt>
+                      <dd>
+                        いま困っていること、使っているアプリや作業の流れ、希望の時期（決まっていれば）
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
 
                 {siteKey ? (
@@ -389,6 +409,27 @@ export default function ContactPage({ siteKey = '' }: { siteKey?: string }) {
               </>
             )}
           </div>
+          <p className={styles.selfServe}>
+            Fラベルの機能と料金は
+            <a
+              href="/service/f-label/"
+              data-track-event="mix_cta_click"
+              data-track-surface="contact_guide"
+              data-track-cta-id="contact_guide_flabel"
+            >
+              Fラベルのページ
+            </a>
+            で、食品表示の作り方は
+            <a
+              href="/tools/"
+              data-track-event="mix_cta_click"
+              data-track-surface="contact_guide"
+              data-track-cta-id="contact_guide_tools"
+            >
+              無料ツール
+            </a>
+            でも確かめられます。
+          </p>
         </div>
       </section>
     </div>
