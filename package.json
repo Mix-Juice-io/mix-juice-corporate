@@ -23,6 +23,8 @@
     "@astrojs/markdown-remark": "^7.3.5",
     "@astrojs/react": "^7.1.2",
     "@astrojs/sitemap": "^3.7.4",
+    "@fontsource/noto-sans-jp": "5.3.1",
+    "@fontsource/roboto": "5.3.0",
     "astro": "^7.4.4",
     "lucide-react": "^1.65.0",
     "react": "^19.3.1",

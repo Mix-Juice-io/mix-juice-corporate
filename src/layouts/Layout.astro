@@ -1,6 +1,14 @@
 ---
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
+// Fonts are served from this site (Fontsource), so first paint does not wait
+// for a third-party stylesheet. Only the weights the styles use (400, 700;
+// 600 renders as 700). unicode-range keeps downloads to the glyphs a page
+// uses; Roboto sets only Latin labels, so it takes the Latin subset.
+import '@fontsource/noto-sans-jp/400.css'
+import '@fontsource/noto-sans-jp/700.css'
+import '@fontsource/roboto/latin-400.css'
+import '@fontsource/roboto/latin-700.css'
 import '../index.css'
 
 interface Props {
@@ -97,15 +105,6 @@ const websiteJsonLd = {
       type="application/rss+xml"
       title="Mix-Juice の記事"
       href="/articles/rss.xml"
-    />
-    <!-- Fonts load from <head> rather than an @import inside the site CSS,
-         so the browser finds them without waiting for that CSS. Only the
-         weights the styles use (400, 700; 600 renders as 700). -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Roboto:wght@400;700&display=swap"
     />
     <title>{title}</title>
     <meta name="description" content={description} />
