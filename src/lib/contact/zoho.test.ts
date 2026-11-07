@@ -2,12 +2,12 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import {
   NO_COMPANY,
-  ZOHO_RETURN_URL,
-  isZohoAccepted,
-  zohoFormBody,
+  readInsertResult,
+  refreshRequestBody,
+  zohoLead,
+  zohoNote,
 } from './zoho.ts'
 
-const config = { xnQsjsdp: 'form-a', xmIwtLD: 'form-b', actionType: 'TGVhZHM=' }
 const data = {
   name: '山田 太郎',
   company: '',
@@ -16,91 +16,69 @@ const data = {
   message: '在庫連携のアプリを相談したい',
 }
 
-test('maps the inquiry onto the Zoho web form fields', () => {
-  const body = zohoFormBody(data, config)
-  assert.equal(body.get('xnQsjsdp'), 'form-a')
-  assert.equal(body.get('xmIwtLD'), 'form-b')
-  assert.equal(body.get('actionType'), 'TGVhZHM=')
-  assert.equal(body.get('returnURL'), ZOHO_RETURN_URL)
-  assert.equal(body.get('Last Name'), '山田 太郎')
-  assert.equal(body.get('Company'), NO_COMPANY)
-  assert.equal(body.get('Email'), 'taro@example.com')
+test('maps the inquiry onto Zoho lead fields', () => {
+  assert.deepEqual(zohoLead(data), {
+    Last_Name: '山田 太郎',
+    Company: NO_COMPANY,
+    Email: 'taro@example.com',
+    Description:
+      'お問い合わせの種類：アプリ開発のご相談\n\n在庫連携のアプリを相談したい',
+  })
   assert.equal(
-    body.get('Description'),
-    'お問い合わせの種類：アプリ開発のご相談\n\n在庫連携のアプリを相談したい',
-  )
-  assert.equal(body.get('aG9uZXlwb3Q'), '')
-})
-
-test('keeps a given company name', () => {
-  const body = zohoFormBody({ ...data, company: '山田菓子店' }, config)
-  assert.equal(body.get('Company'), '山田菓子店')
-})
-
-test('accepts a redirect to the return URL', () => {
-  assert.equal(isZohoAccepted(302, ZOHO_RETURN_URL, null), true)
-  assert.equal(isZohoAccepted(303, ZOHO_RETURN_URL, null), true)
-  assert.equal(isZohoAccepted(302, null, null), false)
-  assert.equal(
-    isZohoAccepted(302, 'https://crm.zoho.jp/crm/error', null),
-    false,
-  )
-  assert.equal(
-    isZohoAccepted(302, 'https://mix-juice.io/contact/', null),
-    false,
-  )
-  assert.equal(
-    isZohoAccepted(302, 'https://evil.example/contact/?sent=1', null),
-    false,
+    zohoLead({ ...data, company: '山田菓子店' }).Company,
+    '山田菓子店',
   )
 })
 
-test('accepts a 200 page that leads to the return URL', () => {
-  const pages = [
-    `<script>window.location.href = '${ZOHO_RETURN_URL}';</script>`,
-    `<meta http-equiv="refresh" content="0;url=${ZOHO_RETURN_URL}">`,
-    `{"redirect":"${ZOHO_RETURN_URL.replaceAll('/', '\\/')}"}`,
-    `<a href="/r?to=${encodeURIComponent(ZOHO_RETURN_URL)}">`,
-    `<input value="https&#x3a;&#x2f;&#x2f;mix-juice.io&#x2f;contact&#x2f;&#x3f;sent&#x3d;1">`,
-    `<input value="https:&#47;&#47;mix-juice.io&#47;contact&#47;?sent=1">`,
-    `<script>go('https\\x3a\\x2f\\x2fmix-juice.io\\x2fcontact\\x2f\\x3fsent\\x3d1')</script>`,
-  ]
-  for (const page of pages) {
-    assert.equal(isZohoAccepted(200, null, page), true, page)
-  }
+test('writes a repeat inquiry as a note', () => {
+  assert.deepEqual(zohoNote({ ...data, company: '山田菓子店' }), {
+    Note_Title: 'Webサイトからのお問い合わせ',
+    Note_Content:
+      '山田 太郎（山田菓子店）\nお問い合わせの種類：アプリ開発のご相談\n\n在庫連携のアプリを相談したい',
+  })
 })
 
-test('rejects error pages and other statuses', () => {
-  assert.equal(isZohoAccepted(200, null, '<title>Error</title>'), false)
-  assert.equal(isZohoAccepted(200, null, ''), false)
-  assert.equal(isZohoAccepted(200, null, null), false)
+test('builds the refresh token request', () => {
+  const body = refreshRequestBody({
+    clientId: 'id',
+    clientSecret: 'secret',
+    refreshToken: 'refresh',
+  })
   assert.equal(
-    isZohoAccepted(200, null, '<a href="https://mix-juice.io/contact/">'),
-    false,
+    body.toString(),
+    'refresh_token=refresh&client_id=id&client_secret=secret&grant_type=refresh_token',
   )
-  assert.equal(isZohoAccepted(500, ZOHO_RETURN_URL, ZOHO_RETURN_URL), false)
 })
 
-test('finds the return URL Base64-encoded in the page', () => {
-  const encoded = btoa(ZOHO_RETURN_URL)
-  const urlSafe = encoded
-    .replaceAll('+', '-')
-    .replaceAll('/', '_')
-    .replace(/=+$/, '')
-  assert.equal(
-    isZohoAccepted(200, null, `<script>go('${encoded}')</script>`),
-    true,
+test('counts only an explicit SUCCESS as stored', () => {
+  assert.deepEqual(
+    readInsertResult({
+      data: [{ code: 'SUCCESS', details: { id: '1' }, status: 'success' }],
+    }),
+    { ok: true },
   )
-  assert.equal(
-    isZohoAccepted(200, null, `<script>go('${urlSafe}')</script>`),
-    true,
-  )
-  assert.equal(
-    isZohoAccepted(
-      200,
-      null,
-      `<script>go('${btoa('https://example.com/x')}')</script>`,
-    ),
-    false,
+  assert.deepEqual(readInsertResult({ data: [{ code: 'INVALID_DATA' }] }), {
+    ok: false,
+    code: 'INVALID_DATA',
+  })
+  assert.deepEqual(readInsertResult({ code: 'INVALID_TOKEN' }), {
+    ok: false,
+    code: 'unknown',
+  })
+  assert.deepEqual(readInsertResult(null), { ok: false, code: 'unknown' })
+})
+
+test('returns the existing record for duplicate data', () => {
+  assert.deepEqual(
+    readInsertResult({
+      data: [
+        {
+          code: 'DUPLICATE_DATA',
+          details: { api_name: 'Email', duplicate_record: { id: '42' } },
+          status: 'error',
+        },
+      ],
+    }),
+    { ok: false, code: 'DUPLICATE_DATA', duplicateId: '42' },
   )
 })

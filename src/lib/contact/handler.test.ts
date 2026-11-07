@@ -1,18 +1,21 @@
-import { test } from 'node:test'
+import { beforeEach, test } from 'node:test'
 import assert from 'node:assert/strict'
 import {
   TURNSTILE_VERIFY_URL,
+  clearZohoTokenCache,
   handleContact,
   type ContactEnv,
 } from './handler.ts'
-import { ZOHO_RETURN_URL, ZOHO_WEBFORM_URL } from './zoho.ts'
+import { ZOHO_ACCOUNTS_URL, ZOHO_API_URL } from './zoho.ts'
 
 const ORIGIN = 'https://mix-juice.io'
+const TOKEN_URL = `${ZOHO_ACCOUNTS_URL}/oauth/v2/token`
+const LEADS_URL = `${ZOHO_API_URL}/crm/v8/Leads`
 const env: ContactEnv = {
   TURNSTILE_SECRET_KEY: 'turnstile-secret',
-  ZOHO_WEBFORM_XNQSJSDP: 'form-a',
-  ZOHO_WEBFORM_XMIWTLD: 'form-b',
-  ZOHO_WEBFORM_ACTION_TYPE: 'TGVhZHM=',
+  ZOHO_CLIENT_ID: 'client-id',
+  ZOHO_CLIENT_SECRET: 'client-secret',
+  ZOHO_REFRESH_TOKEN: 'refresh-token',
 }
 const inquiry = {
   name: '山田 太郎',
@@ -23,6 +26,8 @@ const inquiry = {
   token: 'turnstile-token',
   trap: '',
 }
+
+beforeEach(() => clearZohoTokenCache())
 
 function request(
   body: unknown = inquiry,
@@ -50,14 +55,25 @@ interface Call {
   init: RequestInit
 }
 
+type Reply = { status: number; body: unknown } | 'throw'
+
+const SUCCESS = { status: 201, body: { data: [{ code: 'SUCCESS' }] } }
+
 function fakeFetch(
   options: {
     challenge?: Record<string, unknown>
     turnstileStatus?: number
-    zoho?: { status: number; location?: string; body?: string } | 'throw'
+    token?: Reply
+    leads?: Reply[]
+    note?: Reply
   } = {},
 ) {
   const calls: Call[] = []
+  const leads = [...(options.leads ?? [SUCCESS])]
+  const reply = (r: Reply) => {
+    if (r === 'throw') throw new TypeError('network')
+    return Response.json(r.body, { status: r.status })
+  }
   const impl = (async (input: RequestInfo | URL, init: RequestInit = {}) => {
     const url = String(input)
     calls.push({ url, init })
@@ -71,17 +87,21 @@ function fakeFetch(
         { status: options.turnstileStatus ?? 200 },
       )
     }
-    if (url === ZOHO_WEBFORM_URL) {
-      if (options.zoho === 'throw') throw new TypeError('network')
-      // Default: what Zoho returned for an accepted lead on 2026-11-07.
-      const { status, location, body } = options.zoho ?? {
-        status: 200,
-        body: `<html><script>location.href='${ZOHO_RETURN_URL}'</script></html>`,
-      }
-      return new Response(body ?? null, {
-        status,
-        headers: location ? { Location: location } : {},
-      })
+    if (url === TOKEN_URL) {
+      return reply(
+        options.token ?? {
+          status: 200,
+          body: {
+            access_token: 'access',
+            api_domain: ZOHO_API_URL,
+            expires_in: 3600,
+          },
+        },
+      )
+    }
+    if (url === LEADS_URL) return reply(leads.shift() ?? SUCCESS)
+    if (url.startsWith(`${LEADS_URL}/`) && url.endsWith('/Notes')) {
+      return reply(options.note ?? SUCCESS)
     }
     throw new Error(`unexpected fetch ${url}`)
   }) as typeof fetch
@@ -93,7 +113,7 @@ function silentLog() {
   return { lines, log: { error: (line: string) => lines.push(line) } }
 }
 
-test('stores the inquiry in Zoho after the Turnstile check', async () => {
+test('stores the inquiry as a Zoho lead after the Turnstile check', async () => {
   const { impl, calls } = fakeFetch()
   const { log, lines } = silentLog()
   const response = await handleContact(request(), env, impl, log)
@@ -102,19 +122,159 @@ test('stores the inquiry in Zoho after the Turnstile check', async () => {
   assert.equal(response.headers.get('Cache-Control'), 'no-store')
   assert.deepEqual(
     calls.map((c) => c.url),
-    [TURNSTILE_VERIFY_URL, ZOHO_WEBFORM_URL],
+    [TURNSTILE_VERIFY_URL, TOKEN_URL, LEADS_URL],
   )
   assert.deepEqual(JSON.parse(String(calls[0].init.body)), {
     secret: 'turnstile-secret',
     response: 'turnstile-token',
     remoteip: '203.0.113.7',
   })
-  assert.equal(calls[1].init.redirect, 'manual')
-  const sent = new URLSearchParams(String(calls[1].init.body))
-  assert.equal(sent.get('Last Name'), '山田 太郎')
-  assert.equal(sent.get('Company'), '山田菓子店')
-  assert.equal(sent.get('Email'), 'taro@example.com')
+  const token = new URLSearchParams(String(calls[1].init.body))
+  assert.equal(token.get('grant_type'), 'refresh_token')
+  assert.equal(token.get('refresh_token'), 'refresh-token')
+  const headers = new Headers(calls[2].init.headers)
+  assert.equal(headers.get('Authorization'), 'Zoho-oauthtoken access')
+  assert.deepEqual(JSON.parse(String(calls[2].init.body)), {
+    data: [
+      {
+        Last_Name: '山田 太郎',
+        Company: '山田菓子店',
+        Email: 'taro@example.com',
+        Description:
+          'お問い合わせの種類：Fラベルについて\n\nFラベルの導入を相談したい',
+      },
+    ],
+    trigger: ['workflow'],
+  })
   assert.equal(lines.length, 0)
+})
+
+test('reuses the access token while it is valid', async () => {
+  const { impl, calls } = fakeFetch()
+  const log = silentLog().log
+  await handleContact(request(), env, impl, log, 1_000)
+  await handleContact(request(), env, impl, log, 2_000)
+  assert.equal(calls.filter((c) => c.url === TOKEN_URL).length, 1)
+  await handleContact(request(), env, impl, log, 1_000 + 3_600_000)
+  assert.equal(calls.filter((c) => c.url === TOKEN_URL).length, 2)
+})
+
+test('gets a new token once when Zoho rejects the cached one', async () => {
+  const { impl, calls } = fakeFetch({
+    leads: [{ status: 401, body: { code: 'INVALID_TOKEN' } }, SUCCESS],
+  })
+  const response = await handleContact(request(), env, impl, silentLog().log)
+  assert.equal(response.status, 200)
+  assert.equal(calls.filter((c) => c.url === TOKEN_URL).length, 2)
+  assert.equal(calls.filter((c) => c.url === LEADS_URL).length, 2)
+})
+
+test('adds a repeat inquiry to the existing lead as a note', async () => {
+  const { impl, calls } = fakeFetch({
+    leads: [
+      {
+        status: 400,
+        body: {
+          data: [
+            {
+              code: 'DUPLICATE_DATA',
+              details: { duplicate_record: { id: '42' } },
+            },
+          ],
+        },
+      },
+    ],
+  })
+  const response = await handleContact(request(), env, impl, silentLog().log)
+  assert.equal(response.status, 200)
+  const note = calls.at(-1) as Call
+  assert.equal(note.url, `${LEADS_URL}/42/Notes`)
+  assert.equal(
+    JSON.parse(String(note.init.body)).data[0].Note_Title,
+    'Webサイトからのお問い合わせ',
+  )
+})
+
+test('never confirms an inquiry Zoho did not store', async () => {
+  const cases: { options: Parameters<typeof fakeFetch>[0]; detail: object }[] =
+    [
+      {
+        options: {
+          leads: [{ status: 400, body: { data: [{ code: 'INVALID_DATA' }] } }],
+        },
+        detail: { reason: 'zoho_lead', status: 400, code: 'INVALID_DATA' },
+      },
+      {
+        options: {
+          leads: [
+            { status: 401, body: { code: 'INVALID_TOKEN' } },
+            { status: 401, body: { code: 'INVALID_TOKEN' } },
+          ],
+        },
+        detail: { reason: 'zoho_lead', status: 401, code: 'unknown' },
+      },
+      {
+        options: {
+          leads: [
+            {
+              status: 400,
+              body: {
+                data: [
+                  {
+                    code: 'DUPLICATE_DATA',
+                    details: { duplicate_record: { id: '42' } },
+                  },
+                ],
+              },
+            },
+          ],
+          note: { status: 400, body: { data: [{ code: 'INVALID_DATA' }] } },
+        },
+        detail: { reason: 'zoho_note', status: 400, code: 'INVALID_DATA' },
+      },
+    ]
+  for (const { options, detail } of cases) {
+    clearZohoTokenCache()
+    const { impl } = fakeFetch(options)
+    const { log, lines } = silentLog()
+    const response = await handleContact(request(), env, impl, log)
+    assert.equal(response.status, 502)
+    assert.equal((await response.json()).error, 'send_failed')
+    assert.deepEqual(JSON.parse(lines[0]), {
+      event: 'contact_failure',
+      error: 'send_failed',
+      ...detail,
+    })
+  }
+})
+
+test('reports a refused refresh token as unavailable', async () => {
+  const { impl, calls } = fakeFetch({
+    token: { status: 400, body: { error: 'invalid_code' } },
+  })
+  const { log, lines } = silentLog()
+  const response = await handleContact(request(), env, impl, log)
+  assert.equal(response.status, 503)
+  assert.deepEqual(JSON.parse(lines[0]), {
+    event: 'contact_failure',
+    error: 'unavailable',
+    reason: 'zoho_token',
+    status: 400,
+    code: 'invalid_code',
+  })
+  assert.equal(calls.filter((c) => c.url === LEADS_URL).length, 0)
+})
+
+test('ignores an unexpected API domain from the token response', async () => {
+  const { impl, calls } = fakeFetch({
+    token: {
+      status: 200,
+      body: { access_token: 'access', api_domain: 'https://evil.example' },
+    },
+  })
+  const response = await handleContact(request(), env, impl, silentLog().log)
+  assert.equal(response.status, 200)
+  assert.equal(calls.at(-1)?.url, LEADS_URL)
 })
 
 test('rejects other methods, origins, and content types without calling out', async () => {
@@ -243,64 +403,12 @@ test('reports an unavailable Turnstile service as unavailable', async () => {
   assert.equal(response.status, 503)
 })
 
-test('also accepts a redirect to the return URL', async () => {
-  const { impl } = fakeFetch({
-    zoho: { status: 302, location: ZOHO_RETURN_URL },
-  })
-  const response = await handleContact(request(), env, impl, silentLog().log)
-  assert.equal(response.status, 200)
-})
-
-test('logs what Zoho returned, without the input, when it is not accepted', async () => {
-  const { impl } = fakeFetch({
-    zoho: {
-      status: 200,
-      body: '<html><head><title> Zoho CRM  エラー </title></head></html>',
-    },
-  })
-  const { log, lines } = silentLog()
-  const response = await handleContact(request(), env, impl, log)
-  assert.equal(response.status, 502)
-  assert.deepEqual(JSON.parse(lines[0]), {
-    event: 'contact_failure',
-    error: 'send_failed',
-    status: 200,
-    location: '',
-    length: 56,
-    title: 'Zoho CRM エラー',
-    runs: 0,
-    decodedRuns: 0,
-    decodedMixJuice: 0,
-    unescapedMixJuice: 0,
-    metaRefreshHost: '',
-    scriptUrlHost: '',
-    errorWord: 1,
-  })
-})
-
-test('never confirms an inquiry Zoho did not accept', async () => {
-  for (const zoho of [
-    { status: 200, body: '' },
-    { status: 302, location: 'https://crm.zoho.jp/crm/error.do' },
-    { status: 500 },
-  ]) {
-    const { impl } = fakeFetch({ zoho })
-    const { log, lines } = silentLog()
-    const response = await handleContact(request(), env, impl, log)
-    assert.equal(response.status, 502)
-    assert.equal((await response.json()).error, 'send_failed')
-    const logged = JSON.parse(lines[0])
-    assert.equal(logged.status, zoho.status)
-    assert.ok(!lines[0].includes('taro@example.com'))
-    assert.ok(!lines[0].includes('山田'))
-  }
-})
-
 test('handles a network failure without exposing details', async () => {
-  const { impl } = fakeFetch({ zoho: 'throw' })
+  const { impl } = fakeFetch({ leads: ['throw'] })
   const { log, lines } = silentLog()
   const response = await handleContact(request(), env, impl, log)
   assert.equal(response.status, 503)
   assert.deepEqual(await response.json(), { ok: false, error: 'unavailable' })
   assert.equal(JSON.parse(lines[0]).reason, 'TypeError')
+  assert.ok(!lines[0].includes('taro@example.com'))
 })
