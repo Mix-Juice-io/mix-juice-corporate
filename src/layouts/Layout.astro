@@ -7,7 +7,12 @@ interface Props {
   title: string
   description?: string
   ogType?: 'website' | 'article'
+  // Share image. Without one, pages use the site-wide 1200x630 image. Pass
+  // the size when you pass an image, so og:image:width/height stay right.
   ogImage?: string
+  ogImageAlt?: string
+  ogImageWidth?: number
+  ogImageHeight?: number
   noindex?: boolean
   // false skips the GA4 bootstrap; trackEvent() then stays a no-op.
   analytics?: boolean
@@ -17,13 +22,32 @@ const {
   title,
   description = 'Mix-Juice | Shopifyアプリ開発 - スモールビジネスのためのTech Studio',
   ogType = 'website',
-  ogImage = '/logo.png',
+  ogImage,
+  ogImageAlt,
+  ogImageWidth,
+  ogImageHeight,
   noindex = false,
   analytics = true,
 } = Astro.props
 
+// public/og-default.png: logo and "食品を作って売る人の、食品表示とShopifyアプリ".
+const DEFAULT_OG = {
+  src: '/og-default.png',
+  alt: 'Mix-Juice：食品を作って売る人の、食品表示とShopifyアプリ',
+  width: 1200,
+  height: 630,
+}
+const og = ogImage
+  ? {
+      src: ogImage,
+      alt: ogImageAlt,
+      width: ogImageWidth,
+      height: ogImageHeight,
+    }
+  : DEFAULT_OG
+
 const canonical = new URL(Astro.url.pathname, Astro.site).href
-const ogImageUrl = new URL(ogImage, Astro.site).href
+const ogImageUrl = new URL(og.src, Astro.site).href
 const GA_ID = import.meta.env.VITE_GA_MEASUREMENT_ID
 // gtag is loaded only when the page is served from this host. Keep in sync
 // with isProductionHost() in src/lib/analytics.ts.
@@ -77,12 +101,20 @@ const websiteJsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImageUrl} />
+    {og.width && og.height && (
+      <>
+        <meta property="og:image:width" content={String(og.width)} />
+        <meta property="og:image:height" content={String(og.height)} />
+      </>
+    )}
+    {og.alt && <meta property="og:image:alt" content={og.alt} />}
     <meta property="og:site_name" content="Mix-Juice" />
     <meta property="og:locale" content="ja_JP" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+    {og.alt && <meta name="twitter:image:alt" content={og.alt} />}
 
     <script
       type="application/ld+json"
