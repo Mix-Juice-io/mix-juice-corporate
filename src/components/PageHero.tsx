@@ -1,9 +1,10 @@
+import type { ReactNode } from 'react'
 import styles from './PageHero.module.css'
 
 interface PageHeroProps {
   /** Eyebrow label rendered above the title (e.g. "SERVICE"). */
   label: string
-  title: string
+  title: ReactNode
   description?: string
   /** Text alignment of the hero content. Defaults to left. */
   align?: 'left' | 'center'

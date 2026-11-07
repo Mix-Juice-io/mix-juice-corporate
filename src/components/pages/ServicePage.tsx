@@ -1,3 +1,4 @@
+import FLabelName from '../FLabelName'
 import Link from '../Link'
 import { Package, Wrench, ArrowRight, CheckCircle } from 'lucide-react'
 import PageHero from '../PageHero'
@@ -65,7 +66,7 @@ export default function ServicePage() {
                 <div className={styles.productInfo}>
                   <span className={styles.productBadge}>Shopify App</span>
                   <h3 className={styles.productName}>
-                    Fラベル｜EC用の食品表示
+                    <FLabelName />
                   </h3>
                   <p className={styles.productTagline}>
                     食品表示を正しく管理・表示し、商品説明欄へのコピペ運用を減らすアプリです。

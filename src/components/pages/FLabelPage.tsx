@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import Link from '../Link'
 import { ArrowRight, CheckCircle } from 'lucide-react'
+import FLabelName from '../FLabelName'
 import PageHero from '../PageHero'
 import styles from './FLabelPage.module.css'
 import { FLABEL_APP_URL } from '../../lib/urls'
@@ -156,7 +157,7 @@ export default function FLabelPage() {
     <div className={styles.page}>
       <PageHero
         label="PRODUCT"
-        title="Fラベル｜EC用の食品表示"
+        title={<FLabelName />}
         description="Shopifyの商品ページに、原材料・アレルゲン・栄養成分などの食品表示を載せるアプリです。"
       />
 
@@ -178,7 +179,9 @@ export default function FLabelPage() {
 
               <div className={styles.productBody}>
                 <span className={styles.productBadge}>Shopify App</span>
-                <h2 className={styles.productName}>Fラベル｜EC用の食品表示</h2>
+                <h2 className={styles.productName}>
+                  <FLabelName />
+                </h2>
                 <p className={styles.productTagline}>
                   食品表示を、商品説明欄へのコピペではなく、原材料から組み立てて管理します。
                 </p>

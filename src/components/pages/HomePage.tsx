@@ -1,3 +1,4 @@
+import FLabelName from '../FLabelName'
 import Link from '../Link'
 import { Package, ArrowRight, Wrench, CheckCircle } from 'lucide-react'
 import styles from './HomePage.module.css'
@@ -250,7 +251,7 @@ export default function HomePage({ guide }: Props) {
                 <div className={styles.productInfo}>
                   <p className={styles.productEyebrow}>提供中のアプリ</p>
                   <h4 className={styles.productName}>
-                    Fラベル｜EC用の食品表示
+                    <FLabelName />
                   </h4>
                   <p className={styles.productDesc}>
                     日本の食品EC向け。食品表示を正しく管理・表示し、
