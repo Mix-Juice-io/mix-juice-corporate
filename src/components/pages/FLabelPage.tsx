@@ -59,6 +59,29 @@ const scenes = [
   '商品ごとに、食品表示の書き方がそろっていない',
 ]
 
+// Consumer survey: 消費者庁「令和2年度 ECサイト食品表示実証モデル構築事業
+// 実施報告書」(2021-02-26), figures 16, 17 and 21. Multiple answers, so the
+// percentages must not be added up.
+const CAA_SURVEY_URL =
+  'https://www.caa.go.jp/policies/policy/local_cooperation/local_consumer_administration/advancedmodel/2020/'
+const CAA_GUIDEBOOK_URL = 'https://www.caa.go.jp/notice/entry/029081/'
+
+const surveyStats = [
+  {
+    value: '35.8%',
+    label: '食品表示の情報がサイトにないとき、「実店舗で購入する」',
+  },
+  {
+    value: '18.6%',
+    label: '同じく、「商品の購入をやめる」',
+  },
+  {
+    value: '62.0%',
+    label:
+      '情報の不足で困ったことがある人のうち、「知りたい情報が記載されていない」',
+  },
+]
+
 const blocks = [
   {
     name: '食品表示（一括表示欄）',
@@ -191,6 +214,47 @@ export default function FLabelPage() {
                   </li>
                 ))}
               </ul>
+            </section>
+
+            <section className={styles.sectionBlock} aria-labelledby="why">
+              <h2 id="why" className={styles.blockTitle}>
+                商品ページにも食品表示を載せる理由
+              </h2>
+              <p className={styles.sectionLead}>
+                食品表示基準で表示が義務なのは、容器包装です。ネットショップの商品ページに載せることは義務ではありませんが、消費者庁は
+                <a
+                  href={CAA_GUIDEBOOK_URL}
+                  className={styles.inlineLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-describedby="new-tab-note"
+                >
+                  ガイドブック（2022年）
+                </a>
+                で、買う前に確かめられるよう載せることを勧めています。買う人に聞いた調査でも、表示がないと別の場所で買う、という答えが目立ちます。
+              </p>
+              <ul className={styles.statList}>
+                {surveyStats.map((stat) => (
+                  <li key={stat.value} className={styles.statItem}>
+                    <span className={styles.statValue}>{stat.value}</span>
+                    <span className={styles.statLabel}>{stat.label}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className={styles.note}>
+                出典：消費者庁「
+                <a
+                  href={CAA_SURVEY_URL}
+                  className={styles.inlineLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-describedby="new-tab-note"
+                >
+                  令和2年度 ECサイト食品表示実証モデル構築事業 実施報告書
+                </a>
+                」（2021年2月）。ネットで食品を買ったことがある全国3,000人へのWebアンケート（2020年11〜12月、複数回答。食物アレルギーのある本人・家族を一定数含む）。海外では、EUがネット販売でも義務表示の情報を購入前に示すことを規則で求めています（EU規則1169/2011
+                第14条）。
+              </p>
             </section>
 
             <section className={styles.sectionBlock} aria-labelledby="display">
