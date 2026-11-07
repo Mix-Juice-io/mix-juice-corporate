@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro'
 import OriginCheck from '../../../components/tools/OriginCheck.tsx'
 import { getPublishedArticles, formatDate } from '../../../lib/articles'
+import { topicName } from '../../../lib/article-topics'
 import { GROUP22_ITEMS } from '../../../lib/origin-check/rules'
 import { CHECKED_ON, SOURCES } from '../../../lib/origin-check/sources'
 import { FLABEL_APP_URL } from '../../../lib/urls'
@@ -307,9 +308,7 @@ const breadcrumbJsonLd = {
               {related.map((r) => (
                 <a class="art-related-card reveal" href={`/articles/${r.id}/`}>
                   <div class="art-card-meta">
-                    {r.data.category && (
-                      <span class="art-card-cat">{r.data.category}</span>
-                    )}
+                    <span class="art-card-cat">{topicName(r.data.topic)}</span>
                     <time datetime={r.data.publishDate.toISOString()}>
                       {formatDate(r.data.publishDate)}
                     </time>

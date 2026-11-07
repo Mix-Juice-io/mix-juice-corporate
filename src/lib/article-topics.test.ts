@@ -4,10 +4,16 @@ import {
   TOPICS,
   TOPIC_IDS,
   groupByTopic,
+  topicName,
   type TopicId,
 } from './article-topics.ts'
 
 describe('記事のテーマ', () => {
+  test('テーマの名前を引ける', () => {
+    assert.equal(topicName('make'), '表示を作る')
+    assert.equal(topicName('online'), 'ネットで売る')
+  })
+
   test('id は重複せず、URL のアンカーに使える形', () => {
     assert.equal(new Set(TOPIC_IDS).size, TOPICS.length)
     for (const id of TOPIC_IDS) assert.match(id, /^[a-z]+$/)

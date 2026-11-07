@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro'
 import { getPublishedArticles, formatDate } from '../../lib/articles'
-import { groupByTopic } from '../../lib/article-topics'
+import { groupByTopic, topicName } from '../../lib/article-topics'
 import '../../styles/articles.css'
 
 const articles = await getPublishedArticles()
@@ -166,6 +166,9 @@ const tools = [
                 <time datetime={article.data.publishDate.toISOString()}>
                   {formatDate(article.data.publishDate)}
                 </time>
+                <span class="art-newest-topic">
+                  {topicName(article.data.topic)}
+                </span>
                 <a href={`/articles/${article.id}/`}>
                   {splitTitle(article.data.title).main}
                 </a>
