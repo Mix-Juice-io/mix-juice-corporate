@@ -6,6 +6,7 @@ import {
   getRelatedArticles,
   formatDate,
 } from '../../lib/articles'
+import { topicName } from '../../lib/article-topics'
 import { FLABEL_APP_URL } from '../../lib/urls'
 import '../../styles/articles.css'
 
@@ -133,9 +134,12 @@ const shareLinks = {
         </nav>
         <p class="art-label">ARTICLE</p>
         <div class="art-detail-meta">
-          {article.data.category && (
-            <span class="art-detail-cat">{article.data.category}</span>
-          )}
+          <a
+            class="art-detail-cat"
+            href={`/articles/#topic-${article.data.topic}`}
+          >
+            {topicName(article.data.topic)}
+          </a>
           <time datetime={article.data.publishDate.toISOString()}>
             {formatDate(article.data.publishDate)}
           </time>
@@ -258,9 +262,7 @@ const shareLinks = {
               {related.map((r) => (
                 <a class="art-related-card reveal" href={`/articles/${r.id}/`}>
                   <div class="art-card-meta">
-                    {r.data.category && (
-                      <span class="art-card-cat">{r.data.category}</span>
-                    )}
+                    <span class="art-card-cat">{topicName(r.data.topic)}</span>
                     <time datetime={r.data.publishDate.toISOString()}>
                       {formatDate(r.data.publishDate)}
                     </time>

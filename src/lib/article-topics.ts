@@ -43,3 +43,10 @@ export function groupByTopic<T>(
     items: items.filter((item) => topicOf(item) === topic.id),
   })).filter((group) => group.items.length > 0)
 }
+
+/** The display name of a topic, for labels on article cards. */
+export function topicName(id: TopicId): string {
+  const topic = TOPICS.find((t) => t.id === id)
+  if (!topic) throw new Error(`Unknown article topic: ${id}`)
+  return topic.name
+}
