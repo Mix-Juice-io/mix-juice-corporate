@@ -13,7 +13,8 @@ import '../index.css'
 
 interface Props {
   title: string
-  description?: string
+  // Required: every page states what it is about (no site-wide fallback).
+  description: string
   ogType?: 'website' | 'article'
   // Share image. Without one, pages use the site-wide 1200x630 image. Pass
   // the size when you pass an image, so og:image:width/height stay right.
@@ -28,7 +29,7 @@ interface Props {
 
 const {
   title,
-  description = 'Mix-Juice | Shopifyアプリ開発 - スモールビジネスのためのTech Studio',
+  description,
   ogType = 'website',
   ogImage,
   ogImageAlt,

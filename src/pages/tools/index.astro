@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from '../../components/Breadcrumbs.astro'
 import Layout from '../../layouts/Layout.astro'
 import '../../styles/articles.css'
 
@@ -61,13 +62,9 @@ const tools = [
         <div class="art-blob2"></div>
       </div>
       <div class="container">
-        <nav class="art-crumbs" aria-label="パンくずリスト">
-          <a href="/">ホーム</a>
-          <span class="art-crumbs-sep" aria-hidden="true">
-            /
-          </span>
-          <span class="art-crumbs-current">無料ツール</span>
-        </nav>
+        <Breadcrumbs
+          items={[{ name: 'ホーム', href: '/' }, { name: '無料ツール' }]}
+        />
         <p class="art-label">FREE TOOLS</p>
         <h1 class="art-title">食品事業者向けの無料ツール</h1>
         <p class="art-desc">

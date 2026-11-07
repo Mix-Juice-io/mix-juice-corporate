@@ -12,6 +12,8 @@
 //       be counted as page views).
 //   (e) Every sitemap URL under /articles/ and /tools/ has a lastmod, and each
 //       entry in src/lib/page-lastmod.mjs is a sitemap URL with that date.
+//   (f) A page with BreadcrumbList JSON-LD shows the same trail: the same
+//       names, links to the same URLs, and the last item is the page itself.
 
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { extname, join, relative, sep } from 'node:path'
@@ -191,6 +193,52 @@ for (const file of files) {
       if (!attrs[required]) report(file, `${label} is missing ${required}`)
     }
   }
+}
+
+// (f) visible breadcrumbs match BreadcrumbList JSON-LD
+function breadcrumbProblems(html, urlPath) {
+  const out = []
+  const lists = [
+    ...html.matchAll(
+      /<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g,
+    ),
+  ]
+    .map((m) => JSON.parse(m[1]))
+    .filter((data) => data['@type'] === 'BreadcrumbList')
+  if (lists.length === 0) return out
+  const nav = html.match(/<nav class="art-crumbs"[^>]*>([\s\S]*?)<\/nav>/)
+  if (!nav) return ['has BreadcrumbList JSON-LD but no visible breadcrumbs']
+  const shown = [...nav[1].matchAll(/<li>([\s\S]*?)<\/li>/g)].map((m) => {
+    const href = m[1].match(/<a href="([^"]*)"/)?.[1]
+    const text = decodeEntities(
+      m[1]
+        .replace(/<span class="art-crumbs-sep"[\s\S]*?<\/span>/, '')
+        .replace(/<[^>]+>/g, ''),
+    ).trim()
+    return { text, path: href === undefined ? urlPath : href }
+  })
+  const listed = lists[0].itemListElement.map((item) => ({
+    text: item.name,
+    path: new URL(item.item).pathname,
+  }))
+  if (JSON.stringify(shown) !== JSON.stringify(listed)) {
+    out.push(
+      `breadcrumbs differ from BreadcrumbList: shown ${JSON.stringify(shown)}, JSON-LD ${JSON.stringify(listed)}`,
+    )
+  }
+  return out
+}
+let breadcrumbCount = 0
+for (const file of files) {
+  const html = readFileSync(file, 'utf8')
+  if (!html.includes('"BreadcrumbList"')) continue
+  breadcrumbCount++
+  for (const message of breadcrumbProblems(html, pageUrlPath(file))) {
+    report(file, message)
+  }
+}
+if (breadcrumbCount === 0) {
+  problems.push('no pages with BreadcrumbList found')
 }
 
 if (articleCount === 0) {

@@ -1,0 +1,36 @@
+---
+// Breadcrumb trail shown at the top of article and tool pages. The last item
+// is the current page (no link). Pages that also emit BreadcrumbList JSON-LD
+// must list the same names and URLs; scripts/verify-dist.mjs checks this.
+export interface Crumb {
+  name: string
+  href?: string
+}
+
+interface Props {
+  items: Crumb[]
+}
+
+const { items } = Astro.props
+---
+
+<nav class="art-crumbs" aria-label="パンくずリスト">
+  <ol>
+    {items.map((item, i) => (
+      <li>
+        {i === items.length - 1 ? (
+          <span class="art-crumbs-current" aria-current="page">
+            {item.name}
+          </span>
+        ) : (
+          <>
+            <a href={item.href}>{item.name}</a>
+            <span class="art-crumbs-sep" aria-hidden="true">
+              /
+            </span>
+          </>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>

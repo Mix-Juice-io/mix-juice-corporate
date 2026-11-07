@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from '../../../components/Breadcrumbs.astro'
 import Layout from '../../../layouts/Layout.astro'
 import NutritionCheck from '../../../components/tools/NutritionCheck.tsx'
 import { getPublishedArticles, formatDate } from '../../../lib/articles'
@@ -63,17 +64,13 @@ const breadcrumbJsonLd = {
         <div class="art-blob2"></div>
       </div>
       <div class="container">
-        <nav class="art-crumbs" aria-label="パンくずリスト">
-          <a href="/">ホーム</a>
-          <span class="art-crumbs-sep" aria-hidden="true">
-            /
-          </span>
-          <a href="/tools/">無料ツール</a>
-          <span class="art-crumbs-sep" aria-hidden="true">
-            /
-          </span>
-          <span class="art-crumbs-current">栄養成分表示の要否チェック</span>
-        </nav>
+        <Breadcrumbs
+          items={[
+            { name: 'ホーム', href: '/' },
+            { name: '無料ツール', href: '/tools/' },
+            { name: '栄養成分表示の要否チェック' },
+          ]}
+        />
         <p class="art-label">FREE TOOL</p>
         <h1 class="art-title">栄養成分表示、うちは必要？</h1>
         <p class="art-desc">
