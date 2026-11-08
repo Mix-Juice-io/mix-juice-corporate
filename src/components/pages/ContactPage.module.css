@@ -153,6 +153,13 @@
   color: var(--color-text-light);
 }
 
+.privacyLink {
+  color: var(--color-accent-text);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .verification {
   min-height: 65px;
 }

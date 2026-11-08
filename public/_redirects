@@ -5,3 +5,8 @@
 # complete guide and competed for the same searches (#30).
 /articles/food-labeling-basics-for-ec/ /articles/food-labeling-complete-guide/ 301
 /articles/food-labeling-basics-for-ec /articles/food-labeling-complete-guide/ 301
+
+# 2026-11-08: visitors typed /company looking for a company profile (GA4 showed
+# four 404 views in 10/2-10/29, #52). The profile lives at /about/.
+/company /about/ 301
+/company/ /about/ 301

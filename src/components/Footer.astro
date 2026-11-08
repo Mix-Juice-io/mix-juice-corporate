@@ -3,8 +3,7 @@ import styles from './Footer.module.css'
 
 const year = new Date().getFullYear()
 
-// Site-wide links. Add the site privacy policy (#49) and company profile
-// (#52) here once those pages exist.
+// Site-wide links.
 const groups = [
   {
     id: 'footer-service',
@@ -25,10 +24,15 @@ const groups = [
   },
   {
     id: 'footer-legal',
-    title: 'Fラベルの規約',
+    title: '運営者・規約',
     links: [
-      { href: '/service/f-label/terms/', label: '利用規約' },
-      { href: '/service/f-label/privacy/', label: 'プライバシーポリシー' },
+      { href: '/about/', label: '運営者情報' },
+      { href: '/privacy/', label: 'プライバシーポリシー' },
+      { href: '/service/f-label/terms/', label: 'Fラベルの利用規約' },
+      {
+        href: '/service/f-label/privacy/',
+        label: 'Fラベルのプライバシーポリシー',
+      },
     ],
   },
 ]
