@@ -1,0 +1,4 @@
+/* Break only at the <wbr> points in the name, never inside a word. */
+.name {
+  word-break: keep-all;
+}
