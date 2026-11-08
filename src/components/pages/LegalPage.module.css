@@ -51,7 +51,8 @@
   color: var(--color-text-light);
 }
 
-.paragraph + .paragraph {
+.paragraph + .paragraph,
+.list + .paragraph {
   margin-top: 12px;
 }
 

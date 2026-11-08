@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Send, CheckCircle } from 'lucide-react'
+import Link from '../Link'
 import PageHero from '../PageHero'
 import Turnstile from '../Turnstile'
 import { trackEvent } from '../../lib/analytics'
@@ -364,7 +365,11 @@ export default function ContactPage({ siteKey = '' }: { siteKey?: string }) {
                     <p className={styles.privacyNote}>
                       ご入力いただいた内容は、お問い合わせへの回答のためにだけ使います。内容は、Mix-Juiceが利用する顧客管理サービス「Zoho
                       CRM」（データは日本のデータセンターに保存）に保存します。迷惑な送信を防ぐため、送信の前にCloudflare
-                      Turnstileによる確認を行います。
+                      Turnstileによる確認を行います。詳しくは
+                      <Link to="/privacy/" className={styles.privacyLink}>
+                        プライバシーポリシー
+                      </Link>
+                      をご覧ください。
                     </p>
 
                     <div className={styles.verification}>
