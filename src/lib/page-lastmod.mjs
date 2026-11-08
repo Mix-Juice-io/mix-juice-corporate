@@ -21,6 +21,8 @@ export const PAGE_LASTMOD = {
   '/service/f-label/': '2026-11-08',
   // Site-wide privacy policy, new (#49).
   '/privacy/': '2026-11-08',
+  // Company profile, new (#52).
+  '/about/': '2026-11-08',
   '/tools/': '2026-11-03',
   '/tools/food-label-maker/': '2026-11-07',
   '/tools/food-label-maker/how-to/': '2026-11-04',

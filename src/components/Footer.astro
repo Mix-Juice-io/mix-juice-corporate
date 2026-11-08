@@ -3,7 +3,7 @@ import styles from './Footer.module.css'
 
 const year = new Date().getFullYear()
 
-// Site-wide links. Add the company profile (#52) here once that page exists.
+// Site-wide links.
 const groups = [
   {
     id: 'footer-service',
@@ -24,8 +24,9 @@ const groups = [
   },
   {
     id: 'footer-legal',
-    title: 'ポリシー・規約',
+    title: '運営者・規約',
     links: [
+      { href: '/about/', label: '運営者情報' },
       { href: '/privacy/', label: 'プライバシーポリシー' },
       { href: '/service/f-label/terms/', label: 'Fラベルの利用規約' },
       {
