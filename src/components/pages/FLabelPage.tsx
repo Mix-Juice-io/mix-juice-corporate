@@ -9,6 +9,9 @@ import { FLABEL_APP_URL } from '../../lib/urls'
 // Facts on this page (blocks, onboarding, CSV, billing behavior) were checked
 // against the F-label app code and its App Store listing on 2026-11-07
 // (corporate #34). Re-check them when the app or the listing changes.
+// The screenshots in public/f-label/ are real screens of the app and the demo
+// store (mix-juice-demo-1), taken on 2026-11-08 for the App Store listing
+// (corporate #35). Retake them when the blocks or the product form change.
 
 // Internal links from the page body to free tools and legal pages.
 function BodyLink({
@@ -264,6 +267,27 @@ export default function FLabelPage() {
               <h2 id="display" className={styles.blockTitle}>
                 商品ページに表示できるもの
               </h2>
+              <figure className={styles.shot}>
+                <picture>
+                  <source
+                    media="(max-width: 768px)"
+                    srcSet="/f-label/storefront-mobile.webp"
+                    width="365"
+                    height="730"
+                  />
+                  <img
+                    src="/f-label/storefront-desktop.webp"
+                    alt="デモストアの商品ページ（バタークッキー 8枚入り）。商品説明の下に、名称・原材料名・内容量・賞味期限・保存方法・販売者の一括表示欄と、1枚あたりの栄養成分表示が出ている"
+                    width="962"
+                    height="818"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+                <figcaption>
+                  デモストアの商品ページ。商品説明の下に、一括表示欄と栄養成分表が出ます（表示の内容は例です）。
+                </figcaption>
+              </figure>
               <p className={styles.sectionLead}>
                 テーマエディタで、商品ページに次のブロックを置いて表示します。
               </p>
@@ -314,6 +338,19 @@ export default function FLabelPage() {
                   </li>
                 ))}
               </ul>
+              <figure className={`${styles.shot} ${styles.shotSide}`}>
+                <img
+                  src="/f-label/admin-product.webp"
+                  alt="Fラベルの商品の入力画面。原材料に小麦粉・バター・砂糖・全卵・アーモンド・食塩を、添加物に膨張剤・香料を重量順に選ぶと、この商品のアレルゲンとして、表示義務の小麦・卵・乳成分と、表示推奨のアーモンドが出ている"
+                  width="412"
+                  height="801"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <figcaption>
+                  商品の入力画面。原材料を重量の多い順に選ぶと、その原材料に登録したアレルゲンを集めて、表示義務（特定原材料）と表示推奨（特定原材料に準ずるもの）に分けて出します。
+                </figcaption>
+              </figure>
             </section>
 
             <section className={styles.sectionBlock} aria-labelledby="pricing">

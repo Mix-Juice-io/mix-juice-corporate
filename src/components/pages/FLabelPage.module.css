@@ -214,6 +214,45 @@
   color: var(--color-text-light);
 }
 
+/* Screenshots of the app: framed so the white UI does not blend into the
+   card. Shown at their natural size at most, never scaled up. */
+.shot {
+  margin: 0 0 18px;
+}
+
+.shot img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+.shot figcaption {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+
+/* A tall screenshot with its caption beside it. */
+.shotSide {
+  margin: 24px 0 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.shotSide figcaption {
+  margin-top: 0;
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--color-text-light);
+}
+
 .note {
   margin-top: 14px;
   font-size: 0.86rem;
@@ -376,6 +415,17 @@
 
   .featureGrid {
     grid-template-columns: 1fr;
+  }
+
+  .shotSide {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .shotSide figcaption {
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--color-text-muted);
   }
 
   .ctaBox {
