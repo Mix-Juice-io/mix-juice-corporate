@@ -14,13 +14,6 @@ updates:
       # in CI and Cloudflare Pages). Bump it together with .node-version.
       - dependency-name: '@types/node'
         update-types: ['version-update:semver-major']
-      # ESLint 10 cannot be installed until eslint-plugin-jsx-a11y is replaced
-      # (its eslint peer stops at ^9), and eslint-plugin-astro >=2 requires
-      # ESLint 10. Remove both entries when migrating: see issue #144.
-      - dependency-name: eslint
-        versions: ['>=10']
-      - dependency-name: eslint-plugin-astro
-        versions: ['>=2']
     groups:
       astro:
         update-types: [minor, patch]
