@@ -4,9 +4,13 @@ import styles from './LegalPage.module.css'
 
 // Site-wide privacy policy (#49). Keep the external-transmission table in sync
 // with what the site actually loads: GA4 (src/layouts/Layout.astro, production
-// host only) and Cloudflare Turnstile (contact page). Inquiries go from the
-// Pages Function to Zoho CRM (src/lib/contact/). Checked against the code and
-// the primary sources (APPI Art. 32, Enforcement Order Art. 10, Google
+// host only), Cloudflare Turnstile (contact page) and Cloudflare Web Analytics.
+// Web Analytics is not in the source: Cloudflare Pages injects its beacon
+// (static.cloudflareinsights.com, reporting to /cdn-cgi/rum) into production
+// pages because it is enabled in the Pages project settings. Check the live
+// site's requests, not just the code, when updating this table. Inquiries go
+// from the Pages Function to Zoho CRM (src/lib/contact/). Checked against the
+// code, the live site's requests and the primary sources (APPI Art. 32, Enforcement Order Art. 10, Google
 // Analytics Terms Sec. 7, Zoho's terms and privacy policy) on 2026-11-08.
 
 const GA_PARTNER_SITES_URL =
@@ -131,6 +135,14 @@ export default function PrivacyPage() {
                       <td>迷惑な送信を防ぐため</td>
                       <td>お問い合わせのページ</td>
                     </tr>
+                    <tr>
+                      <td>Cloudflare, Inc.（Cloudflare Web Analytics）</td>
+                      <td>
+                        閲覧したページのURL、参照元のURL、ページの表示にかかった時間などの計測値、ブラウザ・端末の情報、IPアドレス
+                      </td>
+                      <td>アクセスの集計と、表示の速さの改善</td>
+                      <td>本サイトのすべてのページ</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -147,7 +159,8 @@ export default function PrivacyPage() {
                 を使うか、ブラウザの設定でCookieを無効にしてください。お問い合わせの内容やツールに入力した内容は、Googleアナリティクスには送りません。
               </p>
               <p className={styles.paragraph}>
-                Cloudflare Turnstileでの情報の取り扱いは、Cloudflareの
+                Cloudflare TurnstileとCloudflare Web
+                Analyticsでの情報の取り扱いは、Cloudflareの
                 <ExternalLink href={CLOUDFLARE_PRIVACY_URL}>
                   プライバシーポリシー
                 </ExternalLink>
