@@ -1,3 +1,7 @@
+// Disclosures checked on 2026-11-08 (#58): hosting is Railway (Singapore
+// region), error tracking is Sentry (US region), and the storefront block
+// sends a consent-gated render beacon via the App Proxy (F-label #179). The
+// address is given on request, as on the site policy (/privacy/).
 import Link from '../Link'
 import PageHero from '../PageHero'
 import styles from './LegalPage.module.css'
@@ -27,6 +31,10 @@ export default function FLabelPrivacyPage() {
                 <dd>Mix-Juice</dd>
                 <dt>代表者</dt>
                 <dd>水沢孟由</dd>
+                <dt>所在地</dt>
+                <dd>お問い合わせいただければ、遅滞なくお知らせします。</dd>
+                <dt>連絡先</dt>
+                <dd>support@mix-juice.io</dd>
                 <dt>製品サイト</dt>
                 <dd>
                   <a href="/service/f-label/" className={styles.link}>
@@ -120,8 +128,11 @@ export default function FLabelPrivacyPage() {
                   本アプリは、マーチャントの顧客から、いかなる個人情報も直接取得しません。
                 </strong>
                 ストアフロントに表示されるTheme App
-                Extension（食品表示ブロック）は、マーチャントが登録した食品表示データを表示するのみで、
-                閲覧者のIPアドレス、Cookie、ブラウザフィンガープリント等を収集・送信しません。
+                Extension（食品表示ブロック）は、マーチャントが登録した食品表示データを表示します。閲覧者のCookieやブラウザフィンガープリントは使いません。
+              </p>
+              <p className={styles.paragraph}>
+                食品表示が商品ページに表示された回数を数えるため、閲覧者がShopifyの同意の設定でアクセス解析を許可している場合に限り、食品表示ブロックは、商品IDをハッシュにした値と表示のテンプレートの版を、ShopifyのApp
+                Proxyを経由して本アプリのサーバーに送ります。この記録に、閲覧者を識別する値は含みません。同じ商品の表示は1日1件にまとめて記録します。
               </p>
 
               <h3 className={styles.subSectionTitle}>
@@ -185,11 +196,16 @@ export default function FLabelPrivacyPage() {
                       <td>カナダ／米国</td>
                     </tr>
                     <tr>
-                      <td>クラウドホスティング事業者</td>
+                      <td>Railway Corporation</td>
                       <td>
                         アプリケーションホスティング、PostgreSQLデータベース運用
                       </td>
-                      <td>海外（複数リージョン）</td>
+                      <td>米国（データの保存場所はシンガポール）</td>
+                    </tr>
+                    <tr>
+                      <td>Functional Software, Inc.（Sentry）</td>
+                      <td>エラーの記録と通知（2.4のエラーログ）</td>
+                      <td>米国（データの保存場所も米国）</td>
                     </tr>
                   </tbody>
                 </table>
@@ -211,7 +227,7 @@ export default function FLabelPrivacyPage() {
               <h3 className={styles.subSectionTitle}>5.1 保存場所</h3>
               <ul className={styles.list}>
                 <li>
-                  当方サーバーで保存するデータは、ホスティング事業者の指定する複数のリージョン（日本国外を含む）に保存される場合があります。
+                  当方サーバーで保存するデータは、Railwayのシンガポールのリージョンに保存します。エラーの記録は、Sentryの米国のリージョンに保存します。
                 </li>
                 <li>
                   Shopify上に保存されるデータ（メタフィールド、メタオブジェクト等）は、Shopifyの定めるリージョンおよびポリシーに従って管理されます。
@@ -327,7 +343,7 @@ export default function FLabelPrivacyPage() {
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>8. 国際的なデータ移転</h2>
               <p className={styles.paragraph}>
-                本アプリは海外に所在するクラウドホスティング事業者を利用しているため、マーチャントのデータが日本国外に移転される場合があります。
+                本アプリは米国の事業者（Railway・Sentry）を利用しているため、マーチャントのデータは日本国外（シンガポール・米国）に移転されます。
                 マーチャントは、本アプリの利用を開始した時点で当該国際移転に同意するものとみなされます。
               </p>
               <p className={styles.paragraph}>
@@ -363,9 +379,7 @@ export default function FLabelPrivacyPage() {
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>12. お問い合わせ窓口</h2>
               <p className={styles.paragraph}>
-                本ポリシーまたは個人情報の取り扱いに関するお問い合わせは、
-                Shopify App
-                Store記載のサポートメールアドレスまでご連絡ください。
+                本ポリシーまたは個人情報の取り扱いに関するお問い合わせ・苦情は、Mix-Juice（support@mix-juice.io）までご連絡ください。
               </p>
             </section>
 
@@ -373,6 +387,9 @@ export default function FLabelPrivacyPage() {
               <strong>改訂履歴</strong>
               <br />
               2026年4月18日: 初版制定
+              <br />
+              2026年11月8日:
+              事業者の所在地と連絡先、委託先と保存場所（Railway・Sentry）、お問い合わせ窓口を明記。食品表示ブロックの表示回数の記録（2.5）を追記
             </div>
 
             <div className={styles.linkRow}>
