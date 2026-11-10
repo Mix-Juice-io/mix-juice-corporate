@@ -18,7 +18,10 @@ import styles from './LegalPage.module.css'
 // the contact page does not load it (sessionRecording={false}), every tool
 // island is inside data-clarity-mask="True" (both checked by
 // scripts/verify-dist.mjs), and Layout.astro denies advertising storage while
-// public/_headers keeps Clarity's cookie-sync hosts out of img-src. Sources:
+// public/_headers keeps Clarity's cookie-sync hosts out of img-src. With the
+// real project (2026-11-11) the browser kept _clck and _clsk on mix-juice.io
+// plus CLID on www.clarity.ms (set by the tag response, so it cannot be
+// blocked without blocking Clarity); no bing.com cookie. Sources:
 // Microsoft Learn "Masking content", "Clarity cookies", "Consent API v2",
 // "Clarity data collection" and the Clarity FAQ, read on 2026-11-11.
 
@@ -196,7 +199,7 @@ export default function PrivacyPage() {
               </p>
               <p className={styles.paragraph}>
                 Microsoft
-                Clarityは、記録を1つの訪問としてつなぐために、本サイトのCookieに識別子を保存します。広告のためのCookieは使わない設定にしています。記録した情報はMicrosoftも取り扱います。Microsoftでの情報の取り扱いは、
+                Clarityは、記録を1つの訪問としてつなぐために、本サイトのCookieに識別子を保存します。また、Clarityのドメイン（clarity.ms）のCookieにも、Clarityがそのブラウザを初めて見た時を表す識別子が保存されます。広告のためにデータを使うことには同意しない設定にし、広告用のCookieをそろえるための通信も止めています。記録した情報はMicrosoftも取り扱います。Microsoftでの情報の取り扱いは、
                 <ExternalLink href={MICROSOFT_PRIVACY_URL}>
                   Microsoft のプライバシー ステートメント
                 </ExternalLink>
