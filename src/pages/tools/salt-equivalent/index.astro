@@ -90,7 +90,10 @@ const breadcrumbJsonLd = {
           </p>
         </noscript>
 
-        <SaltConverter client:load />
+        {/* Clarity must not record what people type or the result built from it. */}
+        <div data-clarity-mask="True">
+          <SaltConverter client:load />
+        </div>
 
         <article class="art-body tool-guide">
           <h2 id="about">このツールについて</h2>

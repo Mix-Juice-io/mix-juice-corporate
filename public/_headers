@@ -6,12 +6,15 @@
 # main pages (GA4, Turnstile). A new third-party script, frame, font or
 # endpoint must be added here first. HSTS starts at one day (no subdomains);
 # raise max-age once it has run without trouble.
+# Microsoft Clarity gets script-src and connect-src only. Its cookie-sync
+# pixels (c.clarity.ms, c.bing.com) are left out of img-src on purpose, so the
+# cross-site advertising identifiers are never set from this site.
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://*.google-analytics.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.google.com https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com https://challenges.cloudflare.com https://*.clarity.ms; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://*.google-analytics.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://www.google.com https://cloudflareinsights.com https://*.clarity.ms; frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'
   Strict-Transport-Security: max-age=86400
 
 # Hashed build output never changes under the same name.

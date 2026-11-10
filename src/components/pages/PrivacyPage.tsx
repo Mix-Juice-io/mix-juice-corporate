@@ -12,11 +12,25 @@ import styles from './LegalPage.module.css'
 // from the Pages Function to Zoho CRM (src/lib/contact/). Checked against the
 // code, the live site's requests and the primary sources (APPI Art. 32, Enforcement Order Art. 10, Google
 // Analytics Terms Sec. 7, Zoho's terms and privacy policy) on 2026-11-08.
+//
+// Microsoft Clarity (added 2026-11-11) records what a page shows, so the
+// wording in 2.2, 2.3 and 4 depends on three things in the code staying true:
+// the contact page does not load it (sessionRecording={false}), every tool
+// island is inside data-clarity-mask="True" (both checked by
+// scripts/verify-dist.mjs), and Layout.astro denies advertising storage while
+// public/_headers keeps Clarity's cookie-sync hosts out of img-src. With the
+// real project (2026-11-11) the browser kept _clck and _clsk on mix-juice.io
+// plus CLID on www.clarity.ms (set by the tag response, so it cannot be
+// blocked without blocking Clarity); no bing.com cookie. Sources:
+// Microsoft Learn "Masking content", "Clarity cookies", "Consent API v2",
+// "Clarity data collection" and the Clarity FAQ, read on 2026-11-11.
 
 const GA_PARTNER_SITES_URL =
   'https://policies.google.com/technologies/partner-sites?hl=ja'
 const GA_OPTOUT_URL = 'https://tools.google.com/dlpage/gaoptout?hl=ja'
 const CLOUDFLARE_PRIVACY_URL = 'https://www.cloudflare.com/privacypolicy/'
+const MICROSOFT_PRIVACY_URL =
+  'https://www.microsoft.com/ja-jp/privacy/privacystatement'
 const ZOHO_PRIVACY_URL = 'https://www.zoho.co.jp/privacy/'
 const CONTACT_EMAIL = 'support@mix-juice.io'
 
@@ -51,7 +65,8 @@ export default function PrivacyPage() {
               <Link to="/service/f-label/privacy/" className={styles.link}>
                 Fラベル プライバシーポリシー
               </Link>
-              によります。Fラベルのポリシーにある「外部のアクセス解析ツールを使用しない」は、アプリについての定めです。本サイトでは、下記の4のとおりGoogleアナリティクスを使っています。
+              によります。Fラベルのポリシーにある「外部のアクセス解析ツールを使用しない」は、アプリについての定めです。本サイトでは、下記の4のとおりGoogleアナリティクスとMicrosoft
+              Clarityを使っています。
             </p>
 
             <section className={styles.section}>
@@ -85,12 +100,20 @@ export default function PrivacyPage() {
               <p className={styles.paragraph}>
                 Googleアナリティクス（下記の4）で、本サイトの閲覧の情報を集めます。アクセスの数や、どのページ・ツール・リンクが使われているかを集計して、本サイトを改善するために使います。個人を特定するためには使いません。
               </p>
+              <p className={styles.paragraph}>
+                Microsoft
+                Clarity（下記の4）で、ページがどこまで読まれたか、どこがクリックされたかなど、ページの中での操作を記録します。読みにくいところや使いにくいところを見つけて、本サイトを改善するために使います。個人を特定するためには使いません。入力欄に入力した内容は記録されません。お問い合わせのページでは、Clarityを読み込みません。
+              </p>
 
               <h3 className={styles.subSectionTitle}>
                 2.3 無料ツールに入力した内容
               </h3>
               <p className={styles.paragraph}>
                 無料ツールに入力した内容（原材料、配合、資材の台帳など）は、お使いのブラウザの中で処理し、当方には送りません。容器包装のポジティブリストの台帳ツールは、続きから使えるように、入力した内容をお使いのブラウザに保存します。この内容も当方には届きません。ブラウザに保存した内容は、ブラウザの設定で消せます。
+              </p>
+              <p className={styles.paragraph}>
+                Microsoft
+                Clarityにも、ツールに入力した内容は送りません。ツールの画面に出る文字（入力した内容と、そこから作った表示）は、お使いのブラウザの中で伏せ字に置き換えてから記録します。ツールの中でのクリックやスクロールは記録します。
               </p>
             </section>
 
@@ -143,6 +166,14 @@ export default function PrivacyPage() {
                       <td>アクセスの集計と、表示の速さの改善</td>
                       <td>本サイトのすべてのページ</td>
                     </tr>
+                    <tr>
+                      <td>Microsoft Corporation（Microsoft Clarity）</td>
+                      <td>
+                        閲覧したページのURL、参照元のURL、閲覧の日時、ブラウザ・端末・画面の大きさなどの情報、IPアドレス、Cookieに保存した識別子、ページの中での操作（マウスの動き、クリック、スクロール、入力の操作があったこと）、表示されたページの内容（入力欄の内容、数字、メールアドレス、無料ツールの画面の文字は、伏せ字に置き換えます）
+                      </td>
+                      <td>ページの中での操作の記録と、本サイトの改善</td>
+                      <td>お問い合わせのページを除く、本サイトのページ</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -165,6 +196,14 @@ export default function PrivacyPage() {
                   プライバシーポリシー
                 </ExternalLink>
                 をご覧ください。
+              </p>
+              <p className={styles.paragraph}>
+                Microsoft
+                Clarityは、記録を1つの訪問としてつなぐために、本サイトのCookieに識別子を保存します。また、Clarityのドメイン（clarity.ms）のCookieにも、Clarityがそのブラウザを初めて見た時を表す識別子が保存されます。広告のためにデータを使うことには同意しない設定にし、広告用のCookieをそろえるための通信も止めています。記録した情報はMicrosoftも取り扱います。Microsoftでの情報の取り扱いは、
+                <ExternalLink href={MICROSOFT_PRIVACY_URL}>
+                  Microsoft のプライバシー ステートメント
+                </ExternalLink>
+                をご覧ください。Clarityによる記録を止めたい場合は、ブラウザの設定でJavaScriptを無効にするか、コンテンツをブロックする機能でclarity.msへの通信を止めてください。
               </p>
             </section>
 
@@ -244,6 +283,8 @@ export default function PrivacyPage() {
               <strong>改定の履歴</strong>
               <br />
               2026年11月8日：制定
+              <br />
+              2026年11月11日：Microsoft Clarityの利用を追記（2.2、2.3、4）
             </div>
           </article>
         </div>

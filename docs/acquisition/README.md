@@ -46,6 +46,16 @@ mix-juice.io の検索流入と成果（F-label の App Store 遷移・問い合
 - 2026-11-08 に、GA4 と Search Console（URL プレフィックスのプロパティ）を連携した。GA4 の「レポート」→「Search Console」に、検索語（Queries）と、Google のオーガニック検索で入ったページ（Google organic search traffic）が出る。
 - 数値は Search Console 由来で、Search Console の画面と同じ遅れ（2〜3日）がある。検索から入ったページと、そのあとの `mix_*` のイベントを並べて見るときに使う。期間比較の数値は、これまでどおり Search Console の画面で取る。
 
+### Microsoft Clarity（ページの中での動き）
+
+- 見るもの：ページがどこまで読まれたか、どこがクリックされたか、反応のない場所のクリック、すぐ戻った訪問。記録の保存は30日。
+- GA4 と同じく、本番のホスト名で表示されているときだけ読み込む（`VITE_CLARITY_PROJECT_ID`）。
+- Clarity は画面に出ている内容を記録するので、次の決まりを守る。プライバシーポリシー（`/privacy/` の 2.2・2.3・4）の記載は、この決まりを前提にしている。
+  - お問い合わせのページでは読み込まない（`Layout` の `sessionRecording={false}`）。
+  - 入力を受ける React のアイランド（無料ツール）は、`data-clarity-mask="True"` を付けた要素のすぐ内側に置く。入力した内容と、そこから作った表示は伏せ字になり、送られない。付け忘れると `npm run verify` が失敗する。
+  - 広告用の Cookie は使わない。読み込みのときに広告は不同意と伝え（`consentv2`）、CSP の `img-src` に Clarity・Bing の送信先を入れない。
+  - Clarity の管理画面のマスクの設定は「Balanced」か「Strict」のままにする（「Relaxed」にすると、数字とメールアドレスが伏せ字にならない）。
+
 ### ラッコキーワード（検索数と、100位以内に入った語）
 
 - 月1回（28日ごとの確認とあわせる）、獲得キーワード調査で自社（`mix-juice.io`）と競合2サイト（食品表示コンシェルジュ `foodguideservice.com`、食品表示のハコ `shokuhinhyoji-box.azurewebsites.net`）を調べる（#154）。初回は `reports/2026-11-03.md`。

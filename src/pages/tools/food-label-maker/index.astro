@@ -107,7 +107,10 @@ const breadcrumbJsonLd = {
           </p>
         </noscript>
 
-        <LabelMaker client:load />
+        {/* Clarity must not record what people type or the result built from it. */}
+        <div data-clarity-mask="True">
+          <LabelMaker client:load />
+        </div>
 
         <article class="art-body tool-guide" data-print="hide">
           <h2 id="about">このツールについて</h2>

@@ -20,7 +20,7 @@ export const PAGE_LASTMOD = {
   '/contact/': '2026-11-08',
   '/service/f-label/': '2026-11-08',
   // Site-wide privacy policy, new (#49).
-  '/privacy/': '2026-11-08',
+  '/privacy/': '2026-11-11',
   // Company profile, new (#52).
   '/about/': '2026-11-08',
   '/tools/': '2026-11-03',

@@ -103,7 +103,10 @@ const breadcrumbJsonLd = {
           </p>
         </noscript>
 
-        <NutritionCheck client:load />
+        {/* Clarity must not record what people type or the result built from it. */}
+        <div data-clarity-mask="True">
+          <NutritionCheck client:load />
+        </div>
 
         <article class="art-body tool-guide" data-print="hide">
           <h2 id="about">このチェックについて</h2>

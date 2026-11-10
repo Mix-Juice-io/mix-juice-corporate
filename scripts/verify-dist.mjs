@@ -17,6 +17,9 @@
 //   (g) Each topic section on /articles/ lists at most 7 articles. Past that,
 //       the agreed next step is topic pages (/articles/topic/<id>/): show the
 //       newest 6 per topic on the index and link to the topic page.
+//   (h) Microsoft Clarity records what a page shows. The contact page and the
+//       404 page never load it, and on every other page each React island
+//       (where visitors type) sits directly inside data-clarity-mask="True".
 
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { extname, join, relative, sep } from 'node:path'
@@ -277,6 +280,35 @@ if (!existsSync(notFound)) {
   readFileSync(notFound, 'utf8').includes('googletagmanager.com/gtag/js')
 ) {
   report(notFound, 'loads GA4; the 404 page must not be measured')
+}
+
+// (h) Clarity stays away from what visitors type
+const CLARITY_TAG = 'clarity.ms/tag/'
+const NO_CLARITY_PAGES = new Set([
+  join(DIST, '404.html'),
+  join(DIST, 'contact', 'index.html'),
+])
+for (const file of files) {
+  const html = readFileSync(file, 'utf8')
+  if (NO_CLARITY_PAGES.has(file)) {
+    if (html.includes(CLARITY_TAG)) {
+      report(file, 'loads Clarity; this page must not be recorded')
+    }
+    continue
+  }
+  // Astro puts its hydration <style>/<script> before the first island.
+  const markup = html.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, '')
+  const islands = markup.match(/<astro-island\b/g)?.length ?? 0
+  const masked =
+    markup.match(
+      /<[a-z][\w-]*\b[^>]*\sdata-clarity-mask="True"[^>]*>\s*<astro-island\b/g,
+    )?.length ?? 0
+  if (islands !== masked) {
+    report(
+      file,
+      `${islands - masked} island(s) outside data-clarity-mask="True"; wrap each one so Clarity does not record what visitors type`,
+    )
+  }
 }
 
 // (e) sitemap lastmod
