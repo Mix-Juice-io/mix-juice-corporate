@@ -2,7 +2,7 @@
 title: "Shopifyで食品を販売する完全ガイド【許可・法律・表示も解説】"
 description: "Shopifyで食品ECを始めるための完全ガイド。開設までの流れ、必要な許可・届出、特定商取引法の表記や配送プロファイルなどShopifyの設定、食品表示の管理、よくある質問まで、食品ネット販売の全体像を解説します。"
 publishDate: 2026-05-15
-updatedDate: 2026-11-08
+updatedDate: 2026-11-12
 author: "Mix-Juice"
 category: "Shopify"
 topic: "online"
@@ -238,6 +238,11 @@ Mix-Juiceが提供する**Shopify専用の食品表示管理アプリ**です。
 - 商品に使った原材料から、原材料名の表示を組み立てる
 - 原材料のアレルゲンを直すと、その原材料を使う商品にも反映
 - CSVインポートで大量商品も効率的に登録
+
+<figure>
+  <img src="/f-label/storefront-desktop.webp" alt="デモストアの商品ページ（バタークッキー 8枚入り）。商品説明の下に、名称・原材料名・内容量・賞味期限・保存方法・販売者の一括表示欄と、1枚あたりの栄養成分表示が出ている" width="962" height="818" loading="lazy" decoding="async" />
+  <figcaption>Fラベルを入れたデモストアの商品ページ。商品説明の下に、一括表示欄と栄養成分表が出ます（表示の内容は例です）。</figcaption>
+</figure>
 
 商品数が増えてきた食品ECでの表示管理を支援します。詳しくは「[Fラベルのページ](/service/f-label/)」をご覧ください。
 
