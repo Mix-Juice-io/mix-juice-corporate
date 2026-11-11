@@ -38,7 +38,7 @@ export const PAGE_LASTMOD = {
   '/tools/nutrition-labeling-check/how-to/': '2026-10-30',
   '/tools/origin-labeling-check/': '2026-10-30',
   '/tools/origin-labeling-check/how-to/': '2026-10-30',
-  '/tools/expiry-date-record/': '2026-10-30',
+  '/tools/expiry-date-record/': '2026-11-12',
   '/tools/expiry-date-record/how-to/': '2026-10-30',
   '/tools/packaging-positive-list-ledger/': '2026-10-30',
   '/tools/packaging-positive-list-ledger/how-to/': '2026-10-30',
