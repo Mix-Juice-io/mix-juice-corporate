@@ -82,6 +82,34 @@ describe('作られる原材料名（ページに載る文面）', () => {
     )
   })
 
+  test('サンドイッチ', () => {
+    assert.equal(
+      ingredientField(answersOf('sandwich')),
+      '鶏卵（国産）、食パン（小麦粉、砂糖、ショートニング、脱脂粉乳、パン酵母、食塩）、ロースハム（豚ロース肉、食塩、砂糖）、マヨネーズ（食用植物油脂、卵黄、醸造酢、食塩）、レタス、食塩／調味料（アミノ酸）、リン酸塩（Na）、酸化防止剤（ビタミンC）、発色剤（亜硝酸Na）、（一部に小麦・卵・乳成分・豚肉を含む）',
+    )
+  })
+
+  test('シフォンケーキ', () => {
+    assert.equal(
+      ingredientField(answersOf('chiffon-cake')),
+      '鶏卵（国産）、砂糖、小麦粉、牛乳、なたね油／膨張剤、（一部に小麦・卵・乳成分を含む）',
+    )
+  })
+
+  test('チョコレート', () => {
+    assert.equal(
+      ingredientField(answersOf('chocolate')),
+      'カカオマス（国内製造）、砂糖、全粉乳、ココアバター／乳化剤、香料、（一部に乳成分・大豆を含む）',
+    )
+  })
+
+  test('どら焼き', () => {
+    assert.equal(
+      ingredientField(answersOf('dorayaki')),
+      '砂糖（国内製造）、小豆、鶏卵、小麦粉、はちみつ、水あめ、みりん／膨張剤、（一部に小麦・卵を含む）',
+    )
+  })
+
   test('期限の種類が表の項目名になる', () => {
     const names = (id: string) =>
       buildLabel(answersOf(id)).rows.map((r) => r.heading)
