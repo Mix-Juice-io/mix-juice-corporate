@@ -525,6 +525,16 @@ a.art-detail-cat:hover {
   text-decoration: underline;
 }
 
+/* Buttons keep their own look: without this, the link rule above turns
+   .btn-primary text into the same orange as its background. */
+.art-body a.btn {
+  text-decoration: none;
+}
+
+.art-body a.btn-primary {
+  color: var(--color-white);
+}
+
 .art-body img {
   border-radius: 16px;
   margin: 20px 0;
