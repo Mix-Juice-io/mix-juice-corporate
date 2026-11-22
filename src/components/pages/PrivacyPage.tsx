@@ -58,7 +58,7 @@ export default function PrivacyPage() {
 
       <section className={styles.contentSection}>
         <div className="container">
-          <article className={`glass-panel ${styles.card} reveal`}>
+          <article className={`glass-panel ${styles.card}`}>
             <p className={styles.lead}>
               このポリシーは、Mix-Juice（以下「当方」）が運営するウェブサイト
               mix-juice.io（記事・無料ツール・お問い合わせを含みます。以下「本サイト」）に適用します。Shopifyアプリ「Fラベル」での情報の取り扱いは、

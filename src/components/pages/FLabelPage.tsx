@@ -166,7 +166,7 @@ export default function FLabelPage() {
 
       <section className={styles.contentSection}>
         <div className="container">
-          <article className={`glass-panel ${styles.mainCard} reveal`}>
+          <article className={`glass-panel ${styles.mainCard}`}>
             <div className={styles.productHeader}>
               <div className={styles.iconCard}>
                 <img

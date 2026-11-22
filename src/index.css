@@ -146,6 +146,16 @@ img {
   transform: translateY(40px);
 }
 
+/* Printing does not scroll, so anything still pending would print blank.
+   No transition, so it is fully shown the moment print styles apply. */
+@media print {
+  .reveal[data-reveal='pending'] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -13,7 +13,7 @@ export default function FLabelTermsPage() {
 
       <section className={styles.contentSection}>
         <div className="container">
-          <article className={`glass-panel ${styles.card} reveal`}>
+          <article className={`glass-panel ${styles.card}`}>
             <p className={styles.lead}>
               この利用規約（以下「本規約」といいます。）は、Mix-Juice（以下「当方」といいます。）が提供する
               「Fラベル」（以下「本サービス」といいます。）の利用条件を定めるものです。

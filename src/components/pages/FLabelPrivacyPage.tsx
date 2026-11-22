@@ -17,7 +17,7 @@ export default function FLabelPrivacyPage() {
 
       <section className={styles.contentSection}>
         <div className="container">
-          <article className={`glass-panel ${styles.card} reveal`}>
+          <article className={`glass-panel ${styles.card}`}>
             <p className={styles.lead}>
               Fラベル（以下「本アプリ」）は、Mix-Juice（以下「当方」）が提供する、Shopifyプラットフォーム向けの食品表示管理アプリです。
               当方は、マーチャント（アプリ利用事業者）および当該マーチャントの顧客のプライバシーを尊重し、個人情報の保護に努めます。

@@ -22,7 +22,7 @@ export default function AboutPage() {
 
       <section className={styles.contentSection}>
         <div className="container">
-          <article className={`glass-panel ${styles.card} reveal`}>
+          <article className={`glass-panel ${styles.card}`}>
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>運営者</h2>
               <dl className={styles.meta}>
