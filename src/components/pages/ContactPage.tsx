@@ -1,9 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react'
 import { Send, CheckCircle } from 'lucide-react'
 import Link from '../Link'
 import PageHero from '../PageHero'
-import Turnstile from '../Turnstile'
+import Turnstile, { type TurnstileFailure } from '../Turnstile'
 import { trackEvent } from '../../lib/analytics'
+import { clearDraft, readDraft, saveDraft } from '../../lib/contact/draft'
 import {
   CONTACT_LIMITS,
   CONTACT_TOPICS,
@@ -16,6 +23,12 @@ import styles from './ContactPage.module.css'
 
 // Sends to /api/contact (functions/api/contact.ts), which stores the inquiry
 // in Zoho CRM. The page shows "sent" only after the endpoint confirms it.
+//
+// The form is in the HTML before React runs. Until then the submit button is
+// disabled, so the browser cannot send the fields on its own (a native GET
+// would put name, mail address and message in the URL). `method="post"` is
+// the second guard: if a native submit happens anyway, the input travels in
+// the request body, never in the URL.
 
 // The mail address is shown only when the form cannot be used, so ordinary
 // inquiries keep coming through the form (and the address draws less spam).
@@ -38,32 +51,100 @@ const FIELD_ORDER: ContactField[] = [
   'message',
 ]
 
+const KEEPS_INPUT = '入力した内容はそのまま残っています。'
+
+// 'pending': the visitor pressed "send" before the check had finished.
+type VerificationIssue = TurnstileFailure | 'pending'
+
+const VERIFICATION_ERRORS: Record<VerificationIssue, string> = {
+  load: `迷惑な送信を防ぐための確認を読み込めませんでした。${KEEPS_INPUT}「確認をやり直す」を押してください。${MAIL_FALLBACK}`,
+  challenge: `迷惑な送信を防ぐための確認に失敗しました。${KEEPS_INPUT}「確認をやり直す」を押してください。${MAIL_FALLBACK}`,
+  pending:
+    '上の確認がまだ終わっていません。終わってから、もう一度「送信する」を押してください。進まないときは「確認をやり直す」を押してください。',
+}
+
 type Status = 'idle' | 'sending' | 'sent'
 
+type FormValues = Record<ContactField, string>
+
+// What the visitor typed into the server-rendered fields before React ran.
+// Hydration resets the controlled fields to the (empty) state, so the values
+// are read during the first client render and put back after mounting.
+function typedBeforeHydration(): Partial<FormValues> {
+  if (typeof document === 'undefined') return {}
+  const typed: Partial<FormValues> = {}
+  for (const field of FIELD_ORDER) {
+    const element = document.getElementById(`contact-${field}`)
+    if (
+      element instanceof HTMLInputElement ||
+      element instanceof HTMLTextAreaElement ||
+      element instanceof HTMLSelectElement
+    ) {
+      if (element.value !== '') typed[field] = element.value
+    }
+  }
+  return typed
+}
+
+// False in the server-rendered HTML and while hydrating, true once React runs.
+const subscribeNever = () => () => {}
+function useHydrated(): boolean {
+  return useSyncExternalStore(
+    subscribeNever,
+    () => true,
+    () => false,
+  )
+}
+
 export default function ContactPage({ siteKey = '' }: { siteKey?: string }) {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormValues>({
     name: '',
     company: '',
     email: '',
     topic: '',
     message: '',
   })
+  const [typedEarly] = useState(typedBeforeHydration)
   const [status, setStatus] = useState<Status>('idle')
   const [fieldErrors, setFieldErrors] = useState<ContactField[]>([])
   const [error, setError] = useState('')
   const [token, setToken] = useState('')
+  const [verificationIssue, setVerificationIssue] = useState<
+    VerificationIssue | ''
+  >('')
+  // Stays on from the first problem until a token arrives, so the button
+  // does not vanish under the keyboard focus when it is pressed.
+  const [retryOffered, setRetryOffered] = useState(false)
   const [widgetVersion, setWidgetVersion] = useState(0)
+  const hydrated = useHydrated()
   const trap = useRef<HTMLInputElement>(null)
   const sentHeading = useRef<HTMLHeadingElement>(null)
   const errorBox = useRef<HTMLParagraphElement>(null)
+  const verificationBox = useRef<HTMLParagraphElement>(null)
+  const retryButton = useRef<HTMLButtonElement>(null)
+  const submitButton = useRef<HTMLButtonElement>(null)
   const inFlight = useRef(false)
 
-  const handleToken = useCallback((value: string) => setToken(value), [])
-  const handleVerificationError = useCallback(() => {
-    setError(
-      `迷惑な送信を防ぐための確認を読み込めませんでした。ページを再読み込みしてお試しください。${MAIL_FALLBACK}`,
-    )
+  const handleToken = useCallback((value: string) => {
+    setToken(value)
+    if (!value) return
+    // The check went through: nothing left to report or to retry.
+    if (document.activeElement === retryButton.current) {
+      submitButton.current?.focus()
+    }
+    setVerificationIssue('')
+    setRetryOffered(false)
   }, [])
+  const handleVerificationError = useCallback((failure: TurnstileFailure) => {
+    setVerificationIssue(failure)
+    setRetryOffered(true)
+  }, [])
+  // A new key remounts the widget, which also loads its script again.
+  const retryVerification = () => {
+    setToken('')
+    setVerificationIssue('')
+    setWidgetVersion((version) => version + 1)
+  }
 
   useEffect(() => {
     if (status === 'sent') sentHeading.current?.focus()
@@ -71,17 +152,27 @@ export default function ContactPage({ siteKey = '' }: { siteKey?: string }) {
 
   // Links from product pages open the form with the topic chosen, e.g.
   // /contact/?topic=flabel. Only a known topic id is read from the URL.
+  // A message saved before a reload (src/lib/contact/draft.ts) comes back
+  // too. Anything typed before React ran wins over both.
   useEffect(() => {
     const topic = new URLSearchParams(window.location.search).get('topic')
-    if (isContactTopic(topic)) {
-      setForm((current) =>
-        current.topic === '' ? { ...current, topic } : current,
-      )
-    }
-  }, [])
+    const draft = readDraft()
+    if (typedEarly.message) saveDraft(typedEarly.message)
+    setForm((current) => {
+      const next = { ...current }
+      if (next.topic === '' && isContactTopic(topic)) next.topic = topic
+      if (next.message === '') next.message = draft
+      for (const field of FIELD_ORDER) {
+        const typed = typedEarly[field]
+        if (typed && current[field] === '') next[field] = typed
+      }
+      return next
+    })
+  }, [typedEarly])
 
   const update = (field: ContactField, value: string) => {
     setForm((current) => ({ ...current, [field]: value }))
+    if (field === 'message') saveDraft(value)
     if (fieldErrors.includes(field)) {
       setFieldErrors((current) => current.filter((f) => f !== field))
     }
@@ -105,8 +196,9 @@ export default function ContactPage({ siteKey = '' }: { siteKey?: string }) {
     }
     setFieldErrors([])
     if (!token) {
-      setError('送信の前に、下の確認が終わるまでお待ちください。')
-      errorBox.current?.focus()
+      if (!verificationIssue) setVerificationIssue('pending')
+      setRetryOffered(true)
+      requestAnimationFrame(() => verificationBox.current?.focus())
       return
     }
 
@@ -132,6 +224,7 @@ export default function ContactPage({ siteKey = '' }: { siteKey?: string }) {
       }
       if (response.ok && result.ok === true) {
         setStatus('sent')
+        clearDraft()
         trackEvent('mix_contact_submit', {
           form_id: 'contact_main',
           contact_topic: isContactTopic(form.topic) ? form.topic : undefined,
@@ -144,21 +237,22 @@ export default function ContactPage({ siteKey = '' }: { siteKey?: string }) {
         focusError = false
       } else if (code === 'verification_failed') {
         setError(
-          '確認の有効期限が切れたか、確認に失敗しました。もう一度確認してから送信してください。',
+          `確認の有効期限が切れたか、確認に失敗しました。上の確認が終わってから、もう一度送信してください。${KEEPS_INPUT}`,
         )
       } else {
         setError(
-          `送信できませんでした。入力した内容はそのまま残っています。時間をおいて、もう一度お試しください。${MAIL_FALLBACK}`,
+          `送信できませんでした。${KEEPS_INPUT}時間をおいて、もう一度お試しください。${MAIL_FALLBACK}`,
         )
       }
     } catch {
       setError(
-        `送信できませんでした。通信状況を確かめて、もう一度お試しください。入力した内容はそのまま残っています。${MAIL_FALLBACK}`,
+        `送信できませんでした。通信状況を確かめて、もう一度お試しください。${KEEPS_INPUT}${MAIL_FALLBACK}`,
       )
     }
     trackEvent('mix_contact_error', { form_id: 'contact_main', error: code })
     // A Turnstile token is single-use; get a fresh one for the retry.
     setToken('')
+    setVerificationIssue('')
     setWidgetVersion((version) => version + 1)
     setStatus('idle')
     inFlight.current = false
@@ -238,10 +332,20 @@ export default function ContactPage({ siteKey = '' }: { siteKey?: string }) {
                 {siteKey ? (
                   <form
                     className={styles.form}
+                    method="post"
                     onSubmit={handleSubmit}
                     noValidate
                     aria-busy={sending}
                   >
+                    <noscript>
+                      <p className={styles.formError}>
+                        このフォームの送信にはJavaScriptが必要です。JavaScriptを有効にして読み込み直すか、メール（
+                        <a href="mailto:support@mix-juice.io">
+                          support@mix-juice.io
+                        </a>
+                        ）でご連絡ください。
+                      </p>
+                    </noscript>
                     <p className={styles.requiredNote}>
                       <span className={styles.required}>必須</span>
                       の項目は入力が必要です。
@@ -380,6 +484,29 @@ export default function ContactPage({ siteKey = '' }: { siteKey?: string }) {
                         onToken={handleToken}
                         onError={handleVerificationError}
                       />
+                      <p
+                        ref={verificationBox}
+                        tabIndex={-1}
+                        role="alert"
+                        className={
+                          verificationIssue ? styles.formError : styles.hidden
+                        }
+                      >
+                        {verificationIssue
+                          ? VERIFICATION_ERRORS[verificationIssue]
+                          : ''}
+                      </p>
+                      {retryOffered && (
+                        <button
+                          ref={retryButton}
+                          type="button"
+                          className={`btn btn-outline ${styles.retryBtn}`}
+                          onClick={retryVerification}
+                          disabled={sending}
+                        >
+                          確認をやり直す
+                        </button>
+                      )}
                     </div>
 
                     <p
@@ -391,16 +518,30 @@ export default function ContactPage({ siteKey = '' }: { siteKey?: string }) {
                       {error}
                     </p>
 
+                    {/* Disabled in the server-rendered HTML: see the top of
+                        this file. */}
                     <button
+                      ref={submitButton}
                       type="submit"
                       className={`btn btn-primary ${styles.submitBtn}`}
-                      disabled={sending}
-                      aria-describedby={token ? undefined : 'contact-wait'}
+                      disabled={!hydrated || sending}
+                      aria-describedby={
+                        !hydrated
+                          ? 'contact-loading'
+                          : token
+                            ? undefined
+                            : 'contact-wait'
+                      }
                     >
                       {sending ? '送信しています…' : '送信する'}
                       <Send size={18} aria-hidden="true" />
                     </button>
-                    {!token && !sending && (
+                    {!hydrated && (
+                      <p id="contact-loading" className={styles.loadingNote}>
+                        フォームの読み込みに時間がかかっています。送信できないときは、メール（support@mix-juice.io）でご連絡ください。
+                      </p>
+                    )}
+                    {hydrated && !token && !sending && (
                       <p id="contact-wait" className={styles.waitNote}>
                         上の確認が終わると送信できます。
                       </p>

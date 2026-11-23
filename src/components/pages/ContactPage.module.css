@@ -162,6 +162,15 @@
 
 .verification {
   min-height: 65px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.retryBtn {
+  padding: 10px 22px;
+  font-size: 0.92rem;
 }
 
 .formError {
@@ -171,6 +180,12 @@
   color: #8c1d18;
   font-size: 0.92rem;
   line-height: 1.7;
+}
+
+.formError a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .formError:focus {
@@ -186,6 +201,23 @@
   margin-top: -16px;
   font-size: 0.84rem;
   color: var(--color-text-light);
+}
+
+/* Rendered only until React runs. Kept out of sight for the first seconds, so
+   it appears only when the script is slow, failed, or is switched off. */
+.loadingNote {
+  margin-top: -16px;
+  font-size: 0.84rem;
+  line-height: 1.7;
+  color: var(--color-text-light);
+  visibility: hidden;
+  animation: loadingNoteAppear 0s 8s forwards;
+}
+
+@keyframes loadingNoteAppear {
+  to {
+    visibility: visible;
+  }
 }
 
 /* Off-screen rather than display:none so naive bots still see the field. */
