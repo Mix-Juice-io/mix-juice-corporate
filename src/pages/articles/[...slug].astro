@@ -167,6 +167,28 @@ const shareLinks = {
               </ol>
             </nav>
           )}
+          {/* One line, not a box: most readers leave before the F-label box
+              at the end, so the two next steps are also offered up here.
+              Formatted by hand: Prettier would put the link text on its own
+              lines, and the underline would then run into the spaces. */}
+          {/* prettier-ignore */}
+          <p class="art-top-cta">
+            原材料・アレルゲンの表示を作るなら<a
+              href="/tools/food-label-maker/"
+              data-track-event="mix_cta_click"
+              data-track-surface="article_top_line"
+              data-track-cta-position="article_top"
+              data-track-cta-id="article_top_label_maker"
+              data-track-article-slug={article.id}
+            >無料のラベル作成ツール</a>、Shopifyの商品ページには<a
+              href="/service/f-label/"
+              data-track-event="mix_cta_click"
+              data-track-surface="article_top_line"
+              data-track-cta-position="article_top"
+              data-track-cta-id="article_top_flabel_detail"
+              data-track-article-slug={article.id}
+            >Fラベル</a>。
+          </p>
           <Content />
         </article>
 

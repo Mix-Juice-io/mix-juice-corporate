@@ -615,6 +615,18 @@ a.art-detail-cat:hover {
   margin: 4px 0;
 }
 
+/* One-line pointer to the label maker and F-label, under the table of
+   contents (or first in the body when there is none). Kept quieter than the
+   body text so it does not read as a banner. */
+.art-body .art-top-cta {
+  margin: 0 0 28px;
+  padding-left: 12px;
+  border-left: 3px solid var(--color-primary-light);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--color-text-light);
+}
+
 /* Tables are wrapped by rehype-wrap-tables so wide ones scroll on their own. */
 .art-table-wrap {
   margin: 20px 0;
