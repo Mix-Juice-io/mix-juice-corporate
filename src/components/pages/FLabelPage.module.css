@@ -65,6 +65,8 @@
   line-height: 1.45;
   color: var(--color-text);
   margin-bottom: 10px;
+  /* Break only at the <wbr> points, never inside a word. */
+  word-break: keep-all;
 }
 
 .productTagline {
@@ -353,6 +355,22 @@
   justify-content: center;
 }
 
+/* The App Store button after the price, for readers who decide there. */
+.midCta {
+  margin-top: 22px;
+}
+
+.midCtaLead {
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.midCta .ctaRow {
+  margin-top: 14px;
+}
+
 .statList {
   list-style: none;
   display: grid;
@@ -398,19 +416,65 @@
     padding: 26px 20px 24px;
   }
 
+  /* Phones: a small icon beside the heading, then the App Store button, so
+     the button is on the first screen (iPhone 13 shows 664px). The body
+     wrapper is flattened so its children can be placed on this grid. */
   .productHeader {
-    grid-template-columns: 1fr;
-    gap: 20px;
+    grid-template-columns: 60px minmax(0, 1fr);
+    column-gap: 14px;
+    row-gap: 0;
+    align-items: start;
+  }
+
+  .productBody {
+    display: contents;
+  }
+
+  .productBody > * {
+    grid-column: 1 / -1;
   }
 
   .iconCard {
-    width: 120px;
-    height: 120px;
-    border-radius: 22px;
+    grid-row: 1 / span 2;
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
   }
 
-  .productName {
-    font-size: 1.24rem;
+  .productBody > .productBadge {
+    grid-column: 2;
+    grid-row: 1;
+    margin-bottom: 8px;
+  }
+
+  .productBody > .productName {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 1.16rem;
+    margin-bottom: 0;
+  }
+
+  .productHeader .ctaRow {
+    grid-row: 3;
+    margin-top: 18px;
+  }
+
+  .productHeader .ctaRow a {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .ctaNote {
+    grid-row: 4;
+  }
+
+  .productTagline {
+    grid-row: 5;
+    margin-top: 18px;
+  }
+
+  .productDesc {
+    grid-row: 6;
   }
 
   .featureGrid {
