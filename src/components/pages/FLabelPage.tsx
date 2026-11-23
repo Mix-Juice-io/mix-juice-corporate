@@ -36,7 +36,19 @@ function BodyLink({
   )
 }
 
-function InstallButton({ position }: { position: 'hero' | 'bottom' }) {
+// The App Store button appears three times. GA4 tells them apart by `surface`
+// (and `cta_position`); `cta_id` stays the same so the totals still add up.
+const INSTALL_SURFACES = {
+  hero: 'flabel_lp_primary_cta',
+  pricing: 'flabel_lp_mid_cta',
+  bottom: 'flabel_lp_bottom_cta',
+} as const
+
+function InstallButton({
+  position,
+}: {
+  position: keyof typeof INSTALL_SURFACES
+}) {
   return (
     <a
       href={FLABEL_APP_URL}
@@ -45,9 +57,7 @@ function InstallButton({ position }: { position: 'hero' | 'bottom' }) {
       rel="noopener noreferrer"
       aria-describedby="new-tab-note"
       data-track-event="mix_outbound_shopify_app,mix_lp_cta_click"
-      data-track-surface={
-        position === 'hero' ? 'flabel_lp_primary_cta' : 'flabel_lp_bottom_cta'
-      }
+      data-track-surface={INSTALL_SURFACES[position]}
       data-track-cta-position={position}
       data-track-cta-id="flabel_lp_install"
     >
@@ -183,7 +193,15 @@ export default function FLabelPage() {
               <div className={styles.productBody}>
                 <span className={styles.productBadge}>Shopify App</span>
                 <h2 className={styles.productName}>
-                  <FLabelName />
+                  お客様が
+                  <wbr />
+                  買う前に、
+                  <wbr />
+                  原材料と
+                  <wbr />
+                  アレルゲンを
+                  <wbr />
+                  確かめられる
                 </h2>
                 <p className={styles.productTagline}>
                   食品表示を、商品説明欄へのコピペではなく、原材料から組み立てて管理します。
@@ -381,6 +399,14 @@ export default function FLabelPage() {
                   最新の料金は、Shopify App Storeの掲載ページでご確認ください。
                 </li>
               </ul>
+              <div className={styles.midCta}>
+                <p className={styles.midCtaLead}>
+                  原材料とアレルゲンを、お客様が買う前に商品ページで確かめられるようにします。
+                </p>
+                <div className={styles.ctaRow}>
+                  <InstallButton position="pricing" />
+                </div>
+              </div>
             </section>
 
             <section className={styles.sectionBlock} aria-labelledby="limits">

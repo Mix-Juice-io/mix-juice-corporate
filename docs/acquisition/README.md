@@ -39,7 +39,7 @@ mix-juice.io の検索流入と成果（F-label の App Store 遷移・問い合
 - 食品表示ラベルの作成の「ラベルを印刷する」（ラベル用紙・ラベルプリンター向けの印刷）は、1訪問の最初の1回だけ `mix_tool_print` を送る。パラメータは `tool_id`（`food_label_maker`）と `print_layout`（`sheet`＝A4のラベル用紙、`single`＝ラベル1枚ずつ）。ページ全体の「表示を印刷する」は計測しない。
 - 食品表示ラベルの作成の品目別の表示例（`/tools/food-label-maker/examples/<id>/`）からツールを開く導線は、`surface` が `label_example`、`cta_id` が `example_open_tool`（`example_id` 付き）。
 - 問い合わせフォーム（`/contact/`）：Zoho CRM に登録できたときだけ `mix_contact_submit`（`form_id` は `contact_main`、`contact_topic` は `flabel`／`development`／`other`）、送れなかったときは `mix_contact_error`（`error` はエラーコードだけで、入力内容は送らない）。問い合わせの件数そのものは Zoho CRM の見込み客で数える。
-- F-label の LP（`/service/f-label/`）：`mix_lp_view` の `lp_variant` は、2026-11-07 の書き直し（#34）から `flabel_v2`（それまでは `flabel_v1`）。App Store へのボタンは `cta_id` が `flabel_lp_install` で、`surface` が `flabel_lp_primary_cta`（ページ上部）と `flabel_lp_bottom_cta`（ページ末尾）。本文から無料ツール・プライバシーポリシーへのリンクは `mix_cta_click` の `surface` `flabel_lp_body`。
+- F-label の LP（`/service/f-label/`）：`mix_lp_view` の `lp_variant` は、2026-11-07 の書き直し（#34）から `flabel_v2`（それまでは `flabel_v1`）。App Store へのボタンは `cta_id` が `flabel_lp_install` で、`surface` が `flabel_lp_primary_cta`（ページ上部）、`flabel_lp_mid_cta`（料金の節のあと、`cta_position` は `pricing`。#263 で追加）、`flabel_lp_bottom_cta`（ページ末尾）。本文から無料ツール・プライバシーポリシーへのリンクは `mix_cta_click` の `surface` `flabel_lp_body`。
 
 ### GA4 と Search Console の連携
 
